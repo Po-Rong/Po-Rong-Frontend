@@ -1,4 +1,4 @@
-<!-- 메인(홈) 페이지 html -->
+<!-- 메인(홈) 페이지 -->
 <!doctype html>
 <html lang="ko">
   <head>
@@ -6,6 +6,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PORONG</title>
     <link rel="stylesheet" href="/css/global.css" />
+
+    <!-- 이 페이지 전용 CSS가 필요하다면 여기에 추가 (예: main.css 나 board.css) -->
+    <!-- <link rel="stylesheet" href="/css/main.css"> -->
   </head>
-  <body></body>
+  <body>
+    <!-- 공통 헤더 -->
+    <header class="common-header">
+      <div class="header-container">
+        <div class="header-logo">
+          <a href="/index.html" class="logo font-point">PORONG</a>
+        </div>
+
+        <input type="checkbox" id="menu-toggle" class="menu-checkbox" />
+
+        <nav class="nav-container">
+          <div class="center-menu">
+            <a href="/pages/home.html">홈</a>
+            <a href="/pages/search.html">찾기</a>
+            <a href="/pages/favorites.html">찜</a>
+            <a href="/pages/mypage.html">마이포롱</a>
+          </div>
+        </nav>
+
+        <div class="header-right-group">
+          <button class="search-btn" aria-label="검색">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+
+          <a href="/pages/login.html" class="login-link">로그인</a>
+
+          <label for="menu-toggle" class="hamburger-button">
+            <span></span>
+            <span></span>
+            <span></span>
+          </label>
+        </div>
+      </div>
+    </header>
+
+    <main></main>
+
+    <!-- 이 페이지 전용 JS가 필요하다면 여기에 추가 -->
+    <!-- <script src="/js/main.js"></script> -->
+  </body>
 </html>
