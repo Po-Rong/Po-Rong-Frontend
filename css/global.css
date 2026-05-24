@@ -1,0 +1,25 @@
+/* 폰트 등록 */
+/* Noto Sans KR 웹폰트 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+
+/* 롯데리아 챱 폰트 로컬 등록 */
+@font-face {
+    font-family: 'LotteriaChab';
+    src: url('/assets/fonts/chab.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* 브라우저 기본 여백 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* 기본 폰트 고정 */
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* 특별한 경우(로고, 포인트 타이틀)에만 쓸 챱 폰트 클래스 */
+.font-point {
+    font-family: 'LotteriaChab', sans-serif !important;
+}
