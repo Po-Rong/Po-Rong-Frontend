@@ -87,3 +87,18 @@ function register() {
         })
         .catch(() => showMsg("registerMsg", "서버 오류", false));
 }
+
+function selectRole(role) {
+    document.getElementById("selectedRole").value = role;
+
+    // 두 버튼 다 active 제거
+    document.getElementById("btnUser").classList.remove("active");
+    document.getElementById("btnSeller").classList.remove("active");
+
+    // 클릭한 버튼에 active 추가
+    if (role === "user") {
+        document.getElementById("btnUser").classList.add("active");
+    } else {
+        document.getElementById("btnSeller").classList.add("active");
+    }
+}
