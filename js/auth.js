@@ -87,9 +87,3 @@ function register() {
         })
         .catch(() => showMsg("registerMsg", "서버 오류", false));
 }
-
-function showMsg(id, text, ok) {
-    const el = document.getElementById(id);
-    el.textContent = text;
-    el.className = "msg" + (ok ? "ok" : "fail");
-}
