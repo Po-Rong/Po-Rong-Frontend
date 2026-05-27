@@ -128,7 +128,6 @@
 .input-row input {
     border: 1px solid #222222;
     border-radius: var(--radius-xs);
-    color: var(--color-white);
     font-size: 14px;
     outline: none;
     display: flex;
@@ -303,6 +302,15 @@
 .btn-time-slot:hover {
     border-color: var(--color-primary-dark);
     color: var(--color-primary-dark);
+}
+
+.btn-time-slot.selected {
+    border-color: var(--color-primary-dark) !important;
+    background-color: var(--color-primary-light2) !important;
+    /* 연보라 배경 */
+    color: var(--color-primary-dark) !important;
+    /* 보라색 글씨 */
+    font-weight: var(--weight-bold) !important;
 }
 
 /* 5. 하단 버튼 바 */
