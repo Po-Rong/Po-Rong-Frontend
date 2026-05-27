@@ -44,6 +44,50 @@ function login() {
         .catch(() => showMsg("loginMsg", "서버 오류", false));
 }
 
+// role 선택
+function selectRole(role) {
+    document.getElementById("selectedRole").value = role;
+    document.getElementById("btnUser").classList.remove("active");
+    document.getElementById("btnSeller").classList.remove("active");
+
+    if (role === "user") {
+        document.getElementById("btnUser").classList.add("active");
+    } else {
+        document.getElementById("btnSeller").classList.add("active");
+    }
+}
+
+// 회원가입
+function register() {
+    const email = document.getElementById("regEmail").value.trim();
+    const pw = document.getElementById("regPw").value.trim();
+    const nickname = document.getElementById("regNickname").value.trim();
+    const role = document.getElementById("selectedRole").value;
+
+    if (!email || !pw || !nickname) {
+        showMsg("registerMsg", "모든 항목을 입력해주세요.", false);
+        return;
+    }
+
+    fetch(`${AUTH_API}/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password: pw, nickname, role }),
+    })
+        .then((res) => res.json().then((data) => ({ ok: res.ok, data })))
+        .then(({ ok, data }) => {
+            if (ok) {
+                showMsg("registerMsg", data.message, true);
+                setTimeout(() => {
+                    location.href = "/pages/login.html";
+                }, 1500);
+            } else {
+                showMsg("registerMsg", data.message, false);
+            }
+        })
+        .catch(() => showMsg("registerMsg", "서버 오류", false));
+}
+
 function showMsg(id, text, ok) {
     const el = document.getElementById(id);
     el.textContent = text;
