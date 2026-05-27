@@ -39,7 +39,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 longImageWrapper.innerHTML = "";
                 popup.detailImages.forEach(imgUrl => {
                     const img = document.createElement("img");
-                    img.src = imgUrl;
+
+                    if (imgUrl.startsWith("/")) {
+                        img.src = `http://localhost:8080${imgUrl}`;
+                    } else {
+                        img.src = imgUrl;
+                    }
+
                     img.alt = "상세 안내 포스터 이미지";
                     longImageWrapper.appendChild(img);
                 });
