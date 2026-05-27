@@ -1,0 +1,332 @@
+.reservation-wrapper {
+    width: 100%;
+    min-height: calc(100vh - 70px);
+    display: flex;
+    justify-content: center;
+}
+
+.reservation-container {
+    width: 100%;
+    max-width: 924px;
+    padding: 24px var(--space-md) 40px var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+/* 1. 상단 포스터 이미지 폼 */
+.section-reserve-poster {
+    width: 100%;
+    aspect-ratio: 924 / 250;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    background-color: var(--color-border-default);
+}
+
+.section-reserve-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 2. 요약 영역 */
+.section-reserve-summary {
+    width: 100%;
+    background-color: var(--color-white, #ffffff);
+    border-radius: var(--radius-sm, 8px);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.status-tag-row {
+    display: flex;
+    gap: var(--space-xs, 8px);
+    margin-bottom: 0;
+}
+
+.popup-title {
+    margin-top: 4px;
+    margin-bottom: 0;
+    color: var(--color-text-main);
+    font-family: "Noto Sans KR";
+    font-size: 20px;
+    font-style: var(--weight-medium);
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.8px;
+}
+
+.badge-category {
+    color: var(--color-text-main);
+    font-size: 13px;
+    border-radius: var(--radius-xs);
+    margin-top: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    padding: 5px;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 14px;
+    background: #F1F5F9;
+}
+
+.popup-location-text,
+.popup-period-text {
+    line-height: normal;
+    color: var(--color-text-main);
+    font-family: "Noto Sans KR";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.6px;
+    margin-bottom: px;
+}
+
+.popup-desc-text {
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 14px;
+    color: var(--color-text-main, #4C4C4C);
+    line-height: 1.6;
+    letter-spacing: -0.5px;
+    margin-top: 8px;
+}
+
+/* 구분선 */
+.reserve-divider {
+    width: 100%;
+    border: none;
+    border-top: 1px solid #EAEAEA;
+    margin: 10px 0;
+}
+
+/* 3. 인풋 정보 폼 */
+.section-visitor-inputs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.input-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.input-row label {
+    width: 80px;
+    font-weight: var(--weight-medium);
+    color: var(--color-text-main);
+    font-size: 16px;
+    font-style: normal;
+    line-height: normal;
+}
+
+.input-row input {
+    border: 1px solid #222222;
+    border-radius: var(--radius-xs);
+    color: var(--color-white);
+    font-size: 14px;
+    outline: none;
+    display: flex;
+    padding: 14px;
+    align-items: center;
+    gap: 10px;
+    flex: 1 0 0;
+    border-radius: 8px;
+    border: 1px solid var(--color-text-secondary);
+}
+
+.input-row input:focus {
+    border-color: #7B61FF;
+}
+
+/* 4. 달력 및 시간 선택 대블록 */
+.section-datetime-picker {
+    width: 100%;
+    background-color: var(--color-white);
+    border-radius: var(--radius-sm);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.picker-title {
+    font-size: 18px;
+    color: var(--color-text-main);
+    font-weight: var(--weight-medium);
+}
+
+/* 미니 달력 레이아웃 */
+.calendar-box {
+    width: 100%;
+    border: 1px solid #EAEAEA;
+    border-radius: var(--radius-sm);
+    padding: var(--space-md);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: var(--space-lg);
+}
+
+.calendar-current-month {
+    font-size: 18px;
+    font-weight: var(--weight-bold);
+}
+
+.btn-cal-arrow {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+}
+
+.calendar-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.calendar-table th {
+    font-size: 13px;
+    font-weight: var(--weight-medium);
+    color: #777777;
+    padding-bottom: var(--space-sm);
+    text-align: center;
+}
+
+.calendar-table td {
+    text-align: center;
+    vertical-align: top;
+    height: 52px;
+    padding-top: 6px;
+    font-size: 14px;
+    font-weight: var(--weight-medium);
+    color: #333333;
+    position: relative;
+    cursor: pointer;
+}
+
+/* 날짜별 특수 상태 스타일링 */
+.calendar-table td.muted {
+    color: #CCCCCC;
+}
+
+.calendar-table td.sun {
+    color: #FF4D4D;
+}
+
+.calendar-table td.sun-holiday {
+    color: #FF4D4D;
+    font-size: 13px;
+}
+
+.holiday-name {
+    display: block;
+    font-size: 9px;
+    color: #FF4D4D;
+    transform: scale(0.9);
+    margin-top: 2px;
+}
+
+.today-tag {
+    display: block;
+    font-size: 9px;
+    color: #2ECC71;
+    font-weight: var(--weight-bold);
+}
+
+.muted-status {
+    color: #999999;
+}
+
+.status-sub {
+    display: block;
+    font-size: 9px;
+    color: #AAAAAA;
+}
+
+/* 시안 속 녹색 활성화 선택 날짜 */
+.calendar-table td.active-day {
+    background-color: #00A862;
+    color: var(--color-white);
+    border-radius: var(--radius-xs);
+    font-weight: var(--weight-bold);
+}
+
+/* 시간 슬롯 구역 */
+.time-slot-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.time-period-label {
+    font-size: 20px;
+    color: var(--color-text-main);
+    margin-bottom: 10px;
+    font-weight: var(--weight-regular);
+}
+
+.slots-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.btn-time-slot {
+    display: flex;
+    width: 100%;
+    padding: 14px 0;
+    justify-content: center;
+    align-items: center;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border-default);
+    background: var(--color-white);
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 14px;
+    font-weight: var(--weight-regular);
+    color: var(--color-text-main);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-time-slot:hover {
+    border-color: var(--color-primary-dark);
+    color: var(--color-primary-dark);
+}
+
+/* 5. 하단 버튼 바 */
+.fixed-submit-container {
+    width: 100%;
+    max-width: 924px;
+    margin: 0 auto;
+    padding: var(--space-lg) 0;
+    box-sizing: border-box;
+}
+
+.btn-main-submit {
+    width: 100%;
+    background-color: var(--color-primary-dark);
+    color: var(--color-white);
+    border: none;
+    padding: 16px 0;
+    font-size: 16px;
+    font-weight: var(--weight-bold);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-main-submit:hover {
+    background-color: var(--color-primary);
+}
