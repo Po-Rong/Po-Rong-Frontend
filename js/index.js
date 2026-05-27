@@ -6,8 +6,8 @@ const API = "http://localhost:8080/api";
 function updateHeader() {
     // 로그인/회원가입 페이지에서는 실행 안 함
     if (
-        window.location.pathname.includes("login") ||
-        window.location.pathname.includes("register")
+        window.location.pathname.includes("/pages/login") ||
+        window.location.pathname.includes("/pages/register")
     )
         return;
 

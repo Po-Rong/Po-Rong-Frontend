@@ -64,10 +64,43 @@
         </header>
 
         <!-- [본문 영역] 각자 페이지에 맞는 내용을 여기 안에 작성하세요 -->
-        <main>관리자 페이지</main>
+        <main>
+            <!-- 인사말 -->
+            <div class="admin-welcome">
+                <h2>판매자님, 반가워요!</h2>
+                <button onclick="location.href = '/pages/popup-register.html'">
+                    팝업스토어 등록하기
+                </button>
+            </div>
+
+            <!-- 판매자가 등록한 팝업스토어 목록 -->
+            <section class="admin-section">
+                <h3>판매자님이 등록한 팝업스토어</h3>
+                <div id="popupList" class="scroll-container">
+                    <!-- JS에서 동적으로 생성 -->
+                </div>
+            </section>
+
+            <!-- 팝업스토어에 달린 후기 -->
+            <section class="admin-section">
+                <h3>팝업스토어에 달린 후기</h3>
+                <div id="reviewList" class="scroll-container">
+                    <!-- JS에서 동적으로 생성 -->
+                </div>
+            </section>
+
+            <!-- 나의 팝업스토어 예약 목록 -->
+            <section class="admin-section">
+                <h3>나의 팝업스토어 예약 목록</h3>
+                <div id="reservationList">
+                    <!-- JS에서 동적으로 생성 -->
+                </div>
+            </section>
+        </main>
 
         <!-- 이 페이지 전용 JS가 필요하다면 여기에 추가 -->
         <!-- <script src="/js/main.js"></script> -->
         <script src="/js/index.js"></script>
+        <script src="/js/admin.js"></script>
     </body>
 </html>
