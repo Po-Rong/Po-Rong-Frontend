@@ -4,6 +4,13 @@ const API = "http://localhost:8080/api";
 
 // 헤더 로그인 상태 업데이트
 function updateHeader() {
+    // 로그인/회원가입 페이지에서는 실행 안 함
+    if (
+        window.location.pathname.includes("login") ||
+        window.location.pathname.includes("register")
+    )
+        return;
+
     const user = JSON.parse(localStorage.getItem("loginUser"));
     const loginLink = document.querySelector(".login-link");
 
