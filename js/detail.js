@@ -23,8 +23,14 @@ document.addEventListener("DOMContentLoaded", () => {
             return response.json();
         })
         .then(popup => {
-            if (popupMainThumb) popupMainThumb.src = popup.mainImageUrl || "";
-            if (popupCategory) popupCategory.innerText = popup.categoryName || "미지정";
+            if (popupMainThumb) {
+                const mainUrl = popup.mainImageUrl || "";
+                if (mainUrl.startsWith("/")) {
+                    popupMainThumb.src = `http://localhost:8080${mainUrl}`;
+                } else {
+                    popupMainThumb.src = mainUrl;
+                }
+            } if (popupCategory) popupCategory.innerText = popup.categoryName || "미지정";
             if (popupTitle) popupTitle.innerText = popup.title;
             if (popupPeriod) popupPeriod.innerText = `${popup.startDate.split('T')[0]} ~ ${popup.endDate.split('T')[0]}`;
             if (popupLocation) popupLocation.innerText = popup.address;
