@@ -3,10 +3,11 @@
    ========================================================================== */
 document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
-    const currentPopupId = urlParams.get('popupId') || 11; // 주소창 파라미터가 없으면 기본값 11 사용
+    const currentPopupId = urlParams.get('popupId') || 11;
 
     fetchReviewsData(currentPopupId);
     initImageModal();
+    initRatingPrompt(currentPopupId);
 });
 
 /* ==========================================================================
@@ -23,6 +24,8 @@ async function fetchReviewsData(popupId) {
         }
 
         const reviewsList = await response.json();
+
+        renderUpperDashboard(reviewsList);
         renderReviews(reviewsList);
 
     } catch (error) {
@@ -36,13 +39,76 @@ async function fetchReviewsData(popupId) {
 }
 
 /* ==========================================================================
-   3. 동적 데이터 화면 매핑 및 데이터 가공 렌더러
+   3. 상단 대시보드 실시간 통계 계산 및 동적 주입 함수
+   ========================================================================== */
+function renderUpperDashboard(dataList) {
+    const avgScoreDisplay = document.getElementById('avgScoreDisplay');
+    const avgStarsGroup = document.getElementById('avgStarsGroup');
+    const mainCongestionText = document.getElementById('mainCongestionText');
+    const mainCongestionIcons = document.getElementById('mainCongestionIcons');
+
+    if (!dataList || dataList.length === 0) return;
+
+    let totalScore = 0;
+    dataList.forEach(item => {
+        totalScore += item.rating ? parseInt(item.rating) : 0;
+    });
+    const avgScore = totalScore / dataList.length;
+
+    // 📍 정밀 보정: 다른 문자열을 덧붙이지 않고 오직 숫자만 꽂아 넣어 CSS 클래스 꼬임을 방지합니다
+    if (avgScoreDisplay) {
+        avgScoreDisplay.textContent = avgScore.toFixed(1);
+    }
+
+    if (avgStarsGroup) {
+        const roundedAvg = Math.round(avgScore);
+        let starsHtml = '';
+        for (let i = 1; i <= 5; i++) {
+            starsHtml += `<span class="star-icon ${i <= roundedAvg ? 'is-active' : ''}">★</span>`;
+        }
+        avgStarsGroup.innerHTML = starsHtml;
+    }
+
+    const congestionCounts = { LOW: 0, NORMAL: 0, HIGH: 0 };
+    dataList.forEach(item => {
+        if (item.congestionLevel && congestionCounts[item.congestionLevel] !== undefined) {
+            congestionCounts[item.congestionLevel]++;
+        }
+    });
+
+    let topCongestion = 'NORMAL';
+    let maxCount = -1;
+    for (const key in congestionCounts) {
+        if (congestionCounts[key] > maxCount) {
+            maxCount = congestionCounts[key];
+            topCongestion = key;
+        }
+    }
+
+    if (mainCongestionText) {
+        if (topCongestion === 'LOW') mainCongestionText.textContent = '낮음';
+        if (topCongestion === 'NORMAL') mainCongestionText.textContent = '보통';
+        if (topCongestion === 'HIGH') mainCongestionText.textContent = '높음';
+    }
+
+    if (mainCongestionIcons) {
+        mainCongestionIcons.querySelectorAll('.btn-congestion').forEach(btn => {
+            if (btn.getAttribute('data-level') === topCongestion) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+}
+
+/* ==========================================================================
+   4. 하단 후기 리스트 영역 동적 데이터 렌더러
    ========================================================================== */
 function renderReviews(dataList) {
     const listGroup = document.querySelector('.reviews-list-group');
     if (!listGroup) return;
 
-    // 📍 핵심 수정: 데이터를 새로 그리기 전에 기존 자식 노드들을 깨끗하게 청소합니다.
     while (listGroup.firstChild) {
         listGroup.removeChild(listGroup.firstChild);
     }
@@ -53,20 +119,17 @@ function renderReviews(dataList) {
     }
 
     dataList.forEach(item => {
-        // 📍 백엔드 DTO 반영: item.rating 스펙 연동
         const ratingScore = item.rating ? parseInt(item.rating) : 0;
         let starsHtml = '';
         for (let i = 1; i <= 5; i++) {
             starsHtml += `<span class="star-small ${i <= ratingScore ? 'active' : ''}">★</span>`;
         }
 
-        // 📍 백엔드 DTO 반영: item.congestionLevel 카멜케이스 문자열 가공
         let congestionLabel = '정보 없음';
         if (item.congestionLevel === 'HIGH') congestionLabel = '혼잡도 높음';
         if (item.congestionLevel === 'NORMAL') congestionLabel = '혼잡도 보통';
         if (item.congestionLevel === 'LOW') congestionLabel = '혼잡도 낮음';
 
-        // 📍 백엔드 DTO 반영: item.reviewImageUrl 조건부 처리
         let imageContainerHtml = '';
         if (item.reviewImageUrl && item.reviewImageUrl !== 'NULL') {
             imageContainerHtml = `
@@ -76,10 +139,8 @@ function renderReviews(dataList) {
             `;
         }
 
-        // 📍 백엔드 DTO 반영: item.reserveDate 및 reserveTime 결합 처리
         let formattedDate = '날짜 정보 없음';
         if (item.reserveDate) {
-            // yyyy-mm-dd 형식을 yy.mm.dd 형식으로 가공 처리
             const parts = item.reserveDate.split('-');
             if (parts.length === 3) {
                 const shortYear = parts[0].length === 4 ? parts[0].slice(2) : parts[0];
@@ -90,7 +151,6 @@ function renderReviews(dataList) {
             }
         }
 
-        // 📍 백엔드 DTO 반영: item.nickname 스펙 적용
         const userNickname = item.nickname || '포롱이';
 
         const cardArticle = document.createElement('article');
@@ -153,7 +213,7 @@ function renderReviews(dataList) {
 }
 
 /* ==========================================================================
-   4. 이미지 대형 확대 모달 싱글톤 제어
+   5. 이미지 대형 확대 모달 싱글톤 제어
    ========================================================================== */
 function initImageModal() {
     const modal = document.getElementById('imageModal');
@@ -177,5 +237,39 @@ function initImageModal() {
         if (e.target === modal) {
             modal.classList.remove('is-active');
         }
+    });
+}
+
+/* ==========================================================================
+   6. 하단 평점 선택 및 작성 페이지 이동 인터랙션
+   ========================================================================== */
+function initRatingPrompt(popupId) {
+    const starsContainer = document.getElementById('interactivePromptStars');
+    if (!starsContainer) return;
+
+    const stars = starsContainer.querySelectorAll('.prompt-star-btn');
+
+    stars.forEach(star => {
+        star.addEventListener('mouseenter', () => {
+            const currentLevel = parseInt(star.getAttribute('data-value'));
+            stars.forEach((s, index) => {
+                if (index < currentLevel) {
+                    s.style.color = 'var(--color-primary, #B8A8FF)';
+                } else {
+                    s.style.color = '#EAEAEA';
+                }
+            });
+        });
+
+        star.addEventListener('click', () => {
+            const selectedRating = star.getAttribute('data-value');
+            window.location.href = `/pages/review-write.html?popupId=${popupId}&rating=${selectedRating}`;
+        });
+    });
+
+    starsContainer.addEventListener('mouseleave', () => {
+        stars.forEach(s => {
+            s.style.color = '#EAEAEA';
+        });
     });
 }

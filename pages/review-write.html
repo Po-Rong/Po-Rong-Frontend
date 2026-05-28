@@ -33,15 +33,14 @@
         <h1 class="page-main-title">후기 쓰기</h1>
         <div class="review-write-container">
 
-
             <section class="review-popup-summary">
                 <div class="summary-thumb-box">
-                    <img src="/images/image29.png" alt="팝업 썸네일" id="popup-thumb" />
+                    <img src="" alt="팝업 썸네일" id="popup-thumb" />
                 </div>
                 <div class="summary-info-box">
                     <div class="tag-row">
-                        <span class="badge-category">애니 / 캐릭터</span>
-                        <span class="badge-status">운영중</span>
+                        <span class="badge-category" id="popup-category">애니 / 캐릭터</span>
+                        <span class="badge-status" id="popup-status">운영중</span>
                     </div>
                     <h2 class="popup-title-text">산리오 팝업 - AK 몰</h2>
                     <p class="popup-region-text">홍대</p>
@@ -50,10 +49,12 @@
 
             <div class="review-rating-card">
                 <div class="rating-content-box"></div>
+
                 <div class="rating-score-display">
                     <span class="current-score" id="score-text">0.0</span>
                     <span class="max-score"> / 5.0</span>
                 </div>
+
                 <div class="stars-select-group" id="stars-container">
                     <span class="star-btn" data-value="1">★</span>
                     <span class="star-btn" data-value="2">★</span>
@@ -62,10 +63,8 @@
                     <span class="star-btn" data-value="5">★</span>
                 </div>
 
-
                 <div class="congestion-select-group">
-                    <p class="congestion-title">혼잡도 <span class="selected-status-text" id="congestion-text">보통</span>
-                    </p>
+                    <p class="congestion-title">혼잡도 <span class="selected-status-text" id="congestion-text"></span></p>
                     <div class="congestion-icons-row">
                         <button type="button" class="btn-congestion" data-status="smooth" aria-label="여유">
                             <svg class="icon-person" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -74,7 +73,7 @@
                                     d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z" />
                             </svg>
                         </button>
-                        <button type="button" class="btn-congestion active" data-status="normal" aria-label="보통">
+                        <button type="button" class="btn-congestion" data-status="normal" aria-label="보통">
                             <svg class="icon-person" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
                                 <path
@@ -91,7 +90,6 @@
                     </div>
                 </div>
             </div>
-            </section>
 
             <section class="review-content-form">
                 <div class="textarea-wrapper">
@@ -109,7 +107,7 @@
             </section>
         </div>
     </main>
-
+    <script src="/js/index.js"></script>
     <script src="/js/review-write.js"></script>
 </body>
 
