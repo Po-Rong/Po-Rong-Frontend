@@ -133,6 +133,7 @@
 .trend-card .card-image-wrap {
     /* 기존 높이가 302px로 고정되어있다면 유지 */
     box-shadow: 0 0 7.038px 0 rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
 }
 
 /* 밑으로 갈수록 어두워지는 그라데이션 레이어 구현 */
