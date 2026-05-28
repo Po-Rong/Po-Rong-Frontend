@@ -1,0 +1,353 @@
+/* ==========================================================================
+   1. 전체 페이지 레이아웃
+   ========================================================================== */
+
+/* 최외각 바탕 래퍼 */
+.review-write-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: stretch;
+    width: 100%;
+    min-height: calc(100vh - 70px);
+    padding: var(--space-lg) var(--space-md) 40px var(--space-md);
+    box-sizing: border-box;
+    background: var(--color-white);
+}
+
+/* 메인 타이틀 */
+.page-main-title {
+    flex: 1 0 0;
+    width: 100%;
+    max-width: 924px;
+    margin-top: 0;
+    margin-bottom: var(--space-lg);
+    color: var(--color-text-main);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: var(--weight-medium);
+    line-height: normal;
+    letter-spacing: -0.8px;
+}
+
+/* 중앙 컨텐츠 카드 */
+.review-write-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-lg);
+    width: 924px;
+    padding: 30px;
+    box-sizing: border-box;
+    background: var(--color-offwhite);
+    border-radius: var(--radius-lg);
+}
+
+/* ==========================================================================
+   2. 상단 미니 요약 카드 컴포넌트
+   ========================================================================== */
+
+.review-popup-summary {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 10px;
+    align-self: stretch;
+    padding: var(--space-lg) 10px;
+    background: var(--color-primary-light2);
+    border-radius: var(--radius-sm);
+    box-sizing: border-box;
+}
+
+.summary-thumb-box {
+    width: 60px;
+    height: 60px;
+    background: #D9D9D9;
+    border-radius: var(--radius-sm);
+}
+
+.summary-thumb-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.summary-info-box {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.tag-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.badge-category {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 2px 6px;
+    border-radius: var(--radius-xs);
+}
+
+.badge-status {
+    font-size: 11px;
+    color: #2ECC71;
+    background-color: rgba(46, 204, 113, 0.1);
+    padding: 2px 6px;
+    border-radius: var(--radius-xs);
+    font-weight: var(--weight-bold);
+}
+
+.popup-title-text {
+    align-self: stretch;
+    color: var(--color-text-main);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: var(--weight-regular);
+    line-height: normal;
+    letter-spacing: -0.64px;
+}
+
+.popup-region-text {
+    align-self: stretch;
+    color: var(--color-text-secondary);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: var(--weight-regular);
+}
+
+/* ==========================================================================
+   3. 중앙 평점 및 혼잡도 보드
+   ========================================================================== */
+
+.review-rating-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    align-self: stretch;
+    padding: 30px 0;
+    background: var(--color-white);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    box-sizing: border-box;
+}
+
+.rating-content-box {
+    display: flex;
+    width: 316px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    box-sizing: border-box;
+}
+
+.rating-score-display {
+    align-self: stretch;
+    text-align: center;
+}
+
+.current-score {
+    color: var(--color-text-main);
+    font-size: 32px;
+    font-style: normal;
+    font-weight: var(--weight-bold);
+    line-height: normal;
+}
+
+.max-score {
+    color: var(--color-border-default);
+    font-size: 32px;
+    font-style: normal;
+    font-weight: var(--weight-bold);
+    line-height: normal;
+}
+
+.stars-select-group {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.star-btn {
+    font-size: 36px;
+    color: #EAEAEA;
+    cursor: pointer;
+    transition: color 0.15s ease, transform 0.1s ease;
+}
+
+.star-btn:hover {
+    transform: scale(1.1);
+}
+
+.star-btn.is-active {
+    color: var(--color-primary);
+}
+
+.congestion-select-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.congestion-title {
+    font-size: 15px;
+    font-weight: var(--weight-medium);
+    color: var(--color-text-main);
+}
+
+.selected-status-text {
+    color: #3498DB;
+    font-weight: var(--weight-bold);
+}
+
+.congestion-icons-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+.btn-congestion {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    transition: transform 0.2s;
+}
+
+.btn-congestion:hover {
+    transform: translateY(-2px);
+}
+
+.icon-person {
+    width: 44px;
+    height: 44px;
+    stroke: #BDC3C7;
+    stroke-width: 1.5;
+    fill: none;
+    transition: all 0.2s ease;
+}
+
+.btn-congestion.active .icon-person {
+    stroke: #3498DB;
+    fill: rgba(52, 152, 219, 0.15);
+}
+
+/* ==========================================================================
+   4. 하단 에디터 및 사진 첨부 폼
+   ========================================================================== */
+
+.review-content-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 13px;
+    width: 864px;
+    padding: var(--space-lg);
+    background: var(--color-white);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    box-sizing: border-box;
+}
+
+.textarea-wrapper {
+    width: 100%;
+}
+
+#review-textarea {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    align-self: stretch;
+    width: 824px;
+    height: 186px;
+    padding: var(--space-lg);
+    background: var(--color-white);
+    border: 1px solid var(--color-text-secondary);
+    border-radius: var(--radius-sm);
+    box-sizing: border-box;
+    outline: none;
+    resize: none;
+    color: var(--color-text-secondary);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: var(--weight-regular);
+    line-height: normal;
+    letter-spacing: -0.64px;
+}
+
+#review-textarea:focus {
+    border-color: var(--color-primary-dark);
+}
+
+.file-upload-wrapper {
+    width: 100%;
+}
+
+.btn-file-trigger {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    align-self: stretch;
+    width: 824px;
+    padding: var(--space-lg) 0;
+    background: var(--color-white);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    box-sizing: border-box;
+    cursor: pointer;
+    color: var(--color-text-main);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: var(--weight-regular);
+    line-height: normal;
+    letter-spacing: -0.64px;
+}
+
+.btn-file-trigger:hover {
+    background-color: var(--color-offwhite);
+    border-color: var(--color-text-secondary);
+}
+
+.submit-action-row {
+    width: 100%;
+    margin-top: var(--space-xs);
+}
+
+.btn-main-submit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    align-self: stretch;
+    width: 824px;
+    padding: var(--space-lg) 0;
+    background: var(--color-primary-dark);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    box-sizing: border-box;
+    cursor: pointer;
+    color: var(--color-white);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: var(--weight-medium);
+    line-height: normal;
+    letter-spacing: -0.64px;
+}
+
+.btn-main-submit:hover {
+    background-color: var(--color-primary-dark);
+}
