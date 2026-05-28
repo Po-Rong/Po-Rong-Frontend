@@ -1,3 +1,80 @@
+// API 주소 상수 관리
+const API_BASE_URL = "http://localhost:8080/api";
+const API_TREND_POPUPS = `${API_BASE_URL}/popups?status=ongoing&sort=wishlist`;
+
+// 초기화 및 메인 실행
+document.addEventListener("DOMContentLoaded", () => {
+    // 인기 급상승 팝업 TOP 10
+    fetchTrendPopups();
+
+    // 기존 학습한 정적 데이터 기반 동적 렌더링
+    initStaticReviewStats();
+})
+
+async function fetchTrendPopups() {
+    const trendScrollContainer = document.querySelector(".trend-section .card-scroll-container");
+    if (!trendScrollContainer) return;
+
+    try {
+        const response = await fetch(API_TREND_POPUPS);
+        if (!response.ok) {
+            throw new Error(`API 통신 에러 발생: ${response.status}`);
+        }
+
+        const popupsData = await response.json();
+
+        // 예외 처리
+        // 데이터가 10개보다 적을때는 적은 만큼만 그린다
+        const displayData = popupsData.slice(0, 10);
+        trendScrollContainer.innerHTML = "";
+        // 데이터가 아예 없는 경우의 방어 코드
+        if (displayData.length === 0) {
+            trendScrollContainer.innerHTML = `<p class="no-data-msg" style="color:var(--color-text-secondary); padding: 20px;">현재 집계된 인기 팝업이 없습니다.</p>`;
+            return;
+        }
+
+        // 카드 생성
+        displayData.forEach((popup, index) => {
+            const rank = index + 1;
+
+            // 찜하기 활성화 여부에 따른 초기 클래스 분기
+            const activeClass = popup.isWishlisted ? "active" : "";
+
+            const cardHtml = `
+                <div class="popup-card trend-card" data-popup-id="${popup.id}">
+                    <div class="card-image-wrap">
+                        <img
+                            src="${popup.mainImageUrl}"
+                            alt="${popup.title} 썸네일"
+                            class="card-thumb"
+                        />
+                        <div class="gradient-overlay"></div>
+                        
+                        <div class="crown-badge rank-${rank}"></div>
+
+                        <div class="card-overlay-info">
+                            <span class="trend-rank-num">${rank}</span>
+                            <h3 class="trend-card-title">${popup.title}</h3>
+                            <p class="trend-card-location">${popup.regionName}</p>
+                        </div>
+                    </div>
+
+                    <button class="wish-btn ${activeClass}" aria-label="찜하기" onclick="toggleWish(${popup.id}, this)">
+                        <span class="heart-icon"></span> 찜하기
+                    </button>
+                </div>
+            `;
+
+            trendScrollContainer.insertAdjacentHTML("beforeend", cardHtml);
+        });
+    } catch (error) {
+        console.error("인기 급상승 팝업 조회 중 치명적 실패: ", error);
+        trendScrollContainer.innerHTML = `<p class="error-msg" style="color:var(--color-primary-dark); padding: 20px;">인기 팝업 정보를 불러오지 못했습니다.</p>`;
+    }
+}
+
+
+// 가로 스크롤 container - 스크롤 적용
 document.addEventListener("DOMContentLoaded", () => {
     // 1. 페이지 내 모든 가로 스크롤 컨테이너들을 가져옴
     const scrollContainers = document.querySelectorAll(".card-scroll-container");
@@ -48,6 +125,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+// 인기 급상승 팝업 TOP 10 가져오기
+
+
+// 리뷰 카드 - 별점, 혼잡도 생성
 document.addEventListener("DOMContentLoaded", () => {
     // ==========================================
     // 1. 동적 별점 생성기 (5점 만점 기준)
