@@ -197,3 +197,65 @@
     font-size: 20px;
     font-weight: var(--weight-regular);
 }
+
+.bottom-gradient-container {
+    width: 100%;
+    max-width: 1024px;
+    /* 양옆 화면은 하얀색으로 남도록 1024px 고정 */
+    margin: 0 auto;
+    /* 정중앙 정렬 */
+    box-sizing: border-box;
+
+    /* 리뷰 상단(흰색) -> 아래로 갈수록 사진 배경색(#E6DAF9) */
+    background: linear-gradient(180deg,
+            #FFFFFF 0%,
+            var(--color-primary-light2) 30%,
+            #E6D9F9 60%,
+            #E6D9F9 100%);
+
+    display: flex;
+    flex-direction: column;
+}
+
+.review-section {
+    width: 100%;
+    padding: 50px 16px 0 16px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+@media screen and (min-width: 1024px) {
+    .review-section {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+/* 맨 밑 배경 이미지 설정 */
+.bottom-illust-wrap {
+    width: 100%;
+    background-color: #E6DAF9;
+    margin: 40px 0 0 0;
+    padding: 0;
+    box-sizing: border-box;
+    line-height: 0;
+    font-size: 0;
+}
+
+/* 1024px 이상 해상도 화면 대응 패딩 맞춤 */
+@media screen and (min-width: 1024px) {
+    .bottom-illust-wrap {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+}
+
+.bottom-illust-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    background-color: #E6DAF9;
+}
