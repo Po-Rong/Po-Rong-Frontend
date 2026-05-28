@@ -1,7 +1,6 @@
 // 관리자 팝업 등록 JS
 const POPUP_API = "http://localhost:8080/api/popups";
 
-// admin-popup.js 맨 위에
 function checkAdmin() {
     const user = JSON.parse(localStorage.getItem("loginUser"));
     if (!user) {
@@ -14,11 +13,51 @@ function checkAdmin() {
     }
 }
 
-checkAdmin(); // 관리자 여부 체크
+checkAdmin();
 loadCategories();
 loadRegions();
 
-const tags = []; // 태그 목록
+// flatpickr 날짜 인풋 초기화 (30분 단위)
+const flatpickrConfig = {
+    enableTime: true,
+    dateFormat: "Y-m-dTH:i:S",
+    altInput: true,
+    altFormat: "Y년 m월 d일 h:i K",
+    time_24hr: false,
+    minuteIncrement: 30,
+    locale: "ko",
+    allowInput: true,
+};
+
+flatpickr("#startDate", flatpickrConfig);
+flatpickr("#endDate", flatpickrConfig);
+flatpickr("#reservationStartDate", flatpickrConfig);
+flatpickr("#reservationEndDate", flatpickrConfig);
+
+const tags = [];
+
+// 에러 표시
+function showError(inputId, message) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    input.classList.add("input-error");
+
+    const existing = input.parentElement.querySelector(".error-msg");
+    if (existing) existing.remove();
+
+    const msg = document.createElement("p");
+    msg.className = "error-msg";
+    msg.textContent = message;
+    input.insertAdjacentElement("afterend", msg);
+}
+
+// 에러 초기화
+function clearErrors() {
+    document
+        .querySelectorAll(".input-error")
+        .forEach((el) => el.classList.remove("input-error"));
+    document.querySelectorAll(".error-msg").forEach((el) => el.remove());
+}
 
 // 태그 추가
 function addTag() {
@@ -68,28 +107,30 @@ function handleMainImage(input) {
     mainImageFile = file;
     document.getElementById("mainImageCount").textContent = 1;
 
-    // 미리보기
     const reader = new FileReader();
     reader.onload = (e) => {
-        const preview = document.getElementById("mainImagePreview");
-        preview.innerHTML = "";
-
-        const div = document.createElement("div");
-        const img = document.createElement("img");
-        img.src = e.target.result;
-        img.style.width = "100px";
-        img.style.height = "100px";
-        img.style.objectFit = "cover";
-
-        const btn = document.createElement("button");
-        btn.textContent = "X";
-        btn.onclick = () => removeMainImage();
-
-        div.appendChild(img);
-        div.appendChild(btn);
-        preview.appendChild(div);
+        renderMainImagePreview(e.target.result);
     };
     reader.readAsDataURL(file);
+}
+
+// 대표 이미지 미리보기 렌더링
+function renderMainImagePreview(src) {
+    const preview = document.getElementById("mainImagePreview");
+    preview.innerHTML = "";
+
+    const div = document.createElement("div");
+    div.className = "image-preview-wrap";
+    const img = document.createElement("img");
+    img.src = src;
+
+    const btn = document.createElement("button");
+    btn.textContent = "X";
+    btn.onclick = () => removeMainImage();
+
+    div.appendChild(img);
+    div.appendChild(btn);
+    preview.appendChild(div);
 }
 
 // 대표 이미지 삭제
@@ -107,47 +148,86 @@ const detailImageFiles = [];
 function handleDetailImages(input) {
     const files = Array.from(input.files);
 
-    // 3개 초과 체크
     if (detailImageFiles.length + files.length > 3) {
         alert("상세 이미지는 최대 3장까지 등록 가능합니다.");
         return;
     }
 
     files.forEach((file) => detailImageFiles.push(file));
-
-    // 카운트 업데이트
     document.getElementById("detailImageCount").textContent =
         detailImageFiles.length;
-
-    // 미리보기
     renderDetailImagePreview();
 }
 
-// 상세 이미지 미리보기
+// 상세 이미지 미리보기 렌더링
 function renderDetailImagePreview() {
     const preview = document.getElementById("detailImagePreview");
     preview.innerHTML = "";
 
-    detailImageFiles.forEach((file, index) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const div = document.createElement("div");
-            const img = document.createElement("img");
-            img.src = e.target.result;
-            img.style.width = "100px";
-            img.style.height = "100px";
-            img.style.objectFit = "cover";
-
-            const btn = document.createElement("button");
-            btn.textContent = "X";
-            btn.onclick = () => removeDetailImage(index);
-
-            div.appendChild(img);
-            div.appendChild(btn);
-            preview.appendChild(div);
-        };
-        reader.readAsDataURL(file);
+    const promises = detailImageFiles.map((file, index) => {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) => resolve({ src: e.target.result, index });
+            reader.readAsDataURL(file);
+        });
     });
+
+    Promise.all(promises).then((results) => {
+        results.sort((a, b) => a.index - b.index);
+        results.forEach(({ src }, index) => {
+            const div = createDetailImageDiv(src, index);
+            preview.appendChild(div);
+        });
+    });
+}
+
+// 상세 이미지 div 생성
+function createDetailImageDiv(src, index) {
+    const div = document.createElement("div");
+    div.className = "detail-image-preview-wrap";
+    div.draggable = true;
+    div.dataset.index = index;
+
+    div.addEventListener("dragstart", (e) => {
+        e.dataTransfer.setData("text/plain", index);
+        div.classList.add("dragging");
+    });
+
+    div.addEventListener("dragend", () => {
+        div.classList.remove("dragging");
+    });
+
+    div.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        div.classList.add("drag-over");
+    });
+
+    div.addEventListener("dragleave", () => {
+        div.classList.remove("drag-over");
+    });
+
+    div.addEventListener("drop", (e) => {
+        e.preventDefault();
+        div.classList.remove("drag-over");
+        const fromIndex = parseInt(e.dataTransfer.getData("text/plain"));
+        const toIndex = parseInt(div.dataset.index);
+        if (fromIndex === toIndex) return;
+
+        const moved = detailImageFiles.splice(fromIndex, 1)[0];
+        detailImageFiles.splice(toIndex, 0, moved);
+        renderDetailImagePreview();
+    });
+
+    const img = document.createElement("img");
+    img.src = src;
+
+    const btn = document.createElement("button");
+    btn.textContent = "X";
+    btn.onclick = () => removeDetailImage(index);
+
+    div.appendChild(img);
+    div.appendChild(btn);
+    return div;
 }
 
 // 상세 이미지 삭제
@@ -160,7 +240,9 @@ function removeDetailImage(index) {
 
 // 팝업 등록
 function registerPopup() {
-    console.log("registerPopup 실행됨"); // 이 줄 추가
+    clearErrors();
+    let hasError = false;
+
     const user = JSON.parse(localStorage.getItem("loginUser"));
     const title = document.getElementById("popupTitle").value.trim();
     const categoryId = document.getElementById("selectedCategory").value;
@@ -178,26 +260,55 @@ function registerPopup() {
     const info = document.getElementById("popupInfo").value.trim();
     const snsUrl = document.getElementById("popupSNS").value.trim();
 
-    // 필수값 체크
-    if (
-        !title ||
-        !categoryId ||
-        !regionId ||
-        !address ||
-        !startDate ||
-        !endDate
-    ) {
-        showMsg("popupRegisterMsg", "필수 항목을 입력해주세요.", false);
-        return;
+    if (!title) {
+        showError("popupTitle", "팝업 이름은 필수입니다.");
+        hasError = true;
+    }
+    if (!categoryId) {
+        const formGroup = document
+            .getElementById("categoryList")
+            .closest(".form-group");
+        const msg = document.createElement("p");
+        msg.className = "error-msg";
+        msg.textContent = "카테고리를 선택해주세요.";
+        formGroup.appendChild(msg);
+        hasError = true;
     }
 
-    // 메인 이미지 필수 체크
+    if (!regionId) {
+        const formGroup = document
+            .getElementById("regionList")
+            .closest(".form-group");
+        const msg = document.createElement("p");
+        msg.className = "error-msg";
+        msg.textContent = "지역을 선택해주세요.";
+        formGroup.appendChild(msg);
+        hasError = true;
+    }
+    if (!address) {
+        showError("popupAddress", "주소는 필수입니다.");
+        hasError = true;
+    }
+    if (!startDate || !endDate) {
+        const formGroup = document
+            .getElementById("startDate")
+            .closest(".form-group");
+        const msg = document.createElement("p");
+        msg.className = "error-msg";
+        msg.textContent = "일정을 입력해주세요.";
+        formGroup.appendChild(msg); // afterend → appendChild
+        hasError = true;
+    }
     if (!mainImageFile) {
-        showMsg("popupRegisterMsg", "대표 이미지는 필수입니다.", false);
-        return;
+        const btn = document.querySelector(
+            ".form-group > button[type='button']",
+        );
+        btn.style.borderColor = "#e05c5c";
+        btn.style.color = "#e05c5c";
+        hasError = true;
     }
+    if (hasError) return;
 
-    // FormData 생성
     const formData = new FormData();
     formData.append("sellerId", user.userId);
     formData.append("title", title);
@@ -225,15 +336,19 @@ function registerPopup() {
         .then((res) => res.json().then((data) => ({ ok: res.ok, data })))
         .then(({ ok, data }) => {
             if (ok) {
-                showMsg("popupRegisterMsg", data.message, true);
-                setTimeout(() => {
-                    location.href = "/pages/admin.html";
-                }, 1500);
+                alert(data.message);
+                location.href = "/pages/admin.html";
             } else {
-                showMsg("popupRegisterMsg", data.message, false);
+                alert(data.message);
+                document
+                    .querySelector(".date-group")
+                    .scrollIntoView({ behavior: "smooth", block: "center" });
             }
         })
-        .catch(() => showMsg("popupRegisterMsg", "서버 오류", false));
+        .catch(() => {
+            showMsg("popupRegisterMsg", "서버 오류가 발생했습니다.", false);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
 }
 
 // 페이지 로드될 때 기존 팝업 데이터 불러오기
@@ -249,7 +364,7 @@ let existingData = null;
 
 // 팝업 상세 데이터 불러오기
 function loadPopupDetail(id) {
-    fetch(`${API}/popups/${id}`)
+    fetch(`${POPUP_API}/${id}`)
         .then((res) => res.json())
         .then((data) => {
             existingData = data;
@@ -257,14 +372,20 @@ function loadPopupDetail(id) {
 
             document.getElementById("popupTitle").value = data.title;
             document.getElementById("popupAddress").value = data.address;
-            document.getElementById("startDate").value = data.startDate;
-            document.getElementById("endDate").value = data.endDate;
+
+            document
+                .getElementById("startDate")
+                ._flatpickr.setDate(data.startDate);
+            document.getElementById("endDate")._flatpickr.setDate(data.endDate);
             if (data.reservationStartDate)
-                document.getElementById("reservationStartDate").value =
-                    data.reservationStartDate;
+                document
+                    .getElementById("reservationStartDate")
+                    ._flatpickr.setDate(data.reservationStartDate);
             if (data.reservationEndDate)
-                document.getElementById("reservationEndDate").value =
-                    data.reservationEndDate;
+                document
+                    .getElementById("reservationEndDate")
+                    ._flatpickr.setDate(data.reservationEndDate);
+
             if (data.benefit)
                 document.getElementById("popupBenefit").value = data.benefit;
             if (data.notice)
@@ -274,70 +395,77 @@ function loadPopupDetail(id) {
             if (data.snsUrl)
                 document.getElementById("popupSNS").value = data.snsUrl;
 
-            // 메인 이미지 미리보기
+            // 카테고리 active 처리
+            if (data.categoryName) {
+                setTimeout(() => {
+                    const categoryBtn = Array.from(
+                        document.querySelectorAll("#categoryList button"),
+                    ).find((btn) => btn.textContent === data.categoryName);
+                    if (categoryBtn) {
+                        categoryBtn.classList.add("active");
+                        document.getElementById("selectedCategory").value =
+                            categoryBtn.dataset.id;
+                    }
+                }, 1000);
+            }
+
+            // 지역 active 처리
+            if (data.regionName) {
+                setTimeout(() => {
+                    const regionBtn = Array.from(
+                        document.querySelectorAll("#regionList button"),
+                    ).find((btn) => btn.textContent === data.regionName);
+                    if (regionBtn) {
+                        regionBtn.classList.add("active");
+                        document.getElementById("selectedRegion").value =
+                            regionBtn.dataset.id;
+                    }
+                }, 1000);
+            }
+
             // 메인 이미지 미리보기
             if (data.mainImageUrl) {
                 document.getElementById("mainImageCount").textContent = 1;
-                const preview = document.getElementById("mainImagePreview");
-                preview.innerHTML = "";
-                const div = document.createElement("div");
-                const img = document.createElement("img");
-                img.src = `http://localhost:8080${data.mainImageUrl}`;
-                img.style.width = "100px";
-                img.style.height = "100px";
-                img.style.objectFit = "cover";
-
-                const btn = document.createElement("button");
-                btn.textContent = "X";
-                btn.onclick = () => removeMainImage();
-
-                div.appendChild(img);
-                div.appendChild(btn);
-                preview.appendChild(div);
+                renderMainImagePreview(
+                    `http://localhost:8080${data.mainImageUrl}`,
+                );
             }
 
             // 상세 이미지 미리보기
             if (data.detailImages && data.detailImages.length > 0) {
                 document.getElementById("detailImageCount").textContent =
                     data.detailImages.length;
-                const preview = document.getElementById("detailImagePreview");
-                preview.innerHTML = "";
-                data.detailImages.forEach((imageUrl, index) => {
-                    const div = document.createElement("div");
-                    const img = document.createElement("img");
-                    img.src = `http://localhost:8080${imageUrl}`;
-                    img.style.width = "100px";
-                    img.style.height = "100px";
-                    img.style.objectFit = "cover";
 
-                    const btn = document.createElement("button");
-                    btn.textContent = "X";
-                    btn.onclick = () => {
-                        div.remove();
-                        document.getElementById(
-                            "detailImageCount",
-                        ).textContent =
-                            document.getElementById(
-                                "detailImagePreview",
-                            ).children.length;
-                    };
-
-                    div.appendChild(img);
-                    div.appendChild(btn);
-                    preview.appendChild(div);
+                Promise.all(
+                    data.detailImages.map((imageUrl) =>
+                        fetch(`http://localhost:8080${imageUrl}`)
+                            .then((res) => res.blob())
+                            .then(
+                                (blob) =>
+                                    new File(
+                                        [blob],
+                                        imageUrl.split("/").pop(),
+                                        { type: blob.type },
+                                    ),
+                            ),
+                    ),
+                ).then((files) => {
+                    files.forEach((file) => detailImageFiles.push(file));
+                    renderDetailImagePreview();
                 });
             }
 
             // 태그 불러오기
-            data.tags.forEach((tag) => {
-                tags.push(tag);
-            });
+            data.tags.forEach((tag) => tags.push(tag));
             renderTags();
         });
 }
 
 // 팝업 수정
 function editPopup() {
+    clearErrors();
+    let hasError = false;
+
     const title = document.getElementById("popupTitle").value.trim();
     const address = document.getElementById("popupAddress").value.trim();
     const startDate = document.getElementById("startDate").value;
@@ -345,27 +473,53 @@ function editPopup() {
     const categoryId = document.getElementById("selectedCategory").value;
     const regionId = document.getElementById("selectedRegion").value;
 
-    // 필수값 체크
     if (!title) {
-        showMsg("popupRegisterMsg", "팝업 이름은 필수입니다.", false);
-        return;
+        showError("popupTitle", "팝업 이름은 필수입니다.");
+        hasError = true;
     }
     if (!address) {
-        showMsg("popupRegisterMsg", "주소는 필수입니다.", false);
-        return;
+        showError("popupAddress", "주소는 필수입니다.");
+        hasError = true;
     }
-    if (!startDate) {
-        showMsg("popupRegisterMsg", "시작일은 필수입니다.", false);
-        return;
+    if (!categoryId) {
+        const formGroup = document
+            .getElementById("categoryList")
+            .closest(".form-group");
+        const msg = document.createElement("p");
+        msg.className = "error-msg";
+        msg.textContent = "카테고리를 선택해주세요.";
+        formGroup.appendChild(msg);
+        hasError = true;
     }
-    if (!endDate) {
-        showMsg("popupRegisterMsg", "종료일은 필수입니다.", false);
-        return;
+    if (!regionId) {
+        const formGroup = document
+            .getElementById("regionList")
+            .closest(".form-group");
+        const msg = document.createElement("p");
+        msg.className = "error-msg";
+        msg.textContent = "지역을 선택해주세요.";
+        formGroup.appendChild(msg);
+        hasError = true;
+    }
+    if (!startDate || !endDate) {
+        const formGroup = document
+            .getElementById("startDate")
+            .closest(".form-group");
+        const msg = document.createElement("p");
+        msg.className = "error-msg";
+        msg.textContent = "일정을 입력해주세요.";
+        formGroup.appendChild(msg); // afterend → appendChild
+        hasError = true;
     }
     if (!mainImageFile && !existingMainImageUrl) {
-        showMsg("popupRegisterMsg", "대표 이미지는 필수입니다.", false);
-        return;
+        const btn = document.querySelector(
+            ".form-group > button[type='button']",
+        );
+        btn.style.borderColor = "#e05c5c";
+        btn.style.color = "#e05c5c";
+        hasError = true;
     }
+    if (hasError) return;
 
     const user = JSON.parse(localStorage.getItem("loginUser"));
     const reservationStartDate = document.getElementById(
@@ -405,13 +559,17 @@ function editPopup() {
         .then((res) => res.json().then((data) => ({ ok: res.ok, data })))
         .then(({ ok, data }) => {
             if (ok) {
-                showMsg("popupRegisterMsg", data.message, true);
-                setTimeout(() => {
-                    location.href = "/pages/admin.html";
-                }, 1500);
+                alert(data.message);
+                location.href = "/pages/admin.html";
             } else {
-                showMsg("popupRegisterMsg", data.message, false);
+                alert(data.message);
+                document
+                    .querySelector(".date-group")
+                    .scrollIntoView({ behavior: "smooth", block: "center" });
             }
         })
-        .catch(() => showMsg("popupRegisterMsg", "서버 오류", false));
+        .catch(() => {
+            showMsg("popupRegisterMsg", "서버 오류가 발생했습니다.", false);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
 }
