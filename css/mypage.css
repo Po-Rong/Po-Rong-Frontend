@@ -1,0 +1,711 @@
+/* ==========================================================================
+   PORONG - 마이페이지(mypage.css) 스타일 정의
+   ========================================================================== */
+
+/* 디자인 시스템 변수 정의 */
+:root {
+    --primary-color: #9C8CF2;
+    --primary-hover: #8A7AE0;
+    --primary-light: #ECE9FC;
+
+    --accent-yellow: #FAF2D6;
+    --accent-yellow-text: #DFA426;
+
+    --bg-light: #F9F9FB;
+    --text-main: #333333;
+    --text-muted: #757575;
+    --border-color: #E2E2E8;
+
+    --badge-open-bg: #EAFDF2;
+    --badge-open-text: #17A24B;
+}
+
+/* 메인 컨테이너 레이아웃 */
+.mypage-main {
+    max-width: 1024px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background-color: #FFFFFF;
+}
+
+/* ==========================================================================
+   1. 프로필 영역 (Profile Section)
+   ========================================================================== */
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.profile-img-wrapper {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin-bottom: 16px;
+}
+
+.profile-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FFE3EC 0%, #F5E3FF 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 4px solid #FFFFFF;
+    box-shadow: 0 4px 12px rgba(156, 140, 242, 0.15);
+    overflow: hidden;
+}
+
+.profile-img svg {
+    width: 70px;
+    height: 70px;
+    fill: #9C8CF2;
+}
+
+.profile-name {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 12px;
+}
+
+.btn-change-nickname {
+    background-color: #ECE9FC;
+    color: var(--primary-color);
+    border: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 16px;
+}
+
+.btn-change-nickname:hover {
+    background-color: #DDDAF5;
+    transform: translateY(-1px);
+}
+
+.profile-bio {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.profile-email {
+    display: block;
+    margin-top: 6px;
+    font-weight: 500;
+    color: #888898;
+}
+
+/* ==========================================================================
+   2. 활동 카운터 (Activity Counters)
+   ========================================================================== */
+.activity-counters {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 120px;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.counter-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    transition: transform 0.2s;
+    background: none !important;
+    border: none;
+    padding: 0;
+    width: auto;
+}
+
+.counter-card:hover {
+    transform: translateY(-2px);
+}
+
+.counter-icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+
+    height: 64px;
+    border-radius: 18px;
+
+    margin-bottom: 12px;
+    box-shadow: none;
+
+    transition: transform 0.2s;
+    padding: 16px;
+    gap: 10px;
+    align-self: stretch;
+}
+
+.counter-card.wishlist .counter-icon-box {
+    background-color: #F1EDFE;
+
+}
+
+.counter-card.reviews .counter-icon-box {
+    background-color: #FAF2D6;
+}
+
+.counter-card.wishlist .counter-icon-box svg {
+    fill: var(--primary-color);
+    width: 28px;
+    height: 28px;
+}
+
+.counter-card.reviews .counter-icon-box svg {
+    stroke: var(--accent-yellow-text);
+    fill: none;
+    width: 26px;
+    height: 26px;
+}
+
+.counter-text {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-main);
+}
+
+.counter-value {
+    font-size: 14px;
+    font-weight: 700;
+    margin-left: 2px;
+}
+
+.activity-divider {
+    width: 1px;
+    height: 64px;
+    /* 아이콘 박스 높이와 매칭 */
+    background-color: var(--border-color);
+}
+
+/* ==========================================================================
+   3. 나의 키링 도감 (My Keyring Book)
+   ========================================================================== */
+.keyring-book-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    align-self: stretch;
+    width: 100%;
+    max-width: 956px;
+    padding: 30px;
+    box-sizing: border-box;
+    border-radius: 16px;
+    border: 1px solid var(--Primary-Dark-Purple, #9C8CF2);
+    background: var(--White-White, #FFF);
+    margin: 0 auto;
+}
+
+.keyring-book-title {
+    margin: 0;
+    font-size: 20px;
+    color: var(--Text-Main, #333);
+}
+
+.keyring-grid {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 50px;
+    width: 100%;
+    padding-top: 20px;
+}
+
+.keyring-card {
+    display: flex;
+    width: 122px;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.keyring-circle.empty-state {
+    width: 122px;
+    /* background-color: #F8F9FA; */
+    width: 122px;
+    height: 138px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.keyring-text-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.keyring-tag {
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1px solid #E5E7EB;
+    background: #FFF;
+    font-size: 13px;
+    font-weight: 500;
+    color: #6B7280;
+}
+
+.keyring-desc {
+    font-size: 12px;
+    color: #9CA3AF;
+}
+
+
+/* ==========================================================================
+   4. 탭 메뉴 및 카드 그리드 (Tab Menu & Card Grid)
+   ========================================================================== */
+.tab-section {
+    display: flex;
+    padding: 20px 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    align-self: stretch;
+    background: var(--White-White, #FFF);
+
+    width: 100%;
+    max-width: 956px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.tab-header {
+    display: flex;
+    width: 100%;
+}
+
+.tab-btn {
+    display: flex;
+    height: 60px;
+    justify-content: center;
+    align-items: center;
+    flex: 1 0 0;
+
+    color: #888888;
+    text-align: center;
+    font-family: "Noto Sans KR", sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: -0.8px;
+
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #E5E7EB;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+    color: var(--Text-Main, #4C4C4C);
+    font-weight: 700;
+    border-bottom: 2px solid #333333;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.popup-card {
+    display: flex;
+    flex-direction: column;
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.popup-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(156, 140, 242, 0.08);
+}
+
+.popup-poster-placeholder {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    background: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.02);
+}
+
+.popup-poster-placeholder::before {
+    content: "";
+    position: absolute;
+    width: 120%;
+    height: 120%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 60%);
+    top: -10%;
+    left: -10%;
+}
+
+.poster-title-fallback {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0) 100%);
+    padding: 30px 10px 10px;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.poster-icon {
+    width: 50px;
+    height: 50px;
+    opacity: 0.7;
+    transition: transform 0.3s;
+}
+
+.popup-card:hover .poster-icon {
+    transform: scale(1.15) rotate(-3deg);
+}
+
+.popup-info {
+    padding: 4px 2px;
+}
+
+.badge-open {
+    display: inline-block;
+    background-color: var(--badge-open-bg);
+    color: var(--badge-open-text);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.popup-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.4;
+    margin-bottom: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.popup-loc,
+.popup-date {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+}
+
+/* ==========================================================================
+   5. 예약 섹션 (Timeline)
+   ========================================================================== */
+.reservation-section {
+    padding: 20px;
+    background: #FFFFFF;
+}
+
+.reservation-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.timeline-container {
+    position: relative;
+    padding-left: 24px;
+}
+
+.timeline-container::before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 10px;
+    bottom: 20px;
+    width: 2px;
+    background-color: #E5E7EB;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -23px;
+    top: 6px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #C8BFF9;
+    border: 3px solid #FFFFFF;
+    z-index: 2;
+}
+
+.timeline-date {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.timeline-card {
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: inline-flex;
+    flex-direction: column;
+    min-width: 320px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.timeline-card-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+}
+
+.timeline-card-time {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.btn-reservation-action {
+    align-self: flex-start;
+    background-color: #FFFFFF;
+    color: var(--primary-color);
+    border: 1.5px solid var(--primary-color);
+    padding: 6px 16px;
+    border-radius: 18px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-reservation-action:hover {
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+}
+
+
+/* ==========================================================================
+   6. 닉네임 변경 모달 (Nickname Change Modal)
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(2px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-container {
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 440px;
+    padding: 32px 24px 24px 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    position: relative;
+    transform: translateY(20px);
+    transition: transform 0.25s ease;
+}
+
+.modal-overlay.active .modal-container {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.btn-close-modal {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #9CA3AF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    transition: color 0.2s;
+}
+
+.btn-close-modal:hover {
+    color: #4B5563;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-nickname {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 15px;
+    color: var(--text-main);
+    margin-bottom: 24px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+}
+
+.input-nickname::placeholder {
+    color: #9CA3AF;
+}
+
+.input-nickname:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(156, 140, 242, 0.15);
+}
+
+.btn-confirm-nickname {
+    width: 100%;
+    background-color: var(--primary-color);
+    color: #FFFFFF;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-confirm-nickname:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-confirm-nickname:active {
+    transform: scale(0.98);
+}
+
+/* ==========================================================================
+   7. 로그아웃 버튼 영역
+   ========================================================================== */
+
+.logout-section {
+    width: 100%;
+    max-width: 956px;
+    margin: 50px auto 80px auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.btn-logout-wide {
+    display: flex;
+    padding: 12px 0;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #DDD;
+    background: #FFF;
+    color: #6B7280;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-logout-wide:hover {
+    background-color: #F9FAFB;
+}
+
+/* ==========================================================================
+   8. 재사용 리뷰 카드 css 조절
+   ========================================================================== */
+
+#reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.review-card {
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
+}
+
+.review-attach-box {
+    width: 266px;
+    height: 144px;
+    margin-top: 10px;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.review-attached-img {
+    width: 266px;
+    height: 144px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+    margin-top: 10px;
+}
