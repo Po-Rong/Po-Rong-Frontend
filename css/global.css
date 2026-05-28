@@ -34,6 +34,17 @@
     --color-border-default: #DDDDDD;
     /* 기본 테두리 색상 */
 
+    /* 카테고리 운영 태그 배경색 */
+    --color-category-bg: #F1F5F9;
+
+    /* Sub 색깔 */
+    --color-sub-green: #3FBE6E;
+    --color-sub-light-green: #DBFCE7;
+    --color-sub-dark-blue: #5DADFF;
+    --color-sub-sky-blue: #CDE7FF;
+    --color-sub-blue: #90C6FF;
+
+
     /* 피그마 폰트 두께 */
     --weight-light: 300;
     --weight-regular: 400;
@@ -312,9 +323,12 @@ body {}
 
 /* 공통 컴포넌트 - 모든 페이지에서 공유할 팝업 카드 기본 규격 */
 .popup-card {
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
     position: relative;
+    width: 218px;
+    gap: 4px;
 }
 
 /* 다음 스텝에서 디테일하게 잡을 썸네일 박스 기본 틀 */
@@ -325,7 +339,152 @@ body {}
 }
 
 .card-thumb {
+    border-radius: var(--radius-sm);
     width: 100%;
     height: 100%;
     object-fit: cover;
+    height: 302px;
+    pointer-events: none;
+}
+
+/* 찜하기 전체 버튼 스타일 */
+.wish-btn {
+    width: 100%;
+    height: 40px;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    font-size: 14px;
+    font-weight: var(--weight-regular);
+    cursor: pointer;
+    transition: all 0.2s;
+
+    display: flex;
+    justify-content: center;
+    /* 가로 기준 정중앙 */
+    align-items: center;
+    /* 세로 기준 정중앙 */
+    gap: 6px;
+}
+
+.heart-icon {
+    /* 다른 스타일에 의해 크기가 찌그러지지 않도록 고정 */
+    flex-shrink: 0;
+    width: 19px;
+    height: 19px;
+
+    /* 폴더 구조에 맞춰 저장해 둔 빈 하트 이미지 호출 */
+    background: url('/assets/images/icons/icon-heart-empty.png') no-repeat center / contain;
+    display: inline-block;
+}
+
+/* 호버 효과 */
+.wish-btn:hover {
+    background-color: var(--color-primary-light2);
+}
+
+.wish-btn:hover .heart-icon {
+    background-image: url('/assets/images/icons/icon-heart-fill.png');
+}
+
+
+/* 눌렸을 때 */
+.wish-btn.active {
+    background-color: var(--color-primary-light2);
+}
+
+/* 활성화되었을 때 채워진 하트 이미지로 교체 */
+.wish-btn.active .heart-icon {
+    background-image: url('/assets/images/icons/icon-heart-fill.png');
+}
+
+/* 카드 타이틀 */
+.card-title {
+    font-size: 18px;
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-main);
+
+    white-space: nowrap;
+    /* 글자가 길어져도 아래 줄로 안 넘어가고 한 줄로 유지 */
+    overflow: hidden;
+    /* 카드 너비(218px)를 벗어나는 글자는 화면에서 숨김 */
+    text-overflow: ellipsis;
+    /* 숨겨진 글자 끝부분을 자동으로 '...'으로 변경 */
+}
+
+.card-location .card-date {
+    font-size: 12px;
+    font-weight: var(--weight-regular);
+    color: var(--color-text-main);
+}
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.card-category {
+    font-size: 14px;
+    width: fit-content;
+    padding: 6px;
+    background: var(--color-category-bg);
+    text-align: center;
+    border-radius: var(--radius-xs);
+}
+
+/* 운영 태그 */
+.card-status {
+    width: fit-content;
+    padding: 6px;
+    background: var(--color-sub-light-green);
+    color: var(--color-sub-green);
+    text-align: center;
+    border-radius: var(--radius-xs);
+    font-size: 14px;
+}
+
+/* 운영중 */
+.card-status.is-running {
+    background-color: var(--color-sub-light-green);
+    color: var(--color-sub-green);
+}
+
+/* 운영 마감 */
+.card-status.is-closed {
+    background-color: var(--color-border-default);
+    color: var(--color-text-main);
+}
+
+/* 운영 예정 */
+.card-status.is-upcoming {
+    background-color: var(--color-sub-sky-blue);
+    color: var(--color-sub-dark-blue);
+}
+
+/* 카드를 감싸고 있는 가로 스크롤 부모 박스 */
+.card-scroll-container {
+    display: flex;
+    gap: 16px;
+
+    /* 가로축(X축)으로 화면이 넘치면 스크롤을 허용, 세로축(Y축)은 넘침 차단 */
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    /* 카드들의 그림자나 둥글기가 스크롤 박스에 잘리지 않도록 상하좌우 미세 여백 제공 */
+    padding: var(--space-xs) 4px var(--space-md) 4px;
+    width: 100%;
+    box-sizing: border-box;
+
+    /* 브라우저 기본 가로 스크롤바 디자인 숨기기 */
+    -ms-overflow-style: none;
+    /* IE, Edge 대응 */
+    scrollbar-width: none;
+    /* Firefox 대응 */
+}
+
+/* Chrome, Safari, Opera 브라우저 스크롤바 숨기기 */
+.card-scroll-container::-webkit-scrollbar {
+    display: none;
 }

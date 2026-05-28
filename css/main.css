@@ -19,6 +19,9 @@
     /* 왼쪽 치우침 방지: 자동으로 좌우 여백을 똑같이 나눠 가짐 */
     padding: 50px 16px 0 16px;
     box-sizing: border-box;
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 /* PC 스타일 */
@@ -103,4 +106,25 @@
     text-align: center;
     white-space: nowrap;
     /* 글자가 폭을 넘쳐서 줄바꿈되지 않도록 방지 */
+}
+
+/* 카드 섹션 h2 스타일 */
+.section-header h2 {
+    font-size: 24px;
+    font-weight: var(--weight-medium);
+    color: var(--color-text-main);
+    width: 90%;
+}
+
+.section-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.see-more-btn {
+    text-decoration: none;
+    white-space: nowrap;
+    color: var(--color-text-main);
+    font-size: 16px;
 }
