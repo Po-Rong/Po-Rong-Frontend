@@ -6,8 +6,8 @@ const API = "http://localhost:8080/api";
 function updateHeader() {
     // 로그인/회원가입 페이지에서는 실행 안 함
     if (
-        window.location.pathname.includes("login") ||
-        window.location.pathname.includes("register")
+        window.location.pathname.includes("/pages/login") ||
+        window.location.pathname.includes("/pages/register")
     )
         return;
 
@@ -18,6 +18,14 @@ function updateHeader() {
         // 로그인 상태
         loginLink.textContent = `${user.nickname}님, 반가워요!`;
         loginLink.href = "#";
+
+        // role에 따라 마이포롱 링크 변경
+        const mypageLink = document.querySelector(
+            "a[href='/pages/mypage.html']",
+        );
+        if (mypageLink && user.role === "seller") {
+            mypageLink.href = "/pages/admin.html";
+        }
     } else {
         // 비로그인 상태
         loginLink.textContent = "로그인";

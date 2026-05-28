@@ -113,7 +113,6 @@
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 16px;
 }
 
 .meta-row-layout {
@@ -297,7 +296,7 @@
     background-color: var(--color-white);
     z-index: 2000;
     display: flex;
-    padding: 30px 20px;
+    padding: 14px 20px;
     justify-content: center;
     align-items: center;
     gap: 10px;
@@ -381,7 +380,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 0;
+    padding: 14px 0;
     text-decoration: none;
     font-weight: var(--weight-semibold);
     border-radius: var(--radius-sm);
