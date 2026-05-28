@@ -393,6 +393,12 @@ main {
     background-color: var(--color-primary-dark);
 }
 
+.btn-cancel-reservation:disabled {
+    background-color: var(--color-border-default);
+    color: var(--color-text-secondary);
+    cursor: not-allowed;
+}
+
 /* ── 모바일 (1023px 이하) ── */
 @media screen and (max-width: 1023px) {
     main {

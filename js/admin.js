@@ -188,7 +188,9 @@ function openReservationModal(reservation) {
                 <p>전화번호 : ${reservation.userPhone}</p>
                 <p>예약한 시간 : ${formatDate(reservation.reserveDate)} | ${formatTime(reservation.reserveDate)}</p>
             </div>
-            <button class="btn-cancel-reservation" onclick="cancelReservation(${reservation.id}, this)">
+            <button class="btn-cancel-reservation" 
+                onclick="cancelReservation(${reservation.id}, this)"
+                ${reservation.status === "CANCELED" ? "disabled" : ""}>
                 예약 취소하기
             </button>
         </div>
