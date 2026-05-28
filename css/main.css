@@ -1,1 +1,130 @@
-/* 메인(홈) 화면 css파일입니다 */
+@charset "UTF-8";
+
+/* 전체 화면 가운데 정렬 가두기 */
+.main-content {
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* 메인 내부의 모든 독립 섹션들을 기본적으로 16px 좌우 여백을 주며 정렬 */
+.category-section,
+.scroll-section,
+.banner-section,
+.review-section {
+    width: 100%;
+    max-width: 1024px;
+    /* 피그마 맞춤형 최대 폭 */
+    margin: 0 auto;
+    /* 왼쪽 치우침 방지: 자동으로 좌우 여백을 똑같이 나눠 가짐 */
+    padding: 50px 16px 0 16px;
+    box-sizing: border-box;
+    gap: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* PC 스타일 */
+@media screen and (min-width: 1024px) {
+
+    .category-section,
+    .scroll-section,
+    .banner-section,
+    .review-section {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+/* 상단 히어로 배너 정렬 (풀 너비 화면 대응하되 내부 가두기) */
+.hero-section {
+    width: 100%;
+}
+
+.hero-container {
+    width: 100%;
+    max-width: 1024px;
+    margin: 0 auto;
+}
+
+.hero-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* 카테고리 탭 스타일 */
+.category-container {
+    display: flex;
+    gap: 20px;
+    /* 카테고리 아이템 간의 간격 정확히 16px */
+    overflow-x: auto;
+    /* 모바일/태블릿에서 화면 넘치면 가로 스크롤 활성화 */
+    padding: 10px 4px;
+
+    /* 가로 스크롤바 숨기기 규칙 */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.category-container::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
+}
+
+.category-item {
+    flex: 0 0 70px;
+    /* 가로 폭 70px 절대 유지 (찌그러짐 방지) */
+    width: 70px;
+    height: 75px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* 아이콘과 글씨 정중앙 가로 정렬 */
+    justify-content: center;
+    /* 상하 여백 핏 균등 배치 */
+    gap: 6px;
+    /* 아이콘과 글씨 사이의 미니 간격 */
+    cursor: pointer;
+}
+
+/* 카테고리 원형 이미지 규격 */
+.category-item img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+
+/* 카테고리 글씨 스타일 */
+.category-item p {
+    font-size: 12px;
+    color: var(--color-text-main);
+    font-weight: var(--weight-medium);
+    text-align: center;
+    white-space: nowrap;
+    /* 글자가 폭을 넘쳐서 줄바꿈되지 않도록 방지 */
+}
+
+/* 카드 섹션 h2 스타일 */
+.section-header h2 {
+    font-size: 24px;
+    font-weight: var(--weight-medium);
+    color: var(--color-text-main);
+    width: 90%;
+}
+
+.section-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.see-more-btn {
+    text-decoration: none;
+    white-space: nowrap;
+    color: var(--color-text-main);
+    font-size: 16px;
+}
