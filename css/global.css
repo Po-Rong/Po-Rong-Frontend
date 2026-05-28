@@ -328,7 +328,7 @@ body {}
     flex-direction: column;
     position: relative;
     width: 218px;
-    gap: 4px;
+    gap: 8px;
 }
 
 /* 다음 스텝에서 디테일하게 잡을 썸네일 박스 기본 틀 */
@@ -488,3 +488,6 @@ body {}
 .card-scroll-container::-webkit-scrollbar {
     display: none;
 }
+
+
+/* 리뷰 카드 */
