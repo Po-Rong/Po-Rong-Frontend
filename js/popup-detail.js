@@ -12,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const popupIntro = document.getElementById("popup-intro");
     const longImageWrapper = document.querySelector(".long-image-wrapper");
     const timetableSlots = document.getElementById("timetable-slots");
+    const popupTags = document.getElementById("popup-tags");
+    const popupSns = document.getElementById("popup-sns");
 
     // 1. 공지사항 및 혜택 엘리먼트 선택자 추가
     const popupNotice = document.getElementById("popup-notice");
@@ -36,7 +38,28 @@ document.addEventListener("DOMContentLoaded", () => {
             if (popupLocation) popupLocation.innerText = popup.address;
             if (popupHours) popupHours.innerText = popup.operatingHours || "10:00 ~ 22:00";
             if (popupIntro) popupIntro.innerText = popup.info || "";
+            if (popupTags) {
+                popupTags.innerHTML = ""; // 초기화
+                if (popup.tags && popup.tags.length > 0) {
+                    popup.tags.forEach(tag => {
+                        const span = document.createElement("span");
+                        span.className = "tag-item";
+                        span.innerText = `#${tag} `;
+                        popupTags.appendChild(span);
+                    });
+                } else {
+                    popupTags.innerText = "등록된 태그가 없습니다.";
+                }
+            }
 
+            if (popupSns) {
+                if (popup.snsUrl) {
+                    popupSns.href = popup.snsUrl;
+                    popupSns.innerText = "팝업 SNS 바로가기";
+                } else {
+                    popupSns.style.display = "none";
+                }
+            }
             // 2. 공지사항 및 혜택 데이터 화면에 매핑하는 로직 추가
             if (popupNotice) popupNotice.innerText = popup.notice || "등록된 공지사항이 없습니다.";
             if (popupBenefit) popupBenefit.innerText = popup.benefit || "진행 중인 혜택이 없습니다.";
