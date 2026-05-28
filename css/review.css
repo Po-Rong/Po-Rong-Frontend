@@ -1,0 +1,632 @@
+/* ==========================================================================
+   1. 전체 페이지 레이아웃
+   ========================================================================== */
+
+/* 리뷰 페이지 메인 레이아웃 래퍼 */
+.review-write-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-height: calc(100vh - 70px);
+    padding: var(--space-lg) var(--space-md) 40px var(--space-md);
+    background: var(--color-white);
+}
+
+/* 상단 메인 타이틀 */
+.page-main-title {
+    width: 100%;
+    max-width: 924px;
+    margin-top: 0;
+    margin-bottom: var(--space-lg);
+    color: var(--color-text-main);
+    font-size: 20px;
+    font-weight: var(--weight-medium);
+    letter-spacing: -0.8px;
+}
+
+/* 본문 영역 컨테이너 */
+.review-write-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-lg);
+    width: 924px;
+    padding: 30px;
+    box-sizing: border-box;
+    background: var(--color-offwhite);
+    border-radius: var(--radius-lg);
+}
+
+/* ==========================================================================
+   2. 상단 미니 요약 카드 컴포넌트 (작성 페이지용)
+   ========================================================================== */
+
+/* 팝업스토어 미니 요약 바 */
+.review-popup-summary {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    padding: 20px;
+    background: var(--color-primary-light2);
+    border-radius: var(--radius-sm);
+    box-sizing: border-box;
+}
+
+/* 요약 바 썸네일 박스 */
+.summary-thumb-box {
+    width: 60px;
+    height: 60px;
+    background: #D9D9D9;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.summary-thumb-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 요약 바 정보 영역 */
+.summary-info-box {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+}
+
+/* 태그 및 상태 표시 행 */
+.tag-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.badge-category {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 2px 6px;
+    border-radius: var(--radius-xs);
+}
+
+.badge-status {
+    font-size: 11px;
+    color: #2ECC71;
+    background-color: rgba(46, 204, 113, 0.1);
+    padding: 2px 6px;
+    border-radius: var(--radius-xs);
+    font-weight: var(--weight-bold);
+}
+
+.popup-title-text {
+    color: var(--color-text-main);
+    font-size: 16px;
+    letter-spacing: -0.64px;
+}
+
+.popup-region-text {
+    color: var(--color-text-secondary);
+    font-size: 12px;
+    letter-spacing: -0.48px;
+}
+
+/* ==========================================================================
+   3. 중앙 평점 및 혼잡도 대시보드 (조회 및 작성 공통)
+   ========================================================================== */
+
+/* 평점 및 통게 메인 카드 */
+.review-rating-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 30px 0;
+    background: var(--color-white);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    box-sizing: border-box;
+}
+
+/* 내부 콘텐츠 정렬 박스 */
+.rating-content-box {
+    display: flex;
+    width: 316px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+/* 상단 대형 평점 수치 영역 */
+.rating-score-display {
+    text-align: center;
+}
+
+.rating-score-display .current-score {
+    color: var(--Text-Main, #4C4C4C);
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.rating-score-display .max-score {
+    color: var(--Text-Secondary, #757575);
+    font-size: 32px;
+    font-weight: 700;
+}
+
+/* 상단 대형 별점 노출 그룹 */
+.stars-display-group {
+    display: flex;
+    gap: 4px;
+}
+
+.stars-display-group .star-icon {
+    font-size: 24px;
+    color: #EAEAEA;
+}
+
+.stars-display-group .star-icon.is-active {
+    color: var(--color-primary);
+}
+
+/* 작성 폼 전용 별점 선택 그룹 */
+.stars-select-group {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.star-btn {
+    font-size: 36px;
+    color: #EAEAEA;
+    cursor: pointer;
+    transition: color 0.15s ease, transform 0.1s ease;
+}
+
+.star-btn:hover {
+    transform: scale(1.1);
+}
+
+.star-btn.is-active {
+    color: var(--color-primary);
+}
+
+/* 혼잡도 통계 및 선택 레이아웃 */
+.congestion-stats-group,
+.congestion-select-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.congestion-title {
+    color: var(--Text-Main, #4C4C4C);
+    font-size: 20px;
+    font-weight: 500;
+}
+
+/* 실시간 혼잡도 수치 텍스트 컬러 컬러 스케일 */
+.status-text-blue {
+    color: var(--Main-Dark-Blue, #5DADFF);
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.selected-status-text {
+    color: #3498DB;
+    font-weight: var(--weight-bold);
+}
+
+/* 혼잡도 인물 아이콘 배열 */
+.congestion-icons-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+.btn-congestion {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.btn-congestion:hover {
+    transform: translateY(-2px);
+}
+
+.icon-person {
+    width: 44px;
+    height: 44px;
+    stroke: #BDC3C7;
+    stroke-width: 1.5;
+    fill: none;
+    transition: all 0.2s ease;
+}
+
+/* 혼잡도 활성화 상태 데코레이션 */
+.btn-congestion.active .icon-person {
+    stroke: #3498DB;
+    fill: rgba(52, 152, 219, 0.15);
+}
+
+/* 방문 유도 서브 박스 (인터랙션 구역) */
+.visit-prompt-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.prompt-text {
+    color: var(--Text-Main, #4C4C4C);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.sub-prompt-text {
+    color: var(--Text-Secondary, #757575);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.prompt-stars {
+    font-size: 20px;
+    color: #EAEAEA;
+    display: flex;
+    gap: 2px;
+}
+
+.prompt-star-btn {
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+/* ==========================================================================
+   4. 에디터 폼 및 파일 업로드 필드 (작성 페이지 전용)
+   ========================================================================== */
+
+.review-content-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 13px;
+    width: 864px;
+    padding: var(--space-lg);
+    background: var(--color-white);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    box-sizing: border-box;
+}
+
+.textarea-wrapper,
+.file-upload-wrapper,
+.submit-action-row {
+    width: 100%;
+}
+
+/* 본문 텍스트 에어리어 */
+#review-textarea {
+    width: 824px;
+    height: 186px;
+    padding: var(--space-lg);
+    background: var(--color-white);
+    border: 1px solid var(--color-text-secondary);
+    border-radius: var(--radius-sm);
+    box-sizing: border-box;
+    outline: none;
+    resize: none;
+    color: var(--color-text-secondary);
+    font-size: 16px;
+    letter-spacing: -0.64px;
+}
+
+#review-textarea:focus {
+    border-color: var(--color-primary-dark);
+}
+
+/* 커스텀 이미지 첨부 파일 트리거 */
+.btn-file-trigger {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 824px;
+    padding: var(--space-lg) 0;
+    background: var(--color-white);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    box-sizing: border-box;
+    cursor: pointer;
+    color: var(--color-text-main);
+    font-size: 16px;
+    letter-spacing: -0.64px;
+}
+
+.btn-file-trigger:hover {
+    background-color: var(--color-offwhite);
+    border-color: var(--color-text-secondary);
+}
+
+/* 작성 완료 제출 버튼 */
+.btn-main-submit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 824px;
+    padding: var(--space-lg) 0;
+    background: var(--color-primary-dark);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    box-sizing: border-box;
+    cursor: pointer;
+    color: var(--color-white);
+    font-size: 16px;
+    font-weight: var(--weight-medium);
+    letter-spacing: -0.64px;
+}
+
+/* ==========================================================================
+   5. 후기 리스트 카드 그룹 (조회 페이지 전용)
+   ========================================================================== */
+
+.reviews-list-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    width: 100%;
+}
+
+/* 개별 리뷰 카드 피드 */
+.review-item-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+    width: 100%;
+    padding: 24px;
+    background: var(--color-white);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    box-sizing: border-box;
+}
+
+/* 카드 헤더 구역 */
+.review-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.user-meta-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.user-name-text {
+    color: var(--Text-Main, #4C4C4C);
+    font-size: 16px;
+    letter-spacing: -0.64px;
+}
+
+/* 리스트 소형 카드 평점 제어 행 */
+.card-stars-row {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.star-small {
+    font-size: 14px;
+    color: #EAEAEA;
+}
+
+.star-small.active {
+    color: var(--color-primary);
+}
+
+.score-small-text {
+    margin-left: 6px;
+    display: flex;
+    align-items: center;
+    color: var(--Text-Main, #4C4C4C);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.56px;
+}
+
+.badge-row {
+    display: flex;
+    margin-top: 2px;
+}
+
+.badge-congestion-info {
+    font-size: 11px;
+    color: #3498DB;
+    background-color: rgba(52, 152, 219, 0.1);
+    padding: 2px 6px;
+    border-radius: var(--radius-xs);
+}
+
+.review-date-text {
+    color: var(--Text-Secondary, #757575);
+    font-size: 14px;
+    letter-spacing: -0.56px;
+}
+
+/* 카드 바디 (텍스트 및 이미지) 구역 */
+.review-card-body {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    width: 100%;
+}
+
+/* 더보기 더보기 클릭 시 레이아웃 수직 전환 보정 */
+.review-card-body.is-expanded {
+    flex-direction: column;
+    gap: 20px;
+}
+
+.review-text-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+}
+
+/* 본문 문단 말줄임 설정 규칙 */
+.review-main-paragraph {
+    color: var(--Text-Main, #4C4C4C);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.56px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+/* 본문 확장 활성화 */
+.review-main-paragraph.is-expanded {
+    display: block;
+    overflow: visible;
+    -webkit-line-clamp: unset;
+}
+
+.btn-toggle-expand {
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    font-size: 13px;
+    cursor: pointer;
+    padding: 0;
+}
+
+/* 리뷰 업로드 섬네일 프레임 크기 변화 */
+.review-image-thumbnail {
+    width: 150px;
+    height: 150px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    transition: width 0.2s ease, height 0.2s ease;
+}
+
+.review-image-thumbnail.is-expanded {
+    width: 300px;
+    height: 300px;
+    align-self: center;
+    margin: 10px auto 0 auto;
+}
+
+.review-image-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 하단 대상 팝업 정보 연동 바 */
+.review-target-popup-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px;
+    background: var(--color-primary-light2);
+    border-radius: var(--radius-sm);
+    box-sizing: border-box;
+}
+
+.mini-thumb {
+    width: 40px;
+    height: 40px;
+    background: #D9D9D9;
+    border-radius: var(--radius-xs);
+}
+
+.mini-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.mini-title {
+    font-size: 13px;
+    color: var(--color-text-main);
+    font-weight: var(--weight-medium);
+}
+
+.mini-region {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+}
+
+/* ==========================================================================
+   6. 리뷰 사진 크게 보기 모달 레이어 (싱글톤)
+   ========================================================================== */
+
+.image-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.image-modal-overlay.is-active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.image-modal-content {
+    display: flex;
+    width: 500px;
+    height: 500px;
+    border-radius: 8px;
+    box-sizing: border-box;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.btn-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: #FFFFFF;
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+}
