@@ -151,14 +151,12 @@
     text-align: center;
 }
 
-/* 소형 평점 텍스트 그룹 베이스 */
 .score-small-text {
     margin-left: 6px;
     display: flex;
     align-items: center;
 }
 
-/* 현재 점수 영역 (어두운 본문 검은색) */
 .score-num-current {
     color: var(--Text-Main, #4C4C4C);
     font-size: 14px;
@@ -168,7 +166,6 @@
     letter-spacing: -0.56px;
 }
 
-/* 만점 기준 영역 (기본 테두리용 흐린 회색) */
 .score-num-max {
     color: var(--Text-Secondary, #757575);
     font-size: 14px;
@@ -371,7 +368,6 @@
 
 .status-text-blue {
     color: var(--Main-Dark-Blue, #5DADFF);
-    font-family: "Noto Sans KR", sans-serif;
     font-size: 20px;
     font-style: normal;
     font-weight: 500;
@@ -471,7 +467,6 @@
 
 .score-small-text {
     color: var(--Text-Main, #4C4C4C);
-    font-family: "Noto Sans KR";
     font-size: 14px;
     font-style: normal;
     font-weight: 500;
@@ -494,7 +489,6 @@
 
 .review-date-text {
     color: var(--Text-Secondary, #757575);
-    font-family: "Noto Sans KR", sans-serif;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -504,14 +498,14 @@
 
 .review-card-body {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 30px;
     align-self: stretch;
 }
 
 .review-card-body.is-expanded {
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     gap: 20px;
 }
 
@@ -521,11 +515,11 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
+    width: 100%;
 }
 
 .review-main-paragraph {
     color: var(--Text-Main, #4C4C4C);
-    font-family: "Noto Sans KR", sans-serif;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -543,6 +537,9 @@
     display: block;
     overflow: visible;
     -webkit-line-clamp: unset;
+    text-align: left;
+    align-self: stretch;
+    width: 100%;
 }
 
 .btn-toggle-expand {
@@ -566,6 +563,8 @@
 .review-image-thumbnail.is-expanded {
     width: 300px;
     height: 300px;
+    align-self: center;
+    margin: 10px auto 0 auto;
 }
 
 .review-image-thumbnail img {
