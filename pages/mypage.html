@@ -1,73 +1,181 @@
 <!doctype html>
 <html lang="ko">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>PORONG</title>
 
-        <!-- 모든 페이지 공통 스타일 (폰트, 여백 초기화) -->
-        <link rel="stylesheet" href="/css/global.css" />
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>마이포롱 - PORONG</title>
 
-        <!-- 이 페이지 전용 CSS가 필요하다면 여기에 추가 (예: main.css 나 board.css) -->
-        <!-- <link rel="stylesheet" href="/css/main.css"> -->
-    </head>
-    <body>
-        <!-- [공통 헤더] 모든 파일에 동일하게 복붙해서 사용합니다. -->
-        <header class="common-header">
-            <div class="header-container">
-                <div class="header-logo">
-                    <a href="/index.html" class="logo font-point">PORONG</a>
+    <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/mypage.css" />
+</head>
+
+<body>
+    <header class="common-header">
+        <div class="header-container">
+            <div class="header-logo">
+                <a href="/index.html" class="logo font-point">PORONG</a>
+            </div>
+
+            <input type="checkbox" id="menu-toggle" class="menu-checkbox" />
+
+            <nav class="nav-container">
+                <div class="center-menu">
+                    <a href="/index.html">홈</a>
+                    <a href="/pages/explore.html">찾기</a>
+                    <a href="/pages/wishlist.html">찜</a>
+                    <a href="/pages/mypage.html" class="active">마이포롱</a>
                 </div>
+            </nav>
 
-                <input type="checkbox" id="menu-toggle" class="menu-checkbox" />
+            <div class="header-right-group">
+                <a href="/pages/search.html" class="search-btn" aria-label="검색">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </a>
 
-                <nav class="nav-container">
-                    <div class="center-menu">
-                        <a href="/index.html">홈</a>
-                        <a href="/pages/explore.html">찾기</a>
-                        <a href="/pages/wishlist.html">찜</a>
-                        <a href="/pages/mypage.html">마이포롱</a>
-                    </div>
-                </nav>
+                <a href="/pages/login.html" class="login-link">로그인</a>
 
-                <div class="header-right-group">
-                    <a
-                        href="/pages/search.html"
-                        class="search-btn"
-                        aria-label="검색"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                    </a>
+                <label for="menu-toggle" class="hamburger-button">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </label>
+            </div>
+        </div>
+    </header>
 
-                    <a href="/pages/login.html" class="login-link">로그인</a>
-
-                    <label for="menu-toggle" class="hamburger-button">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </label>
+    <main class="mypage-main">
+        <section class="profile-section">
+            <div class="profile-img-wrapper">
+                <div class="profile-img">
+                    <img src="/assets/images/profile/basic-profile.png" alt="기본 프로필 이미지"
+                        style="width: 100%; height: 100%; object-fit: cover;" />
                 </div>
             </div>
-        </header>
 
-        <!-- [본문 영역] 각자 페이지에 맞는 내용을 여기 안에 작성하세요 -->
-        <main>마이페이지</main>
+            <h2 class="profile-name" id="profile-display-name">사용자님, 반가워요!</h2>
+            <button class="btn-change-nickname" id="btn-open-nickname-modal">닉네임 변경하기</button>
+            <p class="profile-bio">
+                <span id="bio-display-name">사용자</span>님! 반가워요.<br />
+                팝업 후기를 남겨보고 키링을 받아보세요!<br />
+                <span class="profile-email" id="profile-display-email"></span>
+            </p>
+        </section>
 
-        <!-- 이 페이지 전용 JS가 필요하다면 여기에 추가 -->
-        <!-- <script src="/js/main.js"></script> -->
-        <script src="/js/index.js"></script>
-    </body>
+        <section class="activity-counters">
+            <a href="#wishlist-section" class="counter-card wishlist" id="btn-scroll-wishlist">
+                <div class="counter-icon-box">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    </svg>
+                </div>
+                <span class="counter-text">찜 <span class="counter-value" id="count-wishlist">0</span></span>
+            </a>
+            <div class="activity-divider"></div>
+            <a href="#wishlist-section" class="counter-card reviews" id="btn-scroll-reviews">
+                <div class="counter-icon-box">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none">
+                        <path d="M3 19h18" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M16.5 3.5L20.5 7.5L8.5 19.5H4.5V15.5L16.5 3.5Z" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <span class="counter-text">후기 <span class="counter-value" id="count-reviews">0</span></span>
+            </a>
+        </section>
+
+        <section class="keyring-book-section">
+            <h3 class="keyring-book-title">나의 키링 도감</h3>
+            <div class="keyring-grid">
+                <div class="keyring-card locked">
+                    <div class="keyring-circle empty-state"></div>
+                    <div class="keyring-text-group">
+                        <span class="keyring-tag">팝업 새내기</span>
+                        <span class="keyring-desc">리뷰 1회 작성</span>
+                    </div>
+                </div>
+                <div class="keyring-card locked">
+                    <div class="keyring-circle empty-state"></div>
+                    <div class="keyring-text-group">
+                        <span class="keyring-tag">팝업 기록자</span>
+                        <span class="keyring-desc">리뷰 2회 작성</span>
+                    </div>
+                </div>
+                <div class="keyring-card locked">
+                    <div class="keyring-circle empty-state"></div>
+                    <div class="keyring-text-group">
+                        <span class="keyring-tag">취향 수집가</span>
+                        <span class="keyring-desc">리뷰 3회 작성</span>
+                    </div>
+                </div>
+                <div class="keyring-card locked">
+                    <div class="keyring-circle empty-state"></div>
+                    <div class="keyring-text-group">
+                        <span class="keyring-tag">팝업 탐험가</span>
+                        <span class="keyring-desc">리뷰 4회 작성</span>
+                    </div>
+                </div>
+                <div class="keyring-card locked">
+                    <div class="keyring-circle empty-state"></div>
+                    <div class="keyring-text-group">
+                        <span class="keyring-tag">팝업 요정</span>
+                        <span class="keyring-desc">리뷰 5회 작성</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="tab-section" id="wishlist-section">
+            <div class="tab-header">
+                <button class="tab-btn active" id="tab-wishlist">나의 찜</button>
+                <button class="tab-btn" id="tab-reviews">후기</button>
+            </div>
+
+            <div class="grid-container" id="wishlist-grid"></div>
+
+            <div class="grid-container" id="reviews-grid" style="display: none;"></div>
+        </section>
+
+        <section class="reservation-section">
+            <h3 class="reservation-title">예약</h3>
+
+            <div class="timeline-container" id="reservation-timeline-container">
+                <p style="text-align: center; color: #999; padding: 20px;">예약 내역을 불러오는 중입니다...</p>
+            </div>
+        </section>
+
+        <div class="logout-section">
+            <button type="button" id="btn-logout" class="btn-logout-wide">로그아웃</button>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="nickname-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">변경할 닉네임을 적어주세요</h3>
+                <button class="btn-close-modal" id="btn-close-nickname-modal" aria-label="닫기">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" class="input-nickname" id="input-nickname-field" placeholder="닉네임을 입력해주세요"
+                    maxlength="15" />
+                <button class="btn-confirm-nickname" id="btn-save-nickname">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/index.js"></script>
+    <script src="/js/mypage.js"></script>
+</body>
+
 </html>
