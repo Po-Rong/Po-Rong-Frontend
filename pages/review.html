@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PORONG - 포롱 후기</title>
+    <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/review.css" />
+</head>
+
+<body>
+    <header class="common-header">
+        <div class="header-container">
+            <div class="header-logo">
+                <a href="/index.html" class="logo font-point">PORONG</a>
+            </div>
+            <nav class="nav-container">
+                <div class="center-menu">
+                    <a href="/index.html">홈</a>
+                    <a href="/pages/explore.html">찾기</a>
+                    <a href="/pages/wishlist.html">찜</a>
+                    <a href="/pages/mypage.html">마이포롱</a>
+                </div>
+            </nav>
+            <div class="header-right-group">
+                <a href="/pages/login.html" class="login-link">로그인</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="review-write-wrapper">
+        <div class="review-write-container">
+            <h1 class="page-main-title">포롱 후기</h1>
+
+            <section class="review-rating-card">
+                <div class="rating-content-box">
+                    <div class="rating-score-display">
+                        <span class="current-score" id="avgScoreDisplay">0.0</span>
+                        <span class="max-score"> / 5.0</span>
+                    </div>
+                    <div class="stars-display-group" id="avgStarsGroup"></div>
+
+                    <div class="congestion-stats-group">
+                        <p class="congestion-title">혼잡도 <span class="status-text-blue" id="mainCongestionText">-</span>
+                        </p>
+                        <div class="congestion-icons-row" id="mainCongestionIcons">
+                            <div class="btn-congestion" data-level="LOW">
+                                <svg class="icon-person" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path
+                                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z" />
+                                </svg>
+                            </div>
+                            <div class="btn-congestion" data-level="NORMAL">
+                                <svg class="icon-person" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path
+                                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z" />
+                                </svg>
+                            </div>
+                            <div class="btn-congestion" data-level="HIGH">
+                                <svg class="icon-person" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path
+                                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="visit-prompt-box">
+                        <p class="prompt-text">이 팝업 방문하셨나요?</p>
+                        <p class="sub-prompt-text">방문 예정인 분들에게 도움이 되는 후기를 작성해주세요</p>
+                        <div class="prompt-stars" id="interactivePromptStars">
+                            <span class="prompt-star-btn" data-value="1">★</span>
+                            <span class="prompt-star-btn" data-value="2">★</span>
+                            <span class="prompt-star-btn" data-value="3">★</span>
+                            <span class="prompt-star-btn" data-value="4">★</span>
+                            <span class="prompt-star-btn" data-value="5">★</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="reviews-list-group"></div>
+        </div>
+    </main>
+
+    <div class="image-modal-overlay" id="imageModal">
+        <div class="image-modal-content" id="modalContent">
+            <button type="button" class="btn-modal-close" id="modalClose">&times;</button>
+        </div>
+    </div>
+    <script src="/js/index.js"></script>
+    <script src="/js/reviews.js"></script>
+</body>
+
+</html>
