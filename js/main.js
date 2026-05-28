@@ -47,3 +47,52 @@ document.addEventListener("DOMContentLoaded", () => {
         container.style.cursor = "grab";
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    // ==========================================
+    // 1. 동적 별점 생성기 (5점 만점 기준)
+    // ==========================================
+    const ratingContainers = document.querySelectorAll(".rating-stars");
+
+    ratingContainers.forEach(container => {
+        const score = Math.floor(parseFloat(container.dataset.score)); // ex) 3.0 -> 3
+        let starsHtml = "";
+
+        for (let i = 1; i <= 5; i++) {
+            if (i <= score) {
+                // 채워진 별 추가
+                starsHtml += `<img src="/assets/images/icons/icon-star-fill.png" alt="별">`;
+            } else {
+                // 비워진 별 추가
+                starsHtml += `<img src="/assets/images/icons/icon-star-empty.png" alt="빈 별">`;
+            }
+        }
+        container.innerHTML = starsHtml;
+    });
+
+    // ==========================================
+    // 2. 동적 혼잡도 생성기 (3칸 만점 기준)
+    // ==========================================
+    const congestionContainers = document.querySelectorAll(".congestion-icons");
+
+    congestionContainers.forEach(container => {
+        const status = container.dataset.status; // '낮음', '보통', '높음'
+        let fillCount = 1; // 기본값 '낮음'은 1개 채움
+
+        if (status === "보통") fillCount = 2;
+        if (status === "높음") fillCount = 3;
+
+        let peopleHtml = "";
+
+        for (let i = 1; i <= 3; i++) {
+            if (i <= fillCount) {
+                // 채워진 사람 추가
+                peopleHtml += `<img src="/assets/images/icons/icon-person-fill.png" alt="사람 채움">`;
+            } else {
+                // 비워진 사람 테두리 추가
+                peopleHtml += `<img src="/assets/images/icons/icon-person-empty.png" alt="사람 비움">`;
+            }
+        }
+        container.innerHTML = peopleHtml;
+    });
+});
