@@ -305,8 +305,18 @@ function registerPopup() {
         );
         btn.style.borderColor = "#e05c5c";
         btn.style.color = "#e05c5c";
+        btn.classList.add("input-error");
         hasError = true;
     }
+
+    if (hasError) {
+        const firstError = document.querySelector(".input-error, .error-msg");
+        if (firstError) {
+            firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+        return;
+    }
+
     if (hasError) return;
 
     const formData = new FormData();
@@ -517,8 +527,17 @@ function editPopup() {
         );
         btn.style.borderColor = "#e05c5c";
         btn.style.color = "#e05c5c";
+        btn.classList.add("input-error");
         hasError = true;
     }
+    if (hasError) {
+        const firstError = document.querySelector(".input-error, .error-msg");
+        if (firstError) {
+            firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+        return;
+    }
+
     if (hasError) return;
 
     const user = JSON.parse(localStorage.getItem("loginUser"));
@@ -572,4 +591,22 @@ function editPopup() {
             showMsg("popupRegisterMsg", "서버 오류가 발생했습니다.", false);
             window.scrollTo({ top: 0, behavior: "smooth" });
         });
+}
+
+// 입력 시 에러 제거
+document.getElementById("popupTitle").addEventListener("input", () => {
+    clearError("popupTitle");
+});
+
+document.getElementById("popupAddress").addEventListener("input", () => {
+    clearError("popupAddress");
+});
+
+function clearError(id) {
+    const input = document.getElementById(id);
+    if (input) {
+        input.classList.remove("input-error");
+        const msg = input.parentElement.querySelector(".error-msg");
+        if (msg) msg.remove();
+    }
 }
