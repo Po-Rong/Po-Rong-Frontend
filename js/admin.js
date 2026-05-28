@@ -21,6 +21,9 @@ function loadPopupList() {
             data.forEach((popup) => {
                 const div = document.createElement("div");
                 div.className = "popup-card";
+                div.style.cursor = "pointer";
+                div.onclick = () =>
+                    (location.href = `/pages/detail.html?id=${popup.id}`);
                 div.innerHTML = `
                     <div class="card-image-wrap">
                         <img src="http://localhost:8080${popup.mainImageUrl}" alt="${popup.title}" class="card-thumb" />
@@ -30,8 +33,8 @@ function loadPopupList() {
                             <div class="card-status-row">
                                 <span class="card-status ${getStatusClass(popup.status)}">${getStatusText(popup.status)}</span>
                                 <div class="card-actions">
-                                    <button class="btn-edit" onclick="location.href='/pages/popup-edit.html?id=${popup.id}'">수정</button>
-                                    <button class="btn-delete" onclick="deletePopup(${popup.id})">삭제</button>
+                                    <button class="btn-edit" onclick="event.stopPropagation(); location.href='/pages/popup-edit.html?id=${popup.id}'">수정</button>
+                                    <button class="btn-delete" onclick="event.stopPropagation(); deletePopup(${popup.id})">삭제</button>
                                 </div>
                             </div>
                             <h3 class="card-title">${popup.title}</h3>
