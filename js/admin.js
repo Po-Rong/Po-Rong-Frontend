@@ -83,31 +83,71 @@ function loadReviewList() {
                 const div = document.createElement("div");
                 div.className = "review-card";
                 div.innerHTML = `
-                    <div class="review-header">
-                        <span class="reviewer-name">${review.userName || "이름"}</span>
+                    <div class="review-card-header">
+                        <span class="reviewer-name">${review.nickname || "이름"}</span>
                         <span class="review-date">${formatDate(review.createdAt)}</span>
                     </div>
-                    <p class="review-rating">⭐ ${review.rating} / 5.0</p>
-                    <p class="review-content">${review.content}</p>
+                    <div class="review-stats-row">
+                        <div class="rating-wrap">
+                            <div class="rating-stars"></div>
+                            <span class="rating-num">${review.rating}.0</span>
+                            <span>/</span>
+                            <span class="rating-max">5.0</span>
+                        </div>
+                        <div class="congestion-wrap">
+                            <div class="congestion-icons"></div>
+                            <span class="congestion-text">혼잡도</span>
+                            <span class="congestion-strong">${getCongestionText(review.congestionLevel)}</span>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        <p>${review.content}</p>
+                    </div>
                     ${
-                        review.images && review.images.length > 0
+                        review.reviewImageUrl
                             ? `
-                    <div class="review-images">
-                        ${review.images.map((img) => `<img src="http://localhost:8080${img}" alt="후기 이미지" />`).join("")}
+                    <div class="review-attach-box">
+                        <img src="http://localhost:8080${review.reviewImageUrl}" alt="리뷰 첨부 사진" class="review-attached-img" />
                     </div>`
                             : ""
                     }
-                    <div class="review-popup-info">
-                        <img src="http://localhost:8080${review.popupMainImageUrl || ""}" alt="${review.popupTitle}" />
-                        <div class="popup-info-text">
-                            <span class="popup-name">${review.popupTitle || ""}</span>
-                            <span class="popup-sub">${review.categoryName || ""} · ${review.congestionLevel || ""}</span>
+                    <div class="review-target-popup">
+                        <div class="target-thumb-wrap">
+                            <img src="http://localhost:8080${review.popupMainImageUrl || ""}" alt="${review.popupTitle}" class="target-thumb" />
+                        </div>
+                        <div class="target-info-wrap">
+                            <div class="target-tags">
+                                <span class="card-category">${review.categoryName || ""}</span>
+                            </div>
+                            <h4 class="target-title">${review.popupTitle || ""}</h4>
                         </div>
                     </div>
                 `;
+
+                // 별점 혼잡도 렌더링
+                renderStars(div.querySelector(".rating-stars"), review.rating);
+                renderCongestion(
+                    div.querySelector(".congestion-icons"),
+                    review.congestionLevel,
+                );
+
                 reviewList.appendChild(div);
             });
         });
+}
+
+function getCongestionText(level) {
+    if (level === "LOW") return "낮음";
+    if (level === "NORMAL") return "보통";
+    if (level === "HIGH") return "높음";
+    return level;
+}
+
+function getCongestionText(level) {
+    if (level === "LOW") return "낮음";
+    if (level === "NORMAL") return "보통";
+    if (level === "HIGH") return "높음";
+    return level;
 }
 
 // 예약 목록 불러오기
@@ -265,6 +305,31 @@ function formatTime(dateStr) {
     const h = date.getHours() % 12 || 12;
     const mm = String(date.getMinutes()).padStart(2, "0");
     return `${ampm} ${h}:${mm}`;
+}
+
+function renderStars(container, score) {
+    const filled = Math.floor(parseFloat(score));
+    let html = "";
+    for (let i = 1; i <= 5; i++) {
+        html +=
+            i <= filled
+                ? `<img src="/assets/images/icons/icon-star-fill.png" alt="별">`
+                : `<img src="/assets/images/icons/icon-star-empty.png" alt="빈 별">`;
+    }
+    container.innerHTML = html;
+}
+
+function renderCongestion(container, status) {
+    const map = { LOW: 1, NORMAL: 2, HIGH: 3 };
+    const fillCount = map[status] || 1;
+    let html = "";
+    for (let i = 1; i <= 3; i++) {
+        html +=
+            i <= fillCount
+                ? `<img src="/assets/images/icons/icon-person-fill.png" alt="사람 채움">`
+                : `<img src="/assets/images/icons/icon-person-empty.png" alt="사람 비움">`;
+    }
+    container.innerHTML = html;
 }
 
 loadPopupList();
