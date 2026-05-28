@@ -4,23 +4,16 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>PORONG</title>
-
-        <!-- 모든 페이지 공통 스타일 (폰트, 여백 초기화) -->
         <link rel="stylesheet" href="/css/global.css" />
-
-        <!-- 이 페이지 전용 CSS가 필요하다면 여기에 추가 (예: main.css 나 board.css) -->
-        <!-- <link rel="stylesheet" href="/css/main.css"> -->
+        <link rel="stylesheet" href="/css/admin.css" />
     </head>
     <body>
-        <!-- [공통 헤더] 모든 파일에 동일하게 복붙해서 사용합니다. -->
         <header class="common-header">
             <div class="header-container">
                 <div class="header-logo">
                     <a href="/index.html" class="logo font-point">PORONG</a>
                 </div>
-
                 <input type="checkbox" id="menu-toggle" class="menu-checkbox" />
-
                 <nav class="nav-container">
                     <div class="center-menu">
                         <a href="/index.html">홈</a>
@@ -29,7 +22,6 @@
                         <a href="/pages/mypage.html">마이포롱</a>
                     </div>
                 </nav>
-
                 <div class="header-right-group">
                     <a
                         href="/pages/search.html"
@@ -51,19 +43,14 @@
                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                         </svg>
                     </a>
-
                     <a href="/pages/login.html" class="login-link">로그인</a>
-
                     <label for="menu-toggle" class="hamburger-button">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <span></span><span></span><span></span>
                     </label>
                 </div>
             </div>
         </header>
 
-        <!-- [본문 영역] 각자 페이지에 맞는 내용을 여기 안에 작성하세요 -->
         <main>
             <!-- 인사말 -->
             <div class="admin-welcome">
@@ -76,30 +63,22 @@
             <!-- 판매자가 등록한 팝업스토어 목록 -->
             <section class="admin-section">
                 <h3>판매자님이 등록한 팝업스토어</h3>
-                <div id="popupList" class="scroll-container">
-                    <!-- JS에서 동적으로 생성 -->
-                </div>
+                <div id="popupList" class="scroll-container"></div>
             </section>
 
             <!-- 팝업스토어에 달린 후기 -->
             <section class="admin-section">
                 <h3>팝업스토어에 달린 후기</h3>
-                <div id="reviewList" class="scroll-container">
-                    <!-- JS에서 동적으로 생성 -->
-                </div>
+                <div id="reviewList" class="scroll-container"></div>
             </section>
 
             <!-- 나의 팝업스토어 예약 목록 -->
             <section class="admin-section">
                 <h3>나의 팝업스토어 예약 목록</h3>
-                <div id="reservationList">
-                    <!-- JS에서 동적으로 생성 -->
-                </div>
+                <div id="reservationList"></div>
             </section>
         </main>
 
-        <!-- 이 페이지 전용 JS가 필요하다면 여기에 추가 -->
-        <!-- <script src="/js/main.js"></script> -->
         <script src="/js/index.js"></script>
         <script src="/js/admin.js"></script>
     </body>
