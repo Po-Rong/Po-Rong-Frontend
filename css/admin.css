@@ -138,6 +138,11 @@ main {
 }
 
 /* ── 후기 카드 ── */
+.scroll-container .review-card {
+    min-width: 300px;
+    max-width: 300px;
+}
+
 .review-card {
     min-width: 280px;
     max-width: 280px;
