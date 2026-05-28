@@ -4,23 +4,21 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>PORONG</title>
-
-        <!-- 모든 페이지 공통 스타일 (폰트, 여백 초기화) -->
         <link rel="stylesheet" href="/css/global.css" />
-
-        <!-- 이 페이지 전용 CSS가 필요하다면 여기에 추가 (예: main.css 나 board.css) -->
-        <!-- <link rel="stylesheet" href="/css/main.css"> -->
+        <link rel="stylesheet" href="/css/admin-popup.css" />
+        <!-- flatpickr CSS -->
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+        />
     </head>
     <body>
-        <!-- [공통 헤더] 모든 파일에 동일하게 복붙해서 사용합니다. -->
         <header class="common-header">
             <div class="header-container">
                 <div class="header-logo">
                     <a href="/index.html" class="logo font-point">PORONG</a>
                 </div>
-
                 <input type="checkbox" id="menu-toggle" class="menu-checkbox" />
-
                 <nav class="nav-container">
                     <div class="center-menu">
                         <a href="/index.html">홈</a>
@@ -29,7 +27,6 @@
                         <a href="/pages/mypage.html">마이포롱</a>
                     </div>
                 </nav>
-
                 <div class="header-right-group">
                     <a
                         href="/pages/search.html"
@@ -51,19 +48,14 @@
                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                         </svg>
                     </a>
-
                     <a href="/pages/login.html" class="login-link">로그인</a>
-
                     <label for="menu-toggle" class="hamburger-button">
-                        <span></span>
-                        <span></span>
-                        <span></span>
+                        <span></span><span></span><span></span>
                     </label>
                 </div>
             </div>
         </header>
 
-        <!-- [본문 영역] 각자 페이지에 맞는 내용을 여기 안에 작성하세요 -->
         <main>
             <div class="popup-container">
                 <div class="popup-box">
@@ -105,12 +97,12 @@
                         <label>일정</label>
                         <div class="date-group">
                             <input
-                                type="datetime-local"
+                                type="text"
                                 id="startDate"
                                 placeholder="시작일"
                             />
                             <input
-                                type="datetime-local"
+                                type="text"
                                 id="endDate"
                                 placeholder="종료일"
                             />
@@ -121,12 +113,12 @@
                         <label>예약</label>
                         <div class="date-group">
                             <input
-                                type="datetime-local"
+                                type="text"
                                 id="reservationStartDate"
                                 placeholder="시작일"
                             />
                             <input
-                                type="datetime-local"
+                                type="text"
                                 id="reservationEndDate"
                                 placeholder="종료일"
                             />
@@ -138,17 +130,16 @@
                         <div
                             id="categoryList"
                             class="category-group admin-category"
-                        >
-                            <!-- API에서 가져와서 동적으로 생성 -->
-                        </div>
+                        ></div>
                         <input type="hidden" id="selectedCategory" />
                     </div>
 
                     <div class="form-group">
                         <label>지역</label>
-                        <div id="regionList" class="region-group admin-region">
-                            <!-- API에서 가져와서 동적으로 생성 -->
-                        </div>
+                        <div
+                            id="regionList"
+                            class="region-group admin-region"
+                        ></div>
                         <input type="hidden" id="selectedRegion" />
                     </div>
 
@@ -223,20 +214,14 @@
 
                     <div class="form-group">
                         <label>태그</label>
-                        <div class="tag-input-group">
-                            <input
-                                type="text"
-                                id="popupTag"
-                                placeholder="태그를 입력하고 추가 버튼을 눌러주세요"
-                                onkeydown="if (event.key === 'Enter') addTag();"
-                            />
-                            <button type="button" onclick="addTag()">
-                                추가
-                            </button>
-                        </div>
-                        <div id="tagList"></div>
-                        <!-- 추가된 태그 표시 -->
+                        <input
+                            type="text"
+                            id="popupTag"
+                            placeholder="태그를 입력하고 엔터를 눌러주세요"
+                            onkeydown="if (event.key === 'Enter') addTag();"
+                        />
                     </div>
+                    <div id="tagList"></div>
 
                     <button class="btn-submit" onclick="editPopup()">
                         수정하기
@@ -245,8 +230,9 @@
             </div>
         </main>
 
-        <!-- 이 페이지 전용 JS가 필요하다면 여기에 추가 -->
-        <!-- <script src="/js/main.js"></script> -->
+        <!-- flatpickr JS -->
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
         <script src="/js/index.js"></script>
         <script src="/js/admin-popup.js"></script>
     </body>

@@ -1,0 +1,418 @@
+/* =============================================
+   admin.css — 관리자 페이지 스타일
+   ============================================= */
+
+/* 페이지 배경 */
+body {
+    background-color: var(--color-white);
+    min-height: 100vh;
+}
+
+/* ── 전체 래퍼 ── */
+main {
+    width: 100%;
+    max-width: 1024px;
+    margin: 0 auto;
+    padding: 40px 44px 60px;
+}
+
+/* ── 인사말 + 등록 버튼 ── */
+.admin-welcome {
+    margin-bottom: 40px;
+}
+
+.admin-welcome h2 {
+    font-size: 20px;
+    font-weight: var(--weight-bold);
+    color: var(--color-text-main);
+    margin-bottom: 16px;
+}
+
+.admin-welcome button {
+    display: block;
+    width: 100%;
+    height: 64px;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    font-size: 16px;
+    font-weight: var(--weight-semibold);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.admin-welcome button:hover {
+    background-color: var(--color-primary-dark);
+}
+
+/* ── 섹션 공통 ── */
+.admin-section {
+    margin-bottom: 48px;
+}
+
+.admin-section > h3 {
+    font-size: 16px;
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-main);
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--color-border-default);
+}
+
+/* ── 가로 스크롤 컨테이너 ── */
+.scroll-container {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: var(--space-xs) 4px var(--space-md) 4px;
+    width: 100%;
+    box-sizing: border-box;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scroll-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* ── 팝업 카드 admin 전용 ── */
+
+/* card-title h3 기본 마진 제거 */
+.popup-card .card-title {
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* card-location, card-date p 태그 마진 제거 */
+.popup-card .card-location,
+.popup-card .card-date {
+    font-size: 16px;
+    font-weight: var(--weight-regular);
+    color: var(--color-text-main);
+    margin: 0;
+}
+
+/* status + 수정/삭제 버튼 한 줄 */
+.card-status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* 수정/삭제 버튼 */
+.card-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.card-actions .btn-edit,
+.card-actions .btn-delete {
+    width: auto;
+    height: auto;
+    padding: 6px 8px;
+    font-size: 14px;
+    font-weight: var(--weight-medium);
+    border-radius: var(--radius-xs);
+    cursor: pointer;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border-default);
+    color: var(--color-text-secondary);
+    transition:
+        border-color 0.2s,
+        color 0.2s;
+}
+
+.card-actions .btn-edit:hover,
+.card-actions .btn-delete:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+/* ── 빈 상태 메시지 ── */
+.empty-msg {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    padding: 20px 0;
+}
+
+/* ── 후기 카드 ── */
+.review-card {
+    min-width: 280px;
+    max-width: 280px;
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.reviewer-name {
+    font-size: 13px;
+    font-weight: var(--weight-medium);
+    color: var(--color-text-main);
+}
+
+.review-date {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+}
+
+.review-rating {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+.review-content {
+    font-size: 13px;
+    color: var(--color-text-main);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.review-images {
+    display: flex;
+    gap: 6px;
+}
+
+.review-images img {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+}
+
+.review-popup-info {
+    background-color: var(--color-offwhite);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.review-popup-info img {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    border-radius: var(--radius-xs);
+}
+
+.popup-info-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.popup-name {
+    font-size: 12px;
+    font-weight: var(--weight-medium);
+    color: var(--color-text-main);
+}
+
+.popup-sub {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+}
+
+/* ── 예약 목록 ── */
+.reservation-date-group {
+    margin-bottom: 24px;
+}
+
+.date-label {
+    font-size: 14px;
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-main);
+    margin-bottom: 12px;
+}
+
+.reservation-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.reservation-card {
+    background-color: var(--color-white);
+    border: solid 1px var(--color-border-default);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.reservation-card:hover {
+    background-color: var(--color-primary-light2);
+}
+
+.reserver-name {
+    font-size: 14px;
+    font-weight: var(--weight-medium);
+    color: var(--color-text-main);
+    margin: 0;
+}
+
+.reserve-time {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+/* 리뷰 더보기 버튼 */
+.btn-load-more {
+    display: block;
+    width: 100%;
+    height: 48px;
+    margin-top: 16px;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition:
+        border-color 0.2s,
+        color 0.2s;
+}
+
+.btn-load-more:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.reservation-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.reservation-badge {
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
+}
+
+.badge-confirmed {
+    background-color: var(--color-sub-light-green);
+    color: var(--color-sub-green);
+}
+
+.badge-canceled {
+    background-color: var(--color-border-default);
+    color: var(--color-text-secondary);
+}
+
+/* ── 예약 모달 ── */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.modal-box {
+    background-color: var(--color-white);
+    border-radius: var(--radius-xl);
+    padding: 28px;
+    width: 90%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    font-size: 16px;
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-main);
+    margin: 0;
+    border: none;
+    padding: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.modal-body p {
+    font-size: 14px;
+    color: var(--color-text-main);
+    margin: 0;
+}
+
+.btn-cancel-reservation {
+    width: 100%;
+    height: 48px;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    font-weight: var(--weight-semibold);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-cancel-reservation:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.btn-cancel-reservation:disabled {
+    background-color: var(--color-border-default);
+    color: var(--color-text-secondary);
+    cursor: not-allowed;
+}
+
+/* ── 모바일 (1023px 이하) ── */
+@media screen and (max-width: 1023px) {
+    main {
+        padding: 24px 16px 48px;
+    }
+
+    .reservation-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .reservation-grid {
+        grid-template-columns: 1fr;
+    }
+}
