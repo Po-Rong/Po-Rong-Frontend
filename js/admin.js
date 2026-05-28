@@ -118,29 +118,95 @@ function loadReviewList() {
                         <div class="target-info-wrap">
                             <div class="target-tags">
                                 <span class="card-category">${review.categoryName || ""}</span>
+                                <span class="card-status ${getStatusClass(review.popupStatus)}">${getStatusText(review.popupStatus)}</span>
                             </div>
                             <h4 class="target-title">${review.popupTitle || ""}</h4>
+                            <p class="target-location">${review.regionName || ""}</p>
                         </div>
                     </div>
                 `;
 
-                // 별점 혼잡도 렌더링
                 renderStars(div.querySelector(".rating-stars"), review.rating);
                 renderCongestion(
                     div.querySelector(".congestion-icons"),
                     review.congestionLevel,
                 );
 
+                div.style.cursor = "pointer";
+                div.onclick = () => openReviewModal(review);
+
                 reviewList.appendChild(div);
             });
         });
 }
 
-function getCongestionText(level) {
-    if (level === "LOW") return "낮음";
-    if (level === "NORMAL") return "보통";
-    if (level === "HIGH") return "높음";
-    return level;
+// 리뷰 모달
+function openReviewModal(review) {
+    const modal = document.createElement("div");
+    modal.className = "modal-overlay";
+    modal.innerHTML = `
+        <div class="modal-review-box">
+            <div class="modal-header">
+                <div>
+                    <p class="reviewer-name">${review.nickname || "이름"}</p>
+                    <div class="review-stats-row">
+                        <div class="rating-wrap">
+                            <div class="rating-stars"></div>
+                            <span class="rating-num">${review.rating}.0</span>
+                            <span>/</span>
+                            <span class="rating-max">5.0</span>
+                        </div>
+                        <div class="congestion-wrap">
+                            <div class="congestion-icons"></div>
+                            <span class="congestion-text">혼잡도</span>
+                            <span class="congestion-strong">${getCongestionText(review.congestionLevel)}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-header-right">
+                    <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">✕</button>
+                    <span class="review-date">${formatDate(review.createdAt)} | ${formatTime(review.createdAt)} 방문</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p>${review.content}</p>
+            </div>
+            <div class="review-bottom">
+                ${
+                    review.reviewImageUrl
+                        ? `
+                <div class="review-attach-box">
+                    <img src="http://localhost:8080${review.reviewImageUrl}" alt="리뷰 첨부 사진" class="review-attached-img" />
+                </div>`
+                        : ""
+                }
+                <div class="review-target-popup">
+                    <div class="target-thumb-wrap">
+                        <img src="http://localhost:8080${review.popupMainImageUrl || ""}" alt="${review.popupTitle}" class="target-thumb" />
+                    </div>
+                    <div class="target-info-wrap">
+                        <div class="target-tags">
+                            <span class="card-category">${review.categoryName || ""}</span>
+                            <span class="card-status ${getStatusClass(review.popupStatus)}">${getStatusText(review.popupStatus)}</span>
+                        </div>
+                        <h4 class="target-title">${review.popupTitle || ""}</h4>
+                        <p class="target-location">${review.regionName || ""}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    modal.onclick = (e) => {
+        if (e.target === modal) modal.remove();
+    };
+
+    renderStars(modal.querySelector(".rating-stars"), review.rating);
+    renderCongestion(
+        modal.querySelector(".congestion-icons"),
+        review.congestionLevel,
+    );
+
+    document.body.appendChild(modal);
 }
 
 function getCongestionText(level) {
@@ -162,7 +228,7 @@ function loadReservationList(page = 0) {
         .then((data) => {
             const reservationList = document.getElementById("reservationList");
 
-            if (page === 0) reservationList.innerHTML = ""; // 첫 페이지면 초기화
+            if (page === 0) reservationList.innerHTML = "";
 
             if (data.content.length === 0 && page === 0) {
                 reservationList.innerHTML =
@@ -182,14 +248,14 @@ function loadReservationList(page = 0) {
                     const card = document.createElement("div");
                     card.className = "reservation-card";
                     card.innerHTML = `
-                                        <div class="reservation-card-header">
-                                            <p class="reserver-name">${reservation.userName} 님</p>
-                                            <span class="reservation-badge ${reservation.status === "CONFIRMED" ? "badge-confirmed" : "badge-canceled"}">
-                                                ${reservation.status === "CONFIRMED" ? "예약" : "취소"}
-                                            </span>
-                                        </div>
-                                        <p class="reserve-time">${formatTime(reservation.reserveDate)} 예약</p>
-                                    `;
+                        <div class="reservation-card-header">
+                            <p class="reserver-name">${reservation.userName} 님</p>
+                            <span class="reservation-badge ${reservation.status === "CONFIRMED" ? "badge-confirmed" : "badge-canceled"}">
+                                ${reservation.status === "CONFIRMED" ? "예약" : "취소"}
+                            </span>
+                        </div>
+                        <p class="reserve-time">${formatTime(reservation.reserveDate)} 예약</p>
+                    `;
                     card.onclick = () => openReservationModal(reservation);
                     grid.appendChild(card);
                 });
@@ -197,7 +263,6 @@ function loadReservationList(page = 0) {
                 reservationList.appendChild(group);
             });
 
-            // 더보기 버튼 처리
             reservationHasNext = data.hasNext;
             const existingBtn = document.getElementById("loadMoreBtn");
             if (existingBtn) existingBtn.remove();
@@ -231,7 +296,7 @@ function openReservationModal(reservation) {
                 <p>전화번호 : ${reservation.userPhone}</p>
                 <p>예약한 시간 : ${formatDate(reservation.reserveDate)} | ${formatTime(reservation.reserveDate)}</p>
             </div>
-            <button class="btn-cancel-reservation" 
+            <button class="btn-cancel-reservation"
                 onclick="cancelReservation(${reservation.id}, this)"
                 ${reservation.status === "CANCELED" ? "disabled" : ""}>
                 예약 취소하기

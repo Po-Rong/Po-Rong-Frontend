@@ -405,6 +405,122 @@ main {
     cursor: not-allowed;
 }
 
+/* ── 리뷰 모달 ── */
+.modal-review-box {
+    background-color: var(--color-white);
+    border-radius: var(--radius-xl);
+    padding: 28px;
+    width: 90%;
+    max-width: 864px;
+    max-height: 750px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.modal-header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.modal-review-box .review-bottom {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.modal-review-box .review-attach-box {
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.review-target-popup .card-status {
+    font-size: 14px;
+    padding: 6px;
+}
+
+.review-target-popup .card-category {
+    background-color: #e2e8f0;
+}
+
+.review-target-popup .target-info-wrap {
+    overflow: hidden;
+}
+
+.review-target-popup .target-title {
+    margin: 0;
+}
+
+.review-target-popup .target-location {
+    margin: 0;
+}
+
+.review-card .review-attach-box {
+    margin: 0 auto;
+}
+
+.scroll-container .review-card {
+    min-width: 300px;
+    max-width: 300px;
+}
+
+/* ── 예약 배지 ── */
+.reservation-card {
+    border: 1px solid var();
+}
+
+.reservation-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.reservation-badge {
+    font-size: 11px;
+    font-weight: var(--weight-medium);
+    padding: 3px 8px;
+    border-radius: var(--radius-full);
+}
+
+.badge-confirmed {
+    background-color: var(--color-sub-light-green);
+    color: var(--color-sub-green);
+}
+
+.badge-canceled {
+    background-color: var(--color-border-default);
+    color: var(--color-text-secondary);
+}
+
+/* ── 더보기 버튼 ── */
+.btn-load-more {
+    display: block;
+    width: 100%;
+    height: 48px;
+    margin-top: 16px;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition:
+        border-color 0.2s,
+        color 0.2s;
+}
+
+.btn-load-more:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
 /* ── 모바일 (1023px 이하) ── */
 @media screen and (max-width: 1023px) {
     main {
