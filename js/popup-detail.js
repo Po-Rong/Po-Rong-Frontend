@@ -65,5 +65,4 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("데이터 로드 에러:", error);
         });
 
-    // ... 아래 renderTimetable 및 bindReserveEvents 함수 코드는 동일합니다 ...
 });
