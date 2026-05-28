@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (btnLogout) {
         btnLogout.addEventListener('click', function () {
             localStorage.removeItem('loginUser');
-            alert('안전하게 로그아웃 되었습니다.');
+            alert('로그아웃 되었습니다.');
             window.location.href = '/index.html';
         });
     }
@@ -262,81 +262,76 @@ function renderMyReviews(dataList) {
     grid.innerHTML = '';
 
     if (!dataList || dataList.length === 0) {
-        grid.innerHTML = `<p style="text-align:center; grid-column:1/-1; padding:40px; color:#999;">작성한 후기가 없습니다.</p>`;
+        grid.innerHTML = `<p style="text-align:center; padding:40px; color:#999;">작성한 후기가 없습니다.</p>`;
         return;
     }
 
     dataList.forEach(item => {
-        const ratingScore = item.rating ? parseInt(item.rating) : 0;
-        let starsHtml = '';
-        for (let i = 1; i <= 5; i++) {
-            starsHtml += `<span class="star-small ${i <= ratingScore ? 'active' : ''}">★</span>`;
-        }
+        // 데이터 전처리
+        const ratingScore = parseFloat(item.rating) || 0;
+        const formattedDate = item.createdAt ? item.createdAt.split('T')[0].replace(/-/g, '.').substring(2) : '날짜 없음';
 
         let congestionLabel = '정보 없음';
-        if (item.congestionLevel === 'HIGH') congestionLabel = '혼잡도 높음';
-        if (item.congestionLevel === 'NORMAL') congestionLabel = '혼잡도 보통';
-        if (item.congestionLevel === 'LOW') congestionLabel = '혼잡도 낮음';
+        if (item.congestionLevel === 'HIGH') congestionLabel = '높음';
+        else if (item.congestionLevel === 'NORMAL') congestionLabel = '보통';
+        else if (item.congestionLevel === 'LOW') congestionLabel = '낮음';
 
-        let imageContainerHtml = '';
-        if (item.reviewImageUrl && item.reviewImageUrl !== 'NULL') {
-            let finalReviewImg = item.reviewImageUrl.startsWith("/")
-                ? `http://localhost:8080${item.reviewImageUrl}`
-                : item.reviewImageUrl;
-            imageContainerHtml = `
-                <div class="review-image-thumbnail">
-                    <img src="${finalReviewImg}" alt="리뷰 첨부 이미지" style="width:100%; margin-top:10px; border-radius:8px;" />
-                </div>
-            `;
-        }
+        // 이미지 경로 처리
+        const reviewImg = (item.reviewImageUrl && item.reviewImageUrl !== 'NULL')
+            ? (item.reviewImageUrl.startsWith("/") ? `http://localhost:8080${item.reviewImageUrl}` : item.reviewImageUrl)
+            : null;
 
-        let popupThumbHtml = '';
-        if (item.popupMainImageUrl || item.main_image_url) {
-            let imgUrl = item.popupMainImageUrl || item.main_image_url;
-            let finalPopupImg = imgUrl.startsWith("/")
-                ? `http://localhost:8080${imgUrl}`
-                : imgUrl;
-            popupThumbHtml = `<img src="${finalPopupImg}" alt="팝업 썸네일" style="width:100%; height:100%; object-fit:cover; border-radius:inherit;" />`;
-        }
+        const popupImg = (item.popupMainImageUrl || item.main_image_url)
+            ? (item.popupMainImageUrl || item.main_image_url).startsWith("/") ? `http://localhost:8080${item.popupMainImageUrl || item.main_image_url}` : (item.popupMainImageUrl || item.main_image_url)
+            : '/assets/images/dummies/thumb-dummy01.png';
 
+        // 카드 생성
         const cardArticle = document.createElement('article');
-        cardArticle.className = 'review-item-card';
+        cardArticle.className = 'review-card'; // 요청하신 재사용 클래스명
 
         cardArticle.innerHTML = `
             <div class="review-card-header">
-                <div class="user-meta-info">
-                    <span class="user-name-text">${item.nickname || '나'}</span>
-                    <div class="card-stars-row">
-                        ${starsHtml}
-                        <div class="score-small-text">
-                            <span class="score-num-current">${ratingScore.toFixed(1)}</span>
-                            <span class="score-num-max"> / 5.0</span>
-                        </div>
-                    </div>
-                    <div class="badge-row">
-                        <span class="badge-congestion-info">${congestionLabel}</span>
-                    </div>
+                <span class="reviewer-name">${item.nickname || '나'}</span>
+                <span class="review-date">${formattedDate}</span>
+            </div>
+            
+            <div class="review-stats-row">
+                <div class="rating-wrap">
+                    <span class="rating-stars">${'★'.repeat(Math.round(ratingScore))}</span>
+                    <span class="rating-num">${ratingScore.toFixed(1)}</span>
+                    <span class="rating-max">/ 5.0</span>
                 </div>
-                <span class="review-date-text">${item.createdAt ? item.createdAt.split('T')[0].replace(/-/g, '.') : '날짜 없음'} 작성</span>
+                <div class="congestion-wrap">
+                    <span class="congestion-text">혼잡도</span>
+                    <span class="congestion-strong">${congestionLabel}</span>
+                </div>
             </div>
 
-            <div class="review-card-body">
-                <div class="review-text-content">
-                    <p class="review-main-paragraph">${item.content || '내용 없음'}</p>
-                </div>
-                ${imageContainerHtml}
+            <div class="review-content">
+                <p>${item.content || '내용 없음'}</p>
             </div>
 
-            <div class="review-target-popup-bar">
-                <div class="mini-thumb">
-                    ${popupThumbHtml}
+            ${reviewImg ? `
+                <div class="review-attach-box">
+                    <img src="${reviewImg}" alt="리뷰 첨부 사진" class="review-attached-img" />
                 </div>
-                <div class="mini-info">
-                    <span class="mini-title">${item.popupTitle || '정보 없음'}</span>
-                    <span class="mini-region">${item.popupRegion || ''}</span>
+            ` : ''}
+
+            <div class="review-target-popup">
+                <div class="target-thumb-wrap">
+                    <img src="${popupImg}" alt="팝업 썸네일" class="target-thumb" />
+                </div>
+                <div class="target-info-wrap">
+                    <div class="target-tags">
+                        <span class="card-category">${item.categoryName || '기타'}</span>
+                        <span class="card-status is-running">운영중</span>
+                    </div>
+                    <h4 class="target-title">${item.popupTitle || '팝업 이름'}</h4>
+                    <p class="target-location">${item.popupRegion || ''}</p>
                 </div>
             </div>
         `;
+
         grid.appendChild(cardArticle);
     });
 }

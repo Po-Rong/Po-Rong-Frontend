@@ -222,7 +222,7 @@
 .keyring-grid {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     gap: 50px;
     width: 100%;
     padding-top: 20px;
@@ -237,10 +237,14 @@
 }
 
 .keyring-circle.empty-state {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
+    width: 122px;
     /* background-color: #F8F9FA; */
+    width: 122px;
+    height: 138px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }
 
 .keyring-text-group {
@@ -425,14 +429,13 @@
    5. 예약 섹션 (Timeline)
    ========================================================================== */
 .reservation-section {
-    margin-bottom: 60px;
+    padding: 20px;
+    background: #FFFFFF;
 }
 
 .reservation-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--text-main);
-    margin-bottom: 24px;
+    font-size: 20px;
+    margin-bottom: 20px;
 }
 
 .timeline-container {
@@ -463,19 +466,18 @@
     position: absolute;
     left: -23px;
     top: 6px;
-    width: 16px;
-    height: 16px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     background-color: #C8BFF9;
     border: 3px solid #FFFFFF;
-    box-shadow: 0 0 0 2px #E8E5FD;
     z-index: 2;
 }
 
 .timeline-date {
     font-size: 16px;
     font-weight: 700;
-    color: var(--text-main);
+    color: var(--text-muted);
     margin-bottom: 12px;
 }
 
@@ -486,19 +488,19 @@
     display: inline-flex;
     flex-direction: column;
     min-width: 320px;
-    border: 1px solid var(--border-color);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
 }
 
 .timeline-card-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--text-main);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text-muted);
     margin-bottom: 4px;
 }
 
 .timeline-card-time {
-    font-size: 13px;
+    font-size: 16px;
+    font-weight: 500;
     color: var(--text-muted);
     margin-bottom: 12px;
 }
@@ -669,4 +671,41 @@
 
 .btn-logout-wide:hover {
     background-color: #F9FAFB;
+}
+
+/* ==========================================================================
+   8. 재사용 리뷰 카드 css 조절
+   ========================================================================== */
+
+#reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.review-card {
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
+}
+
+.review-attach-box {
+    width: 266px;
+    height: 144px;
+    margin-top: 10px;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: white;
+}
+
+.review-attached-img {
+    width: 266px;
+    height: 144px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+    margin-top: 10px;
 }
