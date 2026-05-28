@@ -4,7 +4,7 @@
 
 /* 페이지 배경 */
 body {
-    background-color: var(--color-offwhite);
+    background-color: var(--color-white);
     min-height: 100vh;
 }
 
@@ -245,6 +245,7 @@ main {
 
 .reservation-card {
     background-color: var(--color-white);
+    border: solid 1px var(--color-border-default);
     border-radius: var(--radius-sm);
     padding: 12px 16px;
     display: flex;
