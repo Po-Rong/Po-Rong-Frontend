@@ -161,3 +161,8 @@ async function fetchUpcomingPopups() {
         upcomingScrollContainer.innerHTML = `<p class="error-msg">팝업 정보를 불러오지 못했습니다.</p>`;
     }
 }
+
+// 홈에서 카테고리 클릭 시 찾기 페이지로 이동
+function navigateToExploreWithCategory(categoryName) {
+    window.location.href = `/pages/explore.html?category=${encodeURIComponent(categoryName)}`;
+}
