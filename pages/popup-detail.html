@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PORONG</title>
     <link rel="stylesheet" href="/css/global.css" />
-    <link rel="stylesheet" href="/css/detail.css">
+    <link rel="stylesheet" href="/css/popup-detail.css">
 </head>
 
 <body>
@@ -41,25 +41,32 @@
     </header>
 
     <main class="detail-wrapper">
-        <section class="section-main-poster">
-            <div class="poster-container">
-                <img src="" alt="팝업스토어 메인 포스터" id="popup-main-thumb" />
+        <div class="content-body">
+            <section class="section-main-poster">
+                <div class="poster-container">
+                    <img src="" alt="팝업스토어 메인 포스터" id="popup-main-thumb" />
+                </div>
+            </section>
+
+            <div class="detail-container">
             </div>
-        </section>
+        </div>
 
         <div class="detail-container">
             <section class="section-info-summary">
                 <div class="status-tag-row">
-                    <span class="badge-status" id="popup-status"></span>
                     <span class="badge-category" id="popup-category"></span>
                 </div>
 
                 <h1 class="popup-title" id="popup-title"></h1>
 
-                <div class="rating-row">
-                    <span class="stars" id="popup-stars"></span>
-                    <span class="rating-score" id="popup-rating-score"></span>
-                    <a href="#reviews" class="review-count-link" id="popup-review-count"></a>
+                <div class="rating-wrap">
+                    <div class="rating-stars" id="popup-stars"></div>
+
+                    <span class="rating-num" id="popup-rating-score"></span>
+                    <span class="rating-max" id="popup-rating-max"></span>
+
+                    <a href="/pages/review.html" class="review-count-link" id="popup-review-count"></a>
                 </div>
 
                 <hr class="detail-divider" />
@@ -80,7 +87,18 @@
                             <span class="meta-value" id="popup-location"></span>
                         </div>
                     </li>
-                </ul>
+                    <hr class="detail-divider" />
+                    <li class="meta-row-layout">
+                        <span class="meta-label">태그</span>
+                        <div class="meta-value-group" id="popup-tags"></div>
+                    </li>
+                    <hr class="detail-divider" />
+                    <li class="meta-row-layout">
+                        <span class="meta-label">SNS</span>
+                        <div class="meta-value-group">
+                            <a href="#" id="popup-sns" target="_blank" class="meta-value">바로가기</a>
+                        </div>
+                    </li>
             </section>
             <hr class="detail-divider" />
 
@@ -118,14 +136,10 @@
                 </div>
 
                 <div class="bar-action-group">
-                    <button type="button" class="wish-toggle-btn" aria-label="찜하기">
-                        <svg class="heart-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path
-                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                            </path>
-                        </svg>
-                        <span class="wish-count">201</span>
+                    <button type="button" class="wish-toggle-btn" id="wish-toggle-btn" aria-label="찜하기">
+                        <img id="heart-icon" src="/assets/images/icons/icon-heart-empty.png" alt="찜하기"
+                            style="width: 24px; height: 24px;">
+                        <span class="wish-count" id="wish-count">201</span>
                     </button>
 
                     <a href="/pages/reservation.html" class="reservation-btn">예약하러 가기</a>
@@ -136,7 +150,7 @@
     </main>
     <script src="/js/index.js"></script>
 
-    <script src="/js/detail.js"></script>
+    <script src="/js/popup-detail.js"></script>
 </body>
 
 </html>
