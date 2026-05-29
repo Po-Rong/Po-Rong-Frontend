@@ -18,6 +18,7 @@ function updateHeader() {
         // 로그인 상태
         loginLink.textContent = `${user.nickname}님, 반가워요!`;
         loginLink.href = "#";
+        loginLink.style.pointerEvents = "none";
 
         // role에 따라 마이포롱 링크 변경
         const mypageLink = document.querySelector(
@@ -25,6 +26,7 @@ function updateHeader() {
         );
         if (mypageLink && user.role === "seller") {
             mypageLink.href = "/pages/admin.html";
+            mypageLink.textContent = "팝업관리";
         }
     } else {
         // 비로그인 상태
