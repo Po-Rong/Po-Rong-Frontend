@@ -20,9 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchUpcomingPopups();
     // 최근 리뷰
     fetchRecentReviews();
-
-    // 기존 학습한 정적 데이터 기반 동적 렌더링
-    initStaticReviewStats();
 })
 
 // API 날짜 변환
@@ -85,7 +82,7 @@ async function fetchTrendPopups() {
                         </div>
                     </div>
 
-                    <button class="wish-btn ${activeClass}" aria-label="찜하기" onclick="toggleWish(${popup.id}, this)">
+                    <button class="wish-btn ${activeClass}" aria-label="찜하기" onclick="toggleWish(${popup.id || popup.popupId}, this)">
                         <span class="heart-icon"></span> 찜하기
                     </button>
                 </div>
@@ -138,7 +135,7 @@ async function fetchLeisurePopups() {
                         />
                     </div>
 
-                    <button class="wish-btn ${activeClass}" aria-label="찜하기" onclick="toggleWish(${popup.id}, this)">
+                    <button class="wish-btn ${activeClass}" aria-label="찜하기" onclick="toggleWish(${popup.id || popup.popupId}, this)">
                         <span class="heart-icon"></span> 찜하기
                     </button>
 
@@ -199,7 +196,7 @@ async function fetchUpcomingPopups() {
                         <div class="status-badge new-status"></div>
                     </div>
 
-                    <button class="wish-btn ${activeClass}" aria-label="찜하기" onclick="toggleWish(${popup.id}, this)">
+                    <button class="wish-btn ${activeClass}" aria-label="찜하기" onclick="toggleWish(${popup.id || popup.popupId}, this)">
                         <span class="heart-icon"></span> 찜하기
                     </button>
 
