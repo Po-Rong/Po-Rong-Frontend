@@ -1,16 +1,6 @@
 // API 주소 상수 관리
 const API_BASE_URL = "http://localhost:8080/api";
 
-// 실시간으로 로컬스토리지에서 최신 유저 쿼리를 만들어주는 함수
-function getUserQuery() {
-    const loginUser = JSON.parse(localStorage.getItem("loginUser"));
-    if (!loginUser) return "";
-
-    const currentUserId = loginUser.userId || loginUser.id;
-    // 백엔드가 컨트롤러에서 받는 이름(user_id)으로 매핑
-    return currentUserId ? `&user_id=${currentUserId}` : "";
-}
-
 // 초기화 및 메인 실행
 document.addEventListener("DOMContentLoaded", () => {
     // 인기 급상승 팝업 TOP 10
@@ -22,14 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // 최근 리뷰
     renderReviews(`${API_BASE_URL}/reviews/recent`, ".review-grid-container");
 })
-
-// API 날짜 변환
-function formatDateString(isoString) {
-    if (!isoString) return "";
-    const datePart = isoString.split("T")[0];
-    const [year, month, day] = datePart.split("-");
-    return `${year.slice(2)}.${month}.${day}`;
-}
 
 // 인기 급상승 10개
 async function fetchTrendPopups() {
