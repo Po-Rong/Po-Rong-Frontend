@@ -247,3 +247,45 @@ async function renderReviews(apiEndpoint, containerSelector) {
         reviewGridContainer.innerHTML = `<p class="error-msg">리뷰 정보를 불러오지 못했습니다.</p>`;
     }
 }
+
+// 어떤 페이지든 클래스명이 card-scroll-container이기만 하면 자동으로 드래그 스크롤이 됨
+document.addEventListener("DOMContentLoaded", () => {
+    const scrollContainers = document.querySelectorAll(".card-scroll-container");
+
+    scrollContainers.forEach((container) => {
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        container.addEventListener("mousedown", (e) => {
+            isDown = true;
+            container.classList.add("active");
+            startX = e.pageX - container.offsetLeft;
+            scrollLeft = container.scrollLeft;
+
+            container.style.cursor = "grabbing";
+            container.style.userSelect = "none";
+        });
+
+        container.addEventListener("mouseleave", () => {
+            isDown = false;
+            container.style.cursor = "grab";
+        });
+
+        container.addEventListener("mouseup", () => {
+            isDown = false;
+            container.style.cursor = "grab";
+        });
+
+        container.addEventListener("mousemove", (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+
+            const x = e.pageX - container.offsetLeft;
+            const walk = (x - startX) * 1.5; // 스크롤 감도 조절
+            container.scrollLeft = scrollLeft - walk;
+        });
+
+        container.style.cursor = "grab";
+    });
+});
