@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PORONG - 포롱 후기</title>
+    <title>PORONG</title>
     <link rel="stylesheet" href="/css/global.css" />
     <link rel="stylesheet" href="/css/review.css" />
 </head>
@@ -30,9 +30,8 @@
     </header>
 
     <main class="review-write-wrapper">
+        <h1 class="page-main-title">포롱 후기</h1>
         <div class="review-write-container">
-            <h1 class="page-main-title">포롱 후기</h1>
-
             <section class="review-rating-card">
                 <div class="rating-content-box">
                     <div class="rating-score-display">
@@ -45,27 +44,12 @@
                         <p class="congestion-title">혼잡도 <span class="status-text-blue" id="mainCongestionText">-</span>
                         </p>
                         <div class="congestion-icons-row" id="mainCongestionIcons">
-                            <div class="btn-congestion" data-level="LOW">
-                                <svg class="icon-person" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path
-                                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z" />
-                                </svg>
-                            </div>
-                            <div class="btn-congestion" data-level="NORMAL">
-                                <svg class="icon-person" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path
-                                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z" />
-                                </svg>
-                            </div>
-                            <div class="btn-congestion" data-level="HIGH">
-                                <svg class="icon-person" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2">
-                                    <path
-                                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z" />
-                                </svg>
-                            </div>
+                            <img src="/assets/images/icons/icon-person-empty.png" class="btn-congestion"
+                                data-level="LOW" alt="낮음" />
+                            <img src="/assets/images/icons/icon-person-empty.png" class="btn-congestion"
+                                data-level="NORMAL" alt="보통" />
+                            <img src="/assets/images/icons/icon-person-empty.png" class="btn-congestion"
+                                data-level="HIGH" alt="높음" />
                         </div>
                     </div>
 
@@ -73,11 +57,16 @@
                         <p class="prompt-text">이 팝업 방문하셨나요?</p>
                         <p class="sub-prompt-text">방문 예정인 분들에게 도움이 되는 후기를 작성해주세요</p>
                         <div class="prompt-stars" id="interactivePromptStars">
-                            <span class="prompt-star-btn" data-value="1">★</span>
-                            <span class="prompt-star-btn" data-value="2">★</span>
-                            <span class="prompt-star-btn" data-value="3">★</span>
-                            <span class="prompt-star-btn" data-value="4">★</span>
-                            <span class="prompt-star-btn" data-value="5">★</span>
+                            <img src="/assets/images/icons/icon-star-empty.png" class="prompt-star-btn" data-value="1"
+                                alt="1점" />
+                            <img src="/assets/images/icons/icon-star-empty.png" class="prompt-star-btn" data-value="2"
+                                alt="2점" />
+                            <img src="/assets/images/icons/icon-star-empty.png" class="prompt-star-btn" data-value="3"
+                                alt="3점" />
+                            <img src="/assets/images/icons/icon-star-empty.png" class="prompt-star-btn" data-value="4"
+                                alt="4점" />
+                            <img src="/assets/images/icons/icon-star-empty.png" class="prompt-star-btn" data-value="5"
+                                alt="5점" />
                         </div>
                     </div>
                 </div>
