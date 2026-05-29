@@ -199,7 +199,7 @@ function openReviewModal(review) {
                 }
                 <div class="review-target-popup">
                     <div class="target-thumb-wrap">
-                        <img src="${popupImageUrl} || ""}" alt="${review.popupTitle}" class="target-thumb" />
+                        <img src="${popupImageUrl || ""}" alt="${review.popupTitle}" class="target-thumb" />
                     </div>
                     <div class="target-info-wrap">
                         <div class="target-tags">
