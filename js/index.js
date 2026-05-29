@@ -1,6 +1,26 @@
 // 공통된 JS파일을 넣는 파일입니다.
 // 로그인이나 따로 분리가 가능한 기능들은 따로 js파일을 만들어 주세요
-const API = "http://localhost:8080/api";
+window.API_BASE_URL = "http://localhost:8080/api";
+const API = window.API_BASE_URL;
+
+// 실시간으로 로컬스토리지에서 최신 유저 쿼리를 만들어주는 공통 함수
+// 홈페이지, 찾기 페이지 등에서 팝업이 찜하기가 되어있는지 판단할 때 호출
+function getUserQuery() {
+    const loginUser = JSON.parse(localStorage.getItem("loginUser"));
+    if (!loginUser) return "";
+
+    const currentUserId = loginUser.userId || loginUser.id;
+    // 백엔드가 컨트롤러에서 받는 이름(user_id)으로 매핑
+    return currentUserId ? `&user_id=${currentUserId}` : "";
+}
+
+// 날짜 변환 함수
+function formatDateString(isoString) {
+    if (!isoString) return "";
+    const datePart = isoString.split("T")[0];
+    const [year, month, day] = datePart.split("-");
+    return `${year.slice(2)}.${month}.${day}`;
+}
 
 // 헤더 로그인 상태 업데이트
 function updateHeader() {
@@ -115,7 +135,6 @@ async function toggleWish(popupId, buttonElement) {
 
     try {
         // 엔드포인트로 요청 송신
-        // 주소 형식: http://localhost:8080/api/wishlists/popups/{popupId}
         const response = await fetch(`${API}/wishlists/popups/${popupId}`, {
             method: "POST",
             headers: {
@@ -248,6 +267,7 @@ async function renderReviews(apiEndpoint, containerSelector) {
     }
 }
 
+// DOMContentLoaded 통합 제어
 // 어떤 페이지든 클래스명이 card-scroll-container이기만 하면 자동으로 드래그 스크롤이 됨
 document.addEventListener("DOMContentLoaded", () => {
     const scrollContainers = document.querySelectorAll(".card-scroll-container");
