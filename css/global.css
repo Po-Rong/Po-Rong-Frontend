@@ -320,6 +320,14 @@ body {}
     }
 }
 
+/* 데이터를 불러오지 못할 때 */
+.error-msg {
+    color: var(--color-text-secondary);
+    font-weight: var(--weight-regular);
+    font-size: 16px;
+    padding: 20px;
+}
+
 
 /* 공통 컴포넌트 - 모든 페이지에서 공유할 팝업 카드 기본 규격 */
 .popup-card {
@@ -510,6 +518,7 @@ body {}
     box-sizing: border-box;
     padding: 20px;
     min-width: 0;
+    height: 430px;
 }
 
 /* 상단 헤더 - 이름 / 날짜 */
@@ -601,6 +610,15 @@ body {}
     object-fit: contain;
 }
 
+/* 리뷰 본문 텍스트 공간 자동 확장 및 제한 */
+.review-content {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
 /* 리뷰 본문 텍스트 */
 .review-content p {
     font-size: 16px;
@@ -608,11 +626,19 @@ body {}
     line-height: 1.4;
     /* 영문이나 이모티콘 빠져나감 방지 */
     word-break: break-all;
+    margin: 0;
 
-    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    min-height: 21px;
+    /* 3줄까지만 보여줌 */
+    -webkit-line-clamp: 1;
+}
+
+/* 이미지가 없을 때 글자 수용량 */
+.review-card.has-no-image .review-content p {
+    -webkit-line-clamp: 7;
 }
 
 /* 중앙 첨부 이미지 박스 */
@@ -624,6 +650,8 @@ body {}
     border-radius: var(--radius-sm);
     overflow: hidden;
     margin: 0 auto;
+    /* 본문이 길어져도 이미지가 찌그러지지않게 */
+    flex-shrink: 0;
 }
 
 .review-attached-img {

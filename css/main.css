@@ -133,6 +133,7 @@
 .trend-card .card-image-wrap {
     /* 기존 높이가 302px로 고정되어있다면 유지 */
     box-shadow: 0 0 7.038px 0 rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
 }
 
 /* 밑으로 갈수록 어두워지는 그라데이션 레이어 구현 */
@@ -176,12 +177,12 @@
     font-size: 48px;
     font-weight: var(--weight-medium);
     line-height: 1;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
 }
 
 /* 팝업 제목 스타일 */
 .trend-card .trend-card-title {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: var(--weight-medium);
     /* 말줄임표 작동을 위한 안전 여백 */
     width: 90%;
@@ -194,7 +195,7 @@
 
 /* 위치 값 스타일 */
 .trend-card .trend-card-location {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: var(--weight-regular);
 }
 
