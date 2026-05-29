@@ -13,27 +13,29 @@ document.addEventListener('DOMContentLoaded', () => {
 /* ==========================================================================
    2. API 비동기 통신 함수
    ========================================================================== */
+let currentPopupDetails = null;
+
 async function fetchReviewsData(popupId) {
     const reviewsApiUrl = `http://localhost:8080/api/popups/${popupId}/reviews?sort=rating_high`;
-    const congestionApiUrl = `http://localhost:8080/api/popups/${popupId}/congestion`; // 추가된 API
+    const popupDetailUrl = `http://localhost:8080/api/popups/${popupId}`
+    const congestionApiUrl = `http://localhost:8080/api/popups/${popupId}/congestion`;
 
     try {
-        // 병렬로 API 호출
-        const [reviewsRes, congestionRes] = await Promise.all([
+        const [reviewsRes, popupRes, congestionRes] = await Promise.all([
             fetch(reviewsApiUrl),
+            fetch(popupDetailUrl),
             fetch(congestionApiUrl)
         ]);
 
-        if (!reviewsRes.ok || !congestionRes.ok) throw new Error('API 호출 실패');
-
         const reviewsList = await reviewsRes.json();
-        const congestionData = await congestionRes.json(); // { averageCongestionLevel: "혼잡", ... }
+        currentPopupDetails = await popupRes.json(); // 팝업 정보 저장
+        const congestionData = await congestionRes.json();
 
-        renderUpperDashboard(reviewsList, congestionData); // 데이터를 함께 전달
-        renderReviews(reviewsList);
+        renderUpperDashboard(reviewsList, congestionData);
+        renderReviews(reviewsList); // 이제 렌더링 시 currentPopupDetails 사용 가능
 
     } catch (error) {
-        console.error("데이터 로드 중 오류 발생:", error);
+        console.error("데이터 로드 오류:", error);
     }
 }
 
@@ -137,10 +139,9 @@ function renderReviews(dataList) {
                 </div>
             `;
         }
-
+        const p = currentPopupDetails || {};
         const cardArticle = document.createElement('article');
         cardArticle.className = 'review-item-card';
-
         cardArticle.innerHTML = `
             <div class="review-card">
                 <div class="review-card-header">
@@ -167,17 +168,17 @@ function renderReviews(dataList) {
                 </div>
                 <div class="review-target-popup">
                     <div class="target-thumb-wrap">
-                        <img src="${item.popupThumbnail || '/assets/images/dummies/thumb-dummy01.png'}" alt="팝업 썸네일" class="target-thumb" />
+                        <img src="${p.mainImageUrl || '/assets/images/dummies/thumb-dummy01.png'}" alt="팝업 썸네일" class="target-thumb" />
                     </div>
                     <div class="target-info-wrap">
                         <div class="target-tags">
-                            <span class="card-category">${item.category || '팝업'}</span>
-                            <span class="card-status ${item.status === 'RUNNING' ? 'is-running' : ''}">
-                                ${item.status === 'RUNNING' ? '운영중' : '종료'}
+                            <span class="card-category">${p.categoryName || '팝업'}</span>
+                            <span class="card-status ${p.status === 'ongoing' ? 'is-running' : ''}">
+                                ${p.status === 'ongoing' ? '운영중' : '종료'}
                             </span>
                         </div>
-                        <h4 class="target-title">${item.popupTitle || '팝업 이름'}</h4>
-                        <p class="target-location">${item.location || '위치 미정'}</p>
+                        <h4 class="target-title">${p.title || '팝업 이름'}</h4>
+                        <p class="target-location">${p.regionName || '위치 미정'}</p>
                     </div>
                 </div>
             </div>
