@@ -56,10 +56,83 @@
       </div>
     </header>
 
-    <main>찾기 페이지</main>
+    <main class="explore-content">
+      <section class="filter-chip-section">
+        <div class="filter-chip-container">
+          <button class="filter-chip" id="chip-region" data-type="region">
+            지역
+          </button>
+          <button class="filter-chip" id="chip-category" data-type="category">
+            카테고리
+          </button>
+          <button class="filter-chip" id="chip-status" data-type="status">
+            운영 상태
+          </button>
+        </div>
+      </section>
 
-    <!-- 이 페이지 전용 JS가 필요하다면 여기에 추가 -->
-    <!-- <script src="/js/main.js"></script> -->
+      <section class="sort-bar-section">
+        <div class="sort-container">
+          <select id="popup-sort-select" class="sort-select">
+            <option value="latest">최신등록순</option>
+            <option value="rating">별점 높은순</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="popup-grid-section">
+        <div class="popup-grid-container" id="explore-grid-container">
+          <div class="popup-card leisure-card">
+            <div class="card-image-wrap">
+              <img
+                src="/assets/images/dummies/thumb-dummy01.png"
+                alt="팝업 썸네일"
+                class="card-thumb"
+              />
+            </div>
+            <button
+              class="wish-btn"
+              aria-label="찜하기"
+              onclick="toggleWish(11, this)"
+            >
+              <span class="heart-icon"></span> 찜하기
+            </button>
+            <div class="card-body-wrap">
+              <div class="card-info">
+                <span
+                  class="card-status is-running"
+                  style="margin-bottom: 4px; display: inline-block"
+                  >운영중</span
+                >
+                <h3 class="card-title">귀여운 산리오 놀이터 팝업스토어</h3>
+                <p class="card-location">강남/서울</p>
+                <p class="card-date">26.05.21 - 26.05.24</p>
+                <span class="card-category">애니/캐릭터</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="filter-modal-overlay" id="filter-modal">
+      <div class="filter-modal-window">
+        <div class="modal-header">
+          <h3 id="modal-title-text">지역</h3>
+          <button class="modal-close-btn" id="modal-close-x">&times;</button>
+        </div>
+
+        <div class="modal-body-content" id="modal-chip-grid"></div>
+
+        <div class="modal-footer-actions">
+          <button class="btn-action-reset" id="modal-btn-reset">초기화</button>
+          <button class="btn-action-apply" id="modal-btn-apply">
+            적용하기
+          </button>
+        </div>
+      </div>
+    </div>
     <script src="/js/index.js"></script>
+    <script src="/js/explore.js"></script>
   </body>
 </html>
