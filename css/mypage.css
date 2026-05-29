@@ -651,7 +651,126 @@
 }
 
 /* ==========================================================================
-   7. 재사용 리뷰 카드 css 조절
+   7. 닉네임 변경 모달 (Nickname Change Modal)
+   ========================================================================== */
+/* 모달 레이아웃 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: #FFF;
+    border-radius: 16px;
+    padding: 40px 30px;
+    width: 490px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: #4C4C4C;
+    margin: 0;
+}
+
+
+.popup-info-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #F9F8FF;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.popup-thumb {
+    width: 57.1px;
+    height: 57.1px;
+    border-radius: 7.61px;
+    background-color: #D9D9D9;
+    object-fit: cover;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-edit,
+.btn-cancel {
+    display: flex;
+    padding: 12px 40px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex: 1 0 0;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.btn-edit {
+    border-radius: 4px;
+    border: 1px solid var(--Border-default, #DDD);
+    background: var(--White-Off-White, #F8F8F8);
+}
+
+.btn-cancel {
+    border-radius: 4px;
+    background: var(--Primary-Dark-Purple, #9C8CF2);
+    border: 1px solid var(--Border-default, #DDD);
+    color: white;
+}
+
+.btn-close-modal {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    color: #4C4C4C;
+    /* X자 색상 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-close-modal:hover {
+    color: #000;
+}
+
+
+/* ==========================================================================
+   8. 재사용 리뷰 카드 css 조절
    ========================================================================== */
 
 #reviews-grid {

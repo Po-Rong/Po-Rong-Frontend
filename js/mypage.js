@@ -165,6 +165,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+    const reservationModal = document.getElementById('reservation-modal');
+    const btnCloseResModal = document.getElementById('btn-close-reservation-modal');
+
+    if (btnCloseResModal) {
+        btnCloseResModal.addEventListener('click', () => {
+            reservationModal.classList.remove('active');
+        });
+    }
 });
 
 async function fetchMyWishlist(userId) {
@@ -382,9 +390,9 @@ function renderMyReservations(dataList) {
         if (item.status === 'USED') {
             actionButtonHtml = `<button class="btn-reservation-action" onclick="location.href='/pages/review-write.html?popupId=${item.popupId}&reservationId=${item.id}'">후기 쓰기</button>`;
         } else if (item.status === 'CONFIRMED') {
-            actionButtonHtml = `<button class="btn-reservation-action" onclick="alert('예약 상세 확인 기능은 준비 중입니다.')">예약 확인하기</button>`;
+            actionButtonHtml = `<button class="btn-reservation-action" onclick="openReservationModal(${JSON.stringify(item).replace(/"/g, '&quot;')})">예약 확인하기</button>`;
         } else {
-            actionButtonHtml = `<button class="btn-reservation-action" disabled>예약 취소</button>`;
+            actionButtonHtml = `<button class="btn-reservation-action" disabled>예약 취소됨</button>`;
         }
 
         const html = `
@@ -470,4 +478,21 @@ function renderMyKeyrings(dataList) {
 
         grid.insertAdjacentHTML('beforeend', cardHtml);
     });
+}
+
+function openReservationModal(item) {
+    const detailInfo = document.getElementById('reservation-detail-info');
+    const thumbUrl = item.mainImageUrl || '/assets/images/dummies/thumb-dummy01.png';
+
+    detailInfo.innerHTML = `
+        <div class="popup-info-box">
+            <img src="${thumbUrl}" alt="팝업 이미지" class="popup-thumb" />
+            <span class="popup-title">${item.popupTitle}</span>
+        </div>
+        <p><strong>이주현 님</strong></p>
+        <p>전화번호: 010-1234-5678</p>
+        <p>예약한 시간: ${item.reserveDate}</p>
+    `;
+
+    document.getElementById('reservation-modal').classList.add('active');
 }
