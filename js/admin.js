@@ -20,13 +20,16 @@ function loadPopupList() {
             }
             data.forEach((popup) => {
                 const div = document.createElement("div");
+                const imageUrl = popup.mainImageUrl?.startsWith("http")
+                    ? popup.mainImageUrl
+                    : `http://localhost:8080${popup.mainImageUrl}`;
                 div.className = "popup-card";
                 div.style.cursor = "pointer";
                 div.onclick = () =>
                     (location.href = `/pages/detail.html?id=${popup.id}`);
                 div.innerHTML = `
                     <div class="card-image-wrap">
-                        <img src="http://localhost:8080${popup.mainImageUrl}" alt="${popup.title}" class="card-thumb" />
+                        <img src="${imageUrl}" alt="${popup.title}" class="card-thumb" />
                     </div>
                     <div class="card-body-wrap">
                         <div class="card-info">
@@ -81,6 +84,14 @@ function loadReviewList() {
             }
             data.forEach((review) => {
                 const div = document.createElement("div");
+                const reviewImageUrl = review.reviewImageUrl?.startsWith("http")
+                    ? review.reviewImageUrl
+                    : `http://localhost:8080${review.reviewImageUrl}`;
+                const popupImageUrl = review.popupMainImageUrl?.startsWith(
+                    "http",
+                )
+                    ? review.popupMainImageUrl
+                    : `http://localhost:8080${review.popupMainImageUrl}`;
                 div.className = "review-card";
                 div.innerHTML = `
                     <div class="review-card-header">
@@ -107,13 +118,13 @@ function loadReviewList() {
                         review.reviewImageUrl
                             ? `
                     <div class="review-attach-box">
-                        <img src="http://localhost:8080${review.reviewImageUrl}" alt="리뷰 첨부 사진" class="review-attached-img" />
+                        <img src="${reviewImageUrl}" alt="리뷰 첨부 사진" class="review-attached-img" />
                     </div>`
                             : ""
                     }
                     <div class="review-target-popup">
                         <div class="target-thumb-wrap">
-                            <img src="http://localhost:8080${review.popupMainImageUrl || ""}" alt="${review.popupTitle}" class="target-thumb" />
+                            <img src="${popupImageUrl || ""}" alt="${review.popupTitle}" class="target-thumb" />
                         </div>
                         <div class="target-info-wrap">
                             <div class="target-tags">
@@ -143,6 +154,12 @@ function loadReviewList() {
 // 리뷰 모달
 function openReviewModal(review) {
     const modal = document.createElement("div");
+    const reviewImageUrl = review.reviewImageUrl?.startsWith("http")
+        ? review.reviewImageUrl
+        : `http://localhost:8080${review.reviewImageUrl}`;
+    const popupImageUrl = review.popupMainImageUrl?.startsWith("http")
+        ? review.popupMainImageUrl
+        : `http://localhost:8080${review.popupMainImageUrl}`;
     modal.className = "modal-overlay";
     modal.innerHTML = `
         <div class="modal-review-box">
@@ -176,13 +193,13 @@ function openReviewModal(review) {
                     review.reviewImageUrl
                         ? `
                 <div class="review-attach-box">
-                    <img src="http://localhost:8080${review.reviewImageUrl}" alt="리뷰 첨부 사진" class="review-attached-img" />
+                    <img src="${reviewImageUrl}" alt="리뷰 첨부 사진" class="review-attached-img" />
                 </div>`
                         : ""
                 }
                 <div class="review-target-popup">
                     <div class="target-thumb-wrap">
-                        <img src="http://localhost:8080${review.popupMainImageUrl || ""}" alt="${review.popupTitle}" class="target-thumb" />
+                        <img src="${popupImageUrl} || ""}" alt="${review.popupTitle}" class="target-thumb" />
                     </div>
                     <div class="target-info-wrap">
                         <div class="target-tags">

@@ -317,8 +317,6 @@ function registerPopup() {
         return;
     }
 
-    if (hasError) return;
-
     const formData = new FormData();
     formData.append("sellerId", user.userId);
     formData.append("title", title);
@@ -436,9 +434,10 @@ function loadPopupDetail(id) {
             // 메인 이미지 미리보기
             if (data.mainImageUrl) {
                 document.getElementById("mainImageCount").textContent = 1;
-                renderMainImagePreview(
-                    `http://localhost:8080${data.mainImageUrl}`,
-                );
+                const mainImageUrl = data.mainImageUrl?.startsWith("http")
+                    ? data.mainImageUrl
+                    : `http://localhost:8080${data.mainImageUrl}`;
+                renderMainImagePreview(`${mainImageUrl}`);
             }
 
             // 상세 이미지 미리보기
@@ -447,8 +446,11 @@ function loadPopupDetail(id) {
                     data.detailImages.length;
 
                 Promise.all(
-                    data.detailImages.map((imageUrl) =>
-                        fetch(`http://localhost:8080${imageUrl}`)
+                    data.detailImages.map((imageUrl) => {
+                        const fullUrl = imageUrl.startsWith("http")
+                            ? imageUrl
+                            : `http://localhost:8080${imageUrl}`;
+                        return fetch(fullUrl)
                             .then((res) => res.blob())
                             .then(
                                 (blob) =>
@@ -457,8 +459,8 @@ function loadPopupDetail(id) {
                                         imageUrl.split("/").pop(),
                                         { type: blob.type },
                                     ),
-                            ),
-                    ),
+                            );
+                    }),
                 ).then((files) => {
                     files.forEach((file) => detailImageFiles.push(file));
                     renderDetailImagePreview();
@@ -537,8 +539,6 @@ function editPopup() {
         }
         return;
     }
-
-    if (hasError) return;
 
     const user = JSON.parse(localStorage.getItem("loginUser"));
     const reservationStartDate = document.getElementById(
