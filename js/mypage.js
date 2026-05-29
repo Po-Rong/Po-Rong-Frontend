@@ -25,14 +25,6 @@ document.addEventListener('DOMContentLoaded', function () {
     fetchMyReservations(loginUser.userId);
     fetchMyKeyrings(loginUser.userId);
 
-    const btnLogout = document.getElementById('btn-logout');
-    if (btnLogout) {
-        btnLogout.addEventListener('click', function () {
-            localStorage.removeItem('loginUser');
-            alert('로그아웃 되었습니다.');
-            window.location.href = '/index.html';
-        });
-    }
 
     const tabWishlist = document.getElementById('tab-wishlist');
     const tabReviews = document.getElementById('tab-reviews');

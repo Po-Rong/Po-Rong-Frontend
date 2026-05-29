@@ -715,6 +715,37 @@ body {}
     font-weight: var(--weight-regular);
 }
 
+/* 공통 로그아웃 컴포넌트 */
+
+.logout-section {
+    width: 100%;
+    max-width: 956px;
+    margin: 50px auto 80px auto;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.btn-logout-wide {
+    display: flex;
+    padding: 12px 0;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: #fff;
+    color: #6b7280;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-logout-wide:hover {
+    background-color: #f9fafb;
+}
+
 /* 공통 푸터 컴포넌트 */
 .common-footer {
     width: 100%;
