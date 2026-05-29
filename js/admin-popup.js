@@ -593,11 +593,59 @@ function editPopup() {
         });
 }
 
-// 입력 시 에러 제거
+/* 입력 시 에러 제거 */
+
+// 제목 입력 시 에러 제거
 document.getElementById("popupTitle").addEventListener("input", () => {
     clearError("popupTitle");
 });
 
+// 대표 이미지 선택 시 에러 제거
+document.getElementById("mainImage").addEventListener("change", () => {
+    const btn = document.querySelector(".form-group > button[type='button']");
+    if (btn) {
+        btn.style.borderColor = "";
+        btn.style.color = "";
+        btn.classList.remove("input-error");
+    }
+});
+
+// 일정 입력 시 에러 제거
+document.getElementById("startDate").addEventListener("change", () => {
+    const formGroup = document
+        .getElementById("startDate")
+        .closest(".form-group");
+    const msg = formGroup.querySelector(".error-msg");
+    if (msg) msg.remove();
+});
+
+document.getElementById("endDate").addEventListener("change", () => {
+    const formGroup = document
+        .getElementById("startDate")
+        .closest(".form-group");
+    const msg = formGroup.querySelector(".error-msg");
+    if (msg) msg.remove();
+});
+
+// 카테고리 선택 시 에러 제거
+document.getElementById("categoryList").addEventListener("click", () => {
+    const formGroup = document
+        .getElementById("categoryList")
+        .closest(".form-group");
+    const msg = formGroup.querySelector(".error-msg");
+    if (msg) msg.remove();
+});
+
+// 지역 선택 시 에러 제거
+document.getElementById("regionList").addEventListener("click", () => {
+    const formGroup = document
+        .getElementById("regionList")
+        .closest(".form-group");
+    const msg = formGroup.querySelector(".error-msg");
+    if (msg) msg.remove();
+});
+
+// 주소 입력시 에러 제거
 document.getElementById("popupAddress").addEventListener("input", () => {
     clearError("popupAddress");
 });
