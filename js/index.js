@@ -47,6 +47,7 @@ function loadCategories() {
             data.forEach((category) => {
                 const btn = document.createElement("button");
                 btn.textContent = category.categoryName;
+                btn.dataset.id = category.id;
                 btn.onclick = () => selectCategory(category.id, btn);
                 categoryList.appendChild(btn);
             });
@@ -73,6 +74,7 @@ function loadRegions() {
             data.forEach((region) => {
                 const btn = document.createElement("button");
                 btn.textContent = region.regionName;
+                btn.dataset.id = region.id;
                 btn.onclick = () => selectRegion(region.id, btn);
                 regionList.appendChild(btn);
             });
