@@ -265,14 +265,15 @@ function loadReservationList(page = 0) {
                     const card = document.createElement("div");
                     card.className = "reservation-card";
                     card.innerHTML = `
-                        <div class="reservation-card-header">
-                            <p class="reserver-name">${reservation.userName} 님</p>
-                            <span class="reservation-badge ${reservation.status === "CONFIRMED" ? "badge-confirmed" : "badge-canceled"}">
-                                ${reservation.status === "CONFIRMED" ? "예약" : "취소"}
-                            </span>
-                        </div>
-                        <p class="reserve-time">${formatTime(reservation.reserveDate)} 예약</p>
-                    `;
+                                    <div class="reservation-card-header">
+                                        <p class="reserver-name">${reservation.userName} 님</p>
+                                        <span class="reservation-badge ${reservation.status === "CONFIRMED" ? "badge-confirmed" : "badge-canceled"}">
+                                            ${reservation.status === "CONFIRMED" ? "예약" : "취소"}
+                                        </span>
+                                    </div>
+                                    <p class="reserve-time">${formatTime(reservation.reserveDate)} 예약</p>
+                                    <p class="reserve-popup-title">${reservation.popupTitle || ""}</p>
+                                `;
                     card.onclick = () => openReservationModal(reservation);
                     grid.appendChild(card);
                 });
@@ -301,6 +302,9 @@ function loadReservationList(page = 0) {
 // 예약 모달
 function openReservationModal(reservation) {
     const modal = document.createElement("div");
+    const popupImageUrl = reservation.mainImageUrl?.startsWith("http")
+        ? reservation.mainImageUrl
+        : `http://localhost:8080${reservation.mainImageUrl}`;
     modal.className = "modal-overlay";
     modal.innerHTML = `
         <div class="modal-box">
@@ -312,6 +316,14 @@ function openReservationModal(reservation) {
                 <p>${reservation.userName} 님</p>
                 <p>전화번호 : ${reservation.userPhone}</p>
                 <p>예약한 시간 : ${formatDate(reservation.reserveDate)} | ${formatTime(reservation.reserveDate)}</p>
+            </div>
+            <div class="review-target-popup">
+                <div class="target-thumb-wrap">
+                    <img src="${popupImageUrl}" alt="${reservation.popupTitle}" class="target-thumb" />
+                </div>
+                <div class="target-info-wrap">
+                    <h4 class="target-title">${reservation.popupTitle || ""}</h4>
+                </div>
             </div>
             <button class="btn-cancel-reservation"
                 onclick="cancelReservation(${reservation.id}, this)"
