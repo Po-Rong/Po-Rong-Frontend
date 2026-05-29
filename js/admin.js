@@ -26,7 +26,7 @@ function loadPopupList() {
                 div.className = "popup-card";
                 div.style.cursor = "pointer";
                 div.onclick = () =>
-                    (location.href = `/pages/detail.html?id=${popup.id}`);
+                    (location.href = `/pages/popup-detail.html?id=${popup.id}`);
                 div.innerHTML = `
                     <div class="card-image-wrap">
                         <img src="${imageUrl}" alt="${popup.title}" class="card-thumb" />
@@ -426,6 +426,21 @@ function renderCongestion(container, status) {
     container.innerHTML = html;
 }
 
+// 판매자 페이지 요약 데이터 불러오기
+function loadSummary() {
+    fetch(`${API}/admin/summary?seller_id=${user.userId}`)
+        .then((res) => res.json())
+        .then((data) => {
+            document.getElementById("statMonthlyReservation").textContent =
+                data.monthlyReservationCount;
+            document.getElementById("statAverageRating").textContent =
+                data.averageRating;
+            document.getElementById("statTotalReview").textContent =
+                data.totalReviewCount;
+        });
+}
+
 loadPopupList();
 loadReviewList();
 loadReservationList();
+loadSummary();
