@@ -221,6 +221,111 @@ async function fetchUpcomingPopups() {
     }
 }
 
+// 최근 올라온 리뷰 연동
+async function fetchRecentReviews() {
+    const reviewGridContainer = document.querySelector(".review-grid-container");
+    if (!reviewGridContainer) return;
+
+    try {
+        const response = await fetch(API_RECENT_REVIEWS);
+        if (!response.ok) throw new Error(`리뷰 API 통신 실패: ${response.status}`);
+
+        const reviewsData = await response.json();
+        reviewGridContainer.innerHTML = "";
+
+        if (reviewsData.length === 0) {
+            reviewGridContainer.innerHTML = `<p class="no-data-msg">등록된 최신 리뷰가 없습니다.</p>`;
+            return;
+        }
+
+        reviewsData.forEach((review) => {
+            // 날짜 변환
+            const formattedReviewDate = review.reserveDate ? review.reserveDate.replace(/-/g, ".").slice(2) : "";
+
+            // 별점 계산
+            let starsHtml = "";
+            const score = Math.floor(review.rating);
+            for (let i = 1; i <= 5; i++) {
+                starsHtml += i <= score
+                    ? `<img src="/assets/images/icons/icon-star-fill.png" alt="별">`
+                    : `<img src="/assets/images/icons/icon-star-empty.png" alt="빈 별">`;
+            }
+
+            // 영어 혼잡도를 한글과 스펙 카운트로 치환
+            let fillCount = 1;
+            let congestionText = "낮음";
+            if (review.congestion_level === "NORMAL") { fillCount = 2; congestionText = "보통"; }
+            if (review.congestion_level === "HIGH") { fillCount = 3; congestionText = "높음"; }
+
+            let peopleHtml = "";
+            for (let i = 1; i <= 3; i++) {
+                peopleHtml += i <= fillCount
+                    ? `<img src="/assets/images/icons/icon-person-fill.png" alt="사람 채움">`
+                    : `<img src="/assets/images/icons/icon-person-empty.png" alt="사람 비움">`;
+            }
+
+            // reviewImageUrl이 있으면 그리고 null이면 지움
+            let attachBoxHtml = "";
+            let noImageClass = "";
+
+            if (review.reviewImageUrl) {
+                attachBoxHtml = `
+                    <div class="review-attach-box">
+                        <img src="${review.reviewImageUrl}" alt="리뷰 첨부 사진" class="review-attached-img" />
+                    </div>
+                `;
+            } else {
+                noImageClass = "has-no-image"; // CSS에서 본문 확장 및 말줄임 분기 처리를 위한 힌트 클래스
+            }
+
+            // 리뷰 카드
+            const reviewHtml = `
+                <div class="review-card ${noImageClass}" data-review-id="${review.reviewId}" onclick="location.href='/pages/explore.html?id=${review.popupId}'" style="cursor:pointer;">
+                    <div class="review-card-header">
+                        <span class="reviewer-name">${review.nickname}</span>
+                        <span class="review-date">${formattedReviewDate} 방문</span>
+                    </div>
+                    <div class="review-stats-row">
+                        <div class="rating-wrap">
+                            <div class="rating-stars">${starsHtml}</div>
+                            <span class="rating-num">${review.rating.toFixed(1)}</span>
+                            <span>/</span>
+                            <span class="rating-max">5.0</span>
+                        </div>
+                        <div class="congestion-wrap">
+                            <div class="congestion-icons">${peopleHtml}</div>
+                            <span class="congestion-text">혼잡도</span>
+                            <span class="congestion-strong">${congestionText}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="review-content">
+                        <p>${review.content}</p>
+                    </div>
+                    
+                    ${attachBoxHtml} <div class="review-target-popup">
+                        <div class="target-thumb-wrap">
+                            <img src="${review.popupMainImageUrl}" alt="팝업 미니 썸네일" class="target-thumb" />
+                        </div>
+                        <div class="target-info-wrap">
+                            <div class="target-tags">
+                                <span class="card-category" style="padding:2px 6px; font-size:11px;">애니/캐릭터</span>
+                                <span class="card-status is-running" style="padding:2px 6px; font-size:11px;">운영중</span>
+                            </div>
+                            <h4 class="target-title">${review.popupTitle}</h4>
+                            <p class="target-location">방문 시간: ${review.reserveTime}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            reviewGridContainer.insertAdjacentHTML("beforeend", reviewHtml);
+        });
+
+    } catch (error) {
+        console.error("최근 리뷰 리스트업 실패: ", error);
+        reviewGridContainer.innerHTML = `<p class="error-msg">리뷰 정보를 불러오지 못했습니다.</p>`;
+    }
+}
 
 // 가로 스크롤 container - 스크롤 적용
 document.addEventListener("DOMContentLoaded", () => {
@@ -270,56 +375,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // 초기 마우스 커서 모양을 잡기 편하게 손모양(grab)으로 지정
         container.style.cursor = "grab";
-    });
-});
-
-
-// 리뷰 카드 - 별점, 혼잡도 생성
-document.addEventListener("DOMContentLoaded", () => {
-    // ==========================================
-    // 1. 동적 별점 생성기 (5점 만점 기준)
-    // ==========================================
-    const ratingContainers = document.querySelectorAll(".rating-stars");
-
-    ratingContainers.forEach(container => {
-        const score = Math.floor(parseFloat(container.dataset.score)); // ex) 3.0 -> 3
-        let starsHtml = "";
-
-        for (let i = 1; i <= 5; i++) {
-            if (i <= score) {
-                // 채워진 별 추가
-                starsHtml += `<img src="/assets/images/icons/icon-star-fill.png" alt="별">`;
-            } else {
-                // 비워진 별 추가
-                starsHtml += `<img src="/assets/images/icons/icon-star-empty.png" alt="빈 별">`;
-            }
-        }
-        container.innerHTML = starsHtml;
-    });
-
-    // ==========================================
-    // 2. 동적 혼잡도 생성기 (3칸 만점 기준)
-    // ==========================================
-    const congestionContainers = document.querySelectorAll(".congestion-icons");
-
-    congestionContainers.forEach(container => {
-        const status = container.dataset.status; // '낮음', '보통', '높음'
-        let fillCount = 1; // 기본값 '낮음'은 1개 채움
-
-        if (status === "보통") fillCount = 2;
-        if (status === "높음") fillCount = 3;
-
-        let peopleHtml = "";
-
-        for (let i = 1; i <= 3; i++) {
-            if (i <= fillCount) {
-                // 채워진 사람 추가
-                peopleHtml += `<img src="/assets/images/icons/icon-person-fill.png" alt="사람 채움">`;
-            } else {
-                // 비워진 사람 테두리 추가
-                peopleHtml += `<img src="/assets/images/icons/icon-person-empty.png" alt="사람 비움">`;
-            }
-        }
-        container.innerHTML = peopleHtml;
     });
 });
