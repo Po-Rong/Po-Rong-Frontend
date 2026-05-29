@@ -109,6 +109,7 @@ function renderReviews(dataList) {
     const listGroup = document.querySelector('.reviews-list-group');
     if (!listGroup) return;
 
+    // 기존 리스트 초기화
     while (listGroup.firstChild) {
         listGroup.removeChild(listGroup.firstChild);
     }
@@ -119,17 +120,36 @@ function renderReviews(dataList) {
     }
 
     dataList.forEach(item => {
+        // 1. 데이터 준비
         const ratingScore = item.rating ? parseInt(item.rating) : 0;
-        let starsHtml = '';
-        for (let i = 1; i <= 5; i++) {
-            starsHtml += `<span class="star-small ${i <= ratingScore ? 'active' : ''}">★</span>`;
+        const userNickname = item.nickname || '포롱이';
+
+        // 날짜 포맷팅
+        let formattedDate = '날짜 없음';
+        if (item.reserveDate) {
+            const parts = item.reserveDate.split('-');
+            formattedDate = parts.length === 3 ? `${parts[0].slice(2)}.${parts[1]}.${parts[2]}` : item.reserveDate;
         }
 
-        let congestionLabel = '정보 없음';
-        if (item.congestionLevel === 'HIGH') congestionLabel = '혼잡도 높음';
-        if (item.congestionLevel === 'NORMAL') congestionLabel = '혼잡도 보통';
-        if (item.congestionLevel === 'LOW') congestionLabel = '혼잡도 낮음';
+        // 혼잡도 텍스트 및 인덱스 처리
+        const congestionMap = { 'HIGH': { label: '높음', index: 2 }, 'NORMAL': { label: '보통', index: 1 }, 'LOW': { label: '낮음', index: 0 } };
+        const congestionData = congestionMap[item.congestionLevel] || { label: '정보 없음', index: -1 };
 
+        // 2. 별 아이콘 렌더링 (이미지 사용)
+        let starsHtml = '';
+        for (let i = 1; i <= 5; i++) {
+            const starSrc = i <= ratingScore ? '/assets/images/icons/icon-star-fill.png' : '/assets/images/icons/icon-star-empty.png';
+            starsHtml += `<img src="${starSrc}" class="icon-star" alt="별" />`;
+        }
+
+        // 3. 혼잡도 아이콘 렌더링 (이미지 사용)
+        let congestionIconsHtml = '';
+        for (let i = 0; i < 3; i++) {
+            const personSrc = i <= congestionData.index ? '/assets/images/icons/icon-person-fill.png' : '/assets/images/icons/icon-person-empty.png';
+            congestionIconsHtml += `<img src="${personSrc}" class="icon-person" alt="혼잡도" />`;
+        }
+
+        // 4. 리뷰 이미지 처리
         let imageContainerHtml = '';
         if (item.reviewImageUrl && item.reviewImageUrl !== 'NULL') {
             imageContainerHtml = `
@@ -139,58 +159,53 @@ function renderReviews(dataList) {
             `;
         }
 
-        let formattedDate = '날짜 정보 없음';
-        if (item.reserveDate) {
-            const parts = item.reserveDate.split('-');
-            if (parts.length === 3) {
-                const shortYear = parts[0].length === 4 ? parts[0].slice(2) : parts[0];
-                const timeStr = item.reserveTime ? ` | ${item.reserveTime}` : '';
-                formattedDate = `${shortYear}.${parts[1]}.${parts[2]}${timeStr} 방문`;
-            } else {
-                formattedDate = `${item.reserveDate} 방문`;
-            }
-        }
-
-        const userNickname = item.nickname || '포롱이';
-
+        // 5. 카드 생성
         const cardArticle = document.createElement('article');
         cardArticle.className = 'review-item-card';
 
         cardArticle.innerHTML = `
-            <div class="review-card-header">
-                <div class="user-meta-info">
-                    <span class="user-name-text">${userNickname}</span>
-                    <div class="card-stars-row">
-                        ${starsHtml}
-                        <div class="score-small-text">
-                            <span class="score-num-current">${ratingScore.toFixed(1)}</span>
-                            <span class="score-num-max"> / 5.0</span>
+            <div class="review-card">
+                <div class="review-card-header">
+                    <span class="reviewer-name">${userNickname}</span>
+                    <span class="review-date">${formattedDate}</span>
+                </div>
+                <div class="review-stats-row">
+                    <div class="rating-wrap">
+                        <div class="rating-stars">${starsHtml}</div>
+                        <span class="rating-num">${ratingScore.toFixed(1)}</span><span>/</span><span class="rating-max">5.0</span>
+                    </div>
+                    <div class="congestion-wrap">
+                        <div class="congestion-icons">${congestionIconsHtml}</div>
+                        <span class="congestion-text">혼잡도</span>
+                        <span class="congestion-strong">${congestionData.label}</span>
+                    </div>
+                </div>
+                <div class="review-card-body">
+                    <div class="review-text-content">
+                        <p class="review-main-paragraph">${item.content || '내용 없음'}</p>
+                        <button type="button" class="btn-toggle-expand">펼치기 ∨</button>
+                    </div>
+                    ${imageContainerHtml}
+                </div>
+                <div class="review-target-popup">
+                    <div class="target-thumb-wrap">
+                        <img src="${item.popupThumbnail || '/assets/images/dummies/thumb-dummy01.png'}" alt="팝업 썸네일" class="target-thumb" />
+                    </div>
+                    <div class="target-info-wrap">
+                        <div class="target-tags">
+                            <span class="card-category">${item.category || '팝업'}</span>
+                            <span class="card-status ${item.status === 'RUNNING' ? 'is-running' : ''}">
+                                ${item.status === 'RUNNING' ? '운영중' : '종료'}
+                            </span>
                         </div>
+                        <h4 class="target-title">${item.popupTitle || '팝업 이름'}</h4>
+                        <p class="target-location">${item.location || '위치 미정'}</p>
                     </div>
-                    <div class="badge-row">
-                        <span class="badge-congestion-info">${congestionLabel}</span>
-                    </div>
-                </div>
-                <span class="review-date-text">${formattedDate}</span>
-            </div>
-
-            <div class="review-card-body">
-                <div class="review-text-content">
-                    <p class="review-main-paragraph">${item.content || '내용 없음'}</p>
-                    <button type="button" class="btn-toggle-expand">펼치기 ∨</button>
-                </div>
-                ${imageContainerHtml}
-            </div>
-
-            <div class="review-target-popup-bar">
-                <div class="mini-thumb"></div>
-                <div class="mini-info">
-                    <span class="mini-title">산리오 성수 아지트</span>
-                    <span class="mini-region">성수동</span>
                 </div>
             </div>
         `;
 
+        // 6. 펼치기 이벤트 연결
         const expandBtn = cardArticle.querySelector('.btn-toggle-expand');
         expandBtn.addEventListener('click', () => {
             const textContentBox = expandBtn.parentElement;
@@ -200,11 +215,7 @@ function renderReviews(dataList) {
 
             const isExpanded = textParagraph.classList.toggle('is-expanded');
             cardBody.classList.toggle('is-expanded', isExpanded);
-
-            if (imageThumb) {
-                imageThumb.classList.toggle('is-expanded', isExpanded);
-            }
-
+            if (imageThumb) imageThumb.classList.toggle('is-expanded', isExpanded);
             expandBtn.textContent = isExpanded ? '접기 ∧' : '펼치기 ∨';
         });
 
