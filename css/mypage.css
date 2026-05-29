@@ -523,6 +523,16 @@
     color: #FFFFFF;
 }
 
+.btn-reservation-action:disabled {
+    border-color: var(--color-border-default);
+    color: var(--color-text-secondary);
+    cursor: not-allowed;
+}
+
+.btn-reservation-action:disabled:hover {
+    background-color: var(--color-white);
+    color: var(--color-text-secondary);
+}
 
 /* ==========================================================================
    6. 닉네임 변경 모달 (Nickname Change Modal)

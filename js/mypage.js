@@ -384,7 +384,7 @@ function renderMyReservations(dataList) {
         } else if (item.status === 'CONFIRMED') {
             actionButtonHtml = `<button class="btn-reservation-action" onclick="alert('예약 상세 확인 기능은 준비 중입니다.')">예약 확인하기</button>`;
         } else {
-            actionButtonHtml = `<button class="btn-reservation-action" disabled>상태 확인 불가</button>`;
+            actionButtonHtml = `<button class="btn-reservation-action" disabled>예약 취소</button>`;
         }
 
         const html = `
