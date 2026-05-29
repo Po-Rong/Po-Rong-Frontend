@@ -489,9 +489,11 @@ function openReservationModal(item) {
             <img src="${thumbUrl}" alt="팝업 이미지" class="popup-thumb" />
             <span class="popup-title">${item.popupTitle}</span>
         </div>
-        <p><strong>이주현 님</strong></p>
-        <p>전화번호: 010-1234-5678</p>
-        <p>예약한 시간: ${item.reserveDate}</p>
+        <div class="reservation-info">
+            <p><strong>${item.userName || '이름 없음'} 님</strong></p>
+            <p>전화번호: ${item.userPhone || '번호 없음'}</p>
+            <p>예약한 시간: ${item.reserveDate}</p>
+        </div>
     `;
 
     document.getElementById('reservation-modal').classList.add('active');
