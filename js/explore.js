@@ -174,7 +174,7 @@ async function fetchFilteredPopups() {
 
             const cardHtml = `
                 <div class="popup-card leisure-card" data-popup-id="${popup.id}">
-                    <div class="card-image-wrap" onclick="location.href='/pages/detail.html?id=${popup.id}'" style="cursor:pointer;">
+                    <div class="card-image-wrap" onclick="location.href='/pages/popup-detail.html?id=${popup.id}'" style="cursor:pointer;">
                         <img src="${popup.mainImageUrl}" alt="${popup.title} 썸네일" class="card-thumb" />
                     </div>
                     <button class="wish-btn ${activeClass}" aria-label="찜하기" onclick="toggleWish(${popup.id}, this)">
@@ -183,7 +183,7 @@ async function fetchFilteredPopups() {
                     <div class="card-body-wrap">
                         <div class="card-info">
                             ${statusBadgeHtml}
-                            <h3 class="card-title" onclick="location.href='/pages/detail.html?id=${popup.id}'" style="cursor:pointer;">${popup.title}</h3>
+                            <h3 class="card-title" onclick="location.href='/pages/popup-detail.html?id=${popup.id}'" style="cursor:pointer;">${popup.title}</h3>
                             <p class="card-location">${popup.regionName}</p>
                             <p class="card-date">${formattedStartDate} - ${formattedEndDate}</p>
                             
