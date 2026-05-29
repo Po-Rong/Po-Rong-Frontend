@@ -118,12 +118,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 wishCountSpan.innerText = allWishList.length;
             }
 
+
             // 로그인 상태일 때, 내 찜 목록에 현재 popupId가 포함되어 있는지 확인
             if (userId && Array.isArray(myWishList)) {
                 const isAlreadyWished = myWishList.some(item => item.popupId === popupId);
                 updateHeartIcon(isAlreadyWished);
             } else {
                 updateHeartIcon(false);
+            }
+            const reservationBtn = document.querySelector('.reservation-btn');
+            if (reservationBtn) {
+                reservationBtn.href = `/pages/reservation.html?id=${popupId}`;
             }
         })
         .catch(err => console.error("데이터 로드 실패:", err));

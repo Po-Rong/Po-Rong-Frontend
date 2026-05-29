@@ -55,6 +55,51 @@
             <!-- 인사말 -->
             <div class="admin-welcome">
                 <h2>판매자님, 반가워요!</h2>
+
+                <!-- 요약 통계 -->
+                <div class="admin-stats">
+                    <div
+                        class="stat-card"
+                        onclick="
+                            window.scrollTo({
+                                top:
+                                    document
+                                        .getElementById('reservationSection')
+                                        .getBoundingClientRect().top +
+                                    window.scrollY -
+                                    150,
+                                behavior: 'smooth',
+                            })
+                        "
+                        style="cursor: pointer"
+                    >
+                        <p class="stat-label">이번달 예약 🗓️</p>
+                        <p class="stat-value" id="statMonthlyReservation">-</p>
+                    </div>
+                    <div class="stat-card">
+                        <p class="stat-label">평균 별점 ⭐</p>
+                        <p class="stat-value" id="statAverageRating">-</p>
+                    </div>
+                    <div
+                        class="stat-card"
+                        onclick="
+                            window.scrollTo({
+                                top:
+                                    document
+                                        .getElementById('reviewSection')
+                                        .getBoundingClientRect().top +
+                                    window.scrollY -
+                                    200,
+                                behavior: 'smooth',
+                            })
+                        "
+                        style="cursor: pointer"
+                    >
+                        <p class="stat-label">총 리뷰 👀</p>
+                        <p class="stat-value" id="statTotalReview">-</p>
+                    </div>
+                </div>
+
                 <button onclick="location.href = '/pages/popup-register.html'">
                     팝업스토어 등록하기
                 </button>
@@ -67,16 +112,23 @@
             </section>
 
             <!-- 팝업스토어에 달린 후기 -->
-            <section class="admin-section">
+            <section class="admin-section" id="reviewSection">
                 <h3>팝업스토어에 달린 후기</h3>
                 <div id="reviewList" class="scroll-container"></div>
             </section>
 
             <!-- 나의 팝업스토어 예약 목록 -->
-            <section class="admin-section">
+            <section class="admin-section" id="reservationSection">
                 <h3>나의 팝업스토어 예약 목록</h3>
                 <div id="reservationList"></div>
             </section>
+
+            <!-- 로그아웃 버튼 -->
+            <div class="logout-section">
+                <button type="button" id="btn-logout" class="btn-logout-wide">
+                    로그아웃
+                </button>
+            </div>
         </main>
 
         <footer class="common-footer">
