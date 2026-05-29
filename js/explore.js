@@ -96,10 +96,32 @@ async function fetchFilteredPopups() {
         });
 
         // 정렬 보정
+        const now = new Date(); // 현재 실시간 날짜/시간 획득
+
         if (sortType === "latest") {
+            // 최신등록순-고유 ID가 큰 순서대로
             popupsData.sort((a, b) => b.id - a.id);
+
         } else if (sortType === "rating") {
+            // 별점 높은순-평점 큰 순서대로
             popupsData.sort((a, b) => (b.avgRating || 0) - (a.avgRating || 0));
+
+        } else if (sortType === "closeSoon") {
+            // 종료 임박순
+            popupsData.sort((a, b) => {
+                const dateA = new Date(a.endDate);
+                const dateB = new Date(b.endDate);
+
+                const timeDiffA = dateA - now; // 종료일까지 남은 밀리초
+                const timeDiffB = dateB - now;
+
+                // 이미 종료된 팝업(timeDiff < 0)은 맨 뒤로 밀어내기
+                if (timeDiffA < 0 && timeDiffB >= 0) return 1;
+                if (timeDiffB < 0 && timeDiffA >= 0) return -1;
+
+                // 아직 운영 중인 것들끼리는 남은 시간이 적은 순으로 정렬
+                return timeDiffA - timeDiffB;
+            });
         }
 
         gridContainer.innerHTML = "";
