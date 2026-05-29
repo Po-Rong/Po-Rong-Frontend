@@ -143,3 +143,107 @@ async function toggleWish(popupId, buttonElement) {
         buttonElement.disabled = false;
     }
 }
+
+// 리뷰 데이터를 가져와서 렌더링
+async function renderReviews(apiEndpoint, containerSelector) {
+    const reviewGridContainer = document.querySelector(containerSelector);
+    if (!reviewGridContainer) return;
+
+    try {
+        const response = await fetch(apiEndpoint);
+        if (!response.ok) throw new Error(`리뷰 API 통신 실패: ${response.status}`);
+
+        const reviewsData = await response.json();
+        reviewGridContainer.innerHTML = "";
+
+        if (reviewsData.length === 0) {
+            reviewGridContainer.innerHTML = `<p class="no-data-msg">등록된 최신 리뷰가 없습니다.</p>`;
+            return;
+        }
+
+        reviewsData.forEach((review) => {
+            // 날짜 변환
+            const formattedReviewDate = review.reserveDate ? review.reserveDate.replace(/-/g, ".").slice(2) : "";
+
+            // 별점 계산
+            let starsHtml = "";
+            const score = Math.floor(review.rating);
+            for (let i = 1; i <= 5; i++) {
+                starsHtml += i <= score
+                    ? `<img src="/assets/images/icons/icon-star-fill.png" alt="별">`
+                    : `<img src="/assets/images/icons/icon-star-empty.png" alt="빈 별">`;
+            }
+
+            // 혼잡도 계산
+            let fillCount = 1;
+            let congestionText = "낮음";
+            if (review.congestion_level === "NORMAL") { fillCount = 2; congestionText = "보통"; }
+            if (review.congestion_level === "HIGH") { fillCount = 3; congestionText = "높음"; }
+
+            let peopleHtml = "";
+            for (let i = 1; i <= 3; i++) {
+                peopleHtml += i <= fillCount
+                    ? `<img src="/assets/images/icons/icon-person-fill.png" alt="사람 채움">`
+                    : `<img src="/assets/images/icons/icon-person-empty.png" alt="사람 비움">`;
+            }
+
+            // 이미지 유무 처리
+            let attachBoxHtml = "";
+            let noImageClass = "";
+            if (review.reviewImageUrl) {
+                attachBoxHtml = `
+                    <div class="review-attach-box">
+                        <img src="${review.reviewImageUrl}" alt="리뷰 첨부 사진" class="review-attached-img" />
+                    </div>
+                `;
+            } else {
+                noImageClass = "has-no-image";
+            }
+
+            // 리뷰 카드 HTML 생성
+            const reviewHtml = `
+                <div class="review-card ${noImageClass}" data-review-id="${review.reviewId}" onclick="location.href='/pages/explore.html?id=${review.popupId}'" style="cursor:pointer;">
+                    <div class="review-card-header">
+                        <span class="reviewer-name">${review.nickname}</span>
+                        <span class="review-date">${formattedReviewDate} 방문</span>
+                    </div>
+                    <div class="review-stats-row">
+                        <div class="rating-wrap">
+                            <div class="rating-stars">${starsHtml}</div>
+                            <span class="rating-num">${review.rating.toFixed(1)}</span>
+                            <span>/</span>
+                            <span class="rating-max">5.0</span>
+                        </div>
+                        <div class="congestion-wrap">
+                            <div class="congestion-icons">${peopleHtml}</div>
+                            <span class="congestion-text">혼잡도</span>
+                            <span class="congestion-strong">${congestionText}</span>
+                        </div>
+                    </div>
+                    <div class="review-content">
+                        <p>${review.content}</p>
+                    </div>
+                    ${attachBoxHtml} 
+                    <div class="review-target-popup">
+                        <div class="target-thumb-wrap">
+                            <img src="${review.popupMainImageUrl}" alt="팝업 미니 썸네일" class="target-thumb" />
+                        </div>
+                        <div class="target-info-wrap">
+                            <div class="target-tags">
+                                <span class="card-category" style="padding:2px 6px; font-size:11px;">애니/캐릭터</span>
+                                <span class="card-status is-running" style="padding:2px 6px; font-size:11px;">운영중</span>
+                            </div>
+                            <h4 class="target-title">${review.popupTitle}</h4>
+                            <p class="target-location">방문 시간: ${review.reserveTime}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            reviewGridContainer.insertAdjacentHTML("beforeend", reviewHtml);
+        });
+
+    } catch (error) {
+        console.error("리뷰 리스트업 실패: ", error);
+        reviewGridContainer.innerHTML = `<p class="error-msg">리뷰 정보를 불러오지 못했습니다.</p>`;
+    }
+}
