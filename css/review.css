@@ -192,6 +192,14 @@
     color: var(--color-primary);
 }
 
+.star-btn {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    object-fit: contain;
+    margin-right: 4px;
+}
+
 
 
 /* 작성 폼 전용 별점 선택 그룹 */
@@ -543,6 +551,10 @@
     background: var(--color-primary-light2);
     border-radius: var(--radius-sm);
     box-sizing: border-box;
+}
+
+.review-target-popup {
+    width: 100%;
 }
 
 .mini-thumb {
