@@ -651,7 +651,7 @@
 }
 
 /* ==========================================================================
-   7. 닉네임 변경 모달 (Nickname Change Modal)
+   7. 모달
    ========================================================================== */
 /* 모달 레이아웃 */
 .modal {
@@ -678,7 +678,6 @@
     width: 490px;
     display: flex;
     flex-direction: column;
-    position: relative;
 }
 
 .close-btn {
@@ -705,12 +704,12 @@
     background: #F9F8FF;
     padding: 10px;
     border-radius: 8px;
-    margin: 20px 0;
+    margin-bottom: 15px;
 }
 
 .popup-thumb {
-    width: 57.1px;
-    height: 57.1px;
+    width: 56px;
+    height: 56px;
     border-radius: 7.61px;
     background-color: #D9D9D9;
     object-fit: cover;
@@ -749,23 +748,31 @@
     color: white;
 }
 
-.btn-close-modal {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: none;
-    border: none;
-    padding: 5px;
-    cursor: pointer;
-    color: #4C4C4C;
-    /* X자 색상 */
+.modal-header {
     display: flex;
+    justify-content: space-between;
+    /* 양 끝으로 배치 */
     align-items: center;
-    justify-content: center;
+    /* 세로 중앙 정렬 */
+    margin-bottom: 20px;
+}
+
+.btn-close-modal {
+    position: static;
+    /* absolute에서 static으로 변경하여 flex 흐름에 따르게 함 */
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
+    color: #4C4C4C;
 }
 
 .btn-close-modal:hover {
     color: #000;
+}
+
+.modal-title {
+    margin: 0;
 }
 
 .reservation-info p {

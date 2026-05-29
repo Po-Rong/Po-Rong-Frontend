@@ -172,28 +172,28 @@
             </div>
         </div>
     </div>
-
     <div id="reservation-modal" class="modal">
         <div class="modal-content">
-            <button class="btn-close-modal" id="btn-close-nickname-modal" aria-label="닫기">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
-            <h2 class="modal-title">예약 조회</h2>
+            <div class="modal-header">
+                <h2 class="modal-title">예약 조회</h2>
+                <button class="btn-close-modal" id="btn-close-reservation-modal">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
 
             <div id="reservation-detail-info">
             </div>
 
             <div class="modal-actions">
-                <button id="btn-edit-reservation" class="btn-edit">예약 수정하기</button>
-                <button id="btn-cancel-reservation" class="btn-cancel">예약 취소하기</button>
+                <button class="btn-edit">예약 수정하기</button>
+                <button class="btn-cancel">예약 취소하기</button>
             </div>
         </div>
     </div>
-
 
     <script src="/js/index.js"></script>
     <script src="/js/mypage.js"></script>
