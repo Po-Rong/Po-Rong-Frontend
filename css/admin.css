@@ -219,6 +219,12 @@ main {
     margin: 0;
 }
 
+.review-card img {
+    -webkit-user-drag: none;
+    user-select: none;
+    pointer-events: none;
+}
+
 .review-images {
     display: flex;
     gap: 6px;
@@ -564,6 +570,62 @@ main {
 .btn-load-more:hover {
     border-color: var(--color-primary);
     color: var(--color-primary);
+}
+
+/* 카드 스크롤 힌트 */
+.scroll-hint {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    background-color: rgba(184, 168, 255, 0.75); /* 투명도 */
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s;
+    cursor: default;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); /* 그림자 */
+    backdrop-filter: blur(2px); /* 뒤가 살짝 블러되어 더 자연스러움 */
+}
+
+.scroll-hint::after {
+    content: "";
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-style: solid;
+    border-color: var(--color-white);
+    border-width: 2.5px 2.5px 0 0;
+    border-radius: 1px; /* 살짝 둥글게 */
+}
+
+.scroll-hint-right::after {
+    transform: rotate(45deg);
+    margin-left: -3px;
+}
+
+.scroll-hint-left::after {
+    transform: rotate(-135deg);
+    margin-right: -3px;
+}
+.scroll-hint-right {
+    right: 0;
+}
+
+.scroll-hint-left {
+    left: 0;
+}
+
+@keyframes nudge {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(4px);
+    }
 }
 
 /* ── 모바일 (1023px 이하) ── */
