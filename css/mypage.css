@@ -523,6 +523,16 @@
     color: #FFFFFF;
 }
 
+.btn-reservation-action:disabled {
+    border-color: var(--color-border-default);
+    color: var(--color-text-secondary);
+    cursor: not-allowed;
+}
+
+.btn-reservation-action:disabled:hover {
+    background-color: var(--color-white);
+    color: var(--color-text-secondary);
+}
 
 /* ==========================================================================
    6. 닉네임 변경 모달 (Nickname Change Modal)
@@ -641,40 +651,7 @@
 }
 
 /* ==========================================================================
-   7. 로그아웃 버튼 영역
-   ========================================================================== */
-
-.logout-section {
-    width: 100%;
-    max-width: 956px;
-    margin: 50px auto 80px auto;
-    padding: 0 20px;
-    box-sizing: border-box;
-}
-
-.btn-logout-wide {
-    display: flex;
-    padding: 12px 0;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    border-radius: 8px;
-    border: 1px solid #DDD;
-    background: #FFF;
-    color: #6B7280;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.btn-logout-wide:hover {
-    background-color: #F9FAFB;
-}
-
-/* ==========================================================================
-   8. 재사용 리뷰 카드 css 조절
+   7. 재사용 리뷰 카드 css 조절
    ========================================================================== */
 
 #reviews-grid {

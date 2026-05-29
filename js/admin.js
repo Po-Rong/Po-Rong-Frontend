@@ -20,13 +20,16 @@ function loadPopupList() {
             }
             data.forEach((popup) => {
                 const div = document.createElement("div");
+                const imageUrl = popup.mainImageUrl?.startsWith("http")
+                    ? popup.mainImageUrl
+                    : `http://localhost:8080${popup.mainImageUrl}`;
                 div.className = "popup-card";
                 div.style.cursor = "pointer";
                 div.onclick = () =>
-                    (location.href = `/pages/detail.html?id=${popup.id}`);
+                    (location.href = `/pages/popup-detail.html?id=${popup.id}`);
                 div.innerHTML = `
                     <div class="card-image-wrap">
-                        <img src="http://localhost:8080${popup.mainImageUrl}" alt="${popup.title}" class="card-thumb" />
+                        <img src="${imageUrl}" alt="${popup.title}" class="card-thumb" />
                     </div>
                     <div class="card-body-wrap">
                         <div class="card-info">
@@ -81,6 +84,14 @@ function loadReviewList() {
             }
             data.forEach((review) => {
                 const div = document.createElement("div");
+                const reviewImageUrl = review.reviewImageUrl?.startsWith("http")
+                    ? review.reviewImageUrl
+                    : `http://localhost:8080${review.reviewImageUrl}`;
+                const popupImageUrl = review.popupMainImageUrl?.startsWith(
+                    "http",
+                )
+                    ? review.popupMainImageUrl
+                    : `http://localhost:8080${review.popupMainImageUrl}`;
                 div.className = "review-card";
                 div.innerHTML = `
                     <div class="review-card-header">
@@ -107,13 +118,13 @@ function loadReviewList() {
                         review.reviewImageUrl
                             ? `
                     <div class="review-attach-box">
-                        <img src="http://localhost:8080${review.reviewImageUrl}" alt="리뷰 첨부 사진" class="review-attached-img" />
+                        <img src="${reviewImageUrl}" alt="리뷰 첨부 사진" class="review-attached-img" />
                     </div>`
                             : ""
                     }
                     <div class="review-target-popup">
                         <div class="target-thumb-wrap">
-                            <img src="http://localhost:8080${review.popupMainImageUrl || ""}" alt="${review.popupTitle}" class="target-thumb" />
+                            <img src="${popupImageUrl || ""}" alt="${review.popupTitle}" class="target-thumb" />
                         </div>
                         <div class="target-info-wrap">
                             <div class="target-tags">
@@ -143,6 +154,12 @@ function loadReviewList() {
 // 리뷰 모달
 function openReviewModal(review) {
     const modal = document.createElement("div");
+    const reviewImageUrl = review.reviewImageUrl?.startsWith("http")
+        ? review.reviewImageUrl
+        : `http://localhost:8080${review.reviewImageUrl}`;
+    const popupImageUrl = review.popupMainImageUrl?.startsWith("http")
+        ? review.popupMainImageUrl
+        : `http://localhost:8080${review.popupMainImageUrl}`;
     modal.className = "modal-overlay";
     modal.innerHTML = `
         <div class="modal-review-box">
@@ -176,13 +193,13 @@ function openReviewModal(review) {
                     review.reviewImageUrl
                         ? `
                 <div class="review-attach-box">
-                    <img src="http://localhost:8080${review.reviewImageUrl}" alt="리뷰 첨부 사진" class="review-attached-img" />
+                    <img src="${reviewImageUrl}" alt="리뷰 첨부 사진" class="review-attached-img" />
                 </div>`
                         : ""
                 }
                 <div class="review-target-popup">
                     <div class="target-thumb-wrap">
-                        <img src="http://localhost:8080${review.popupMainImageUrl || ""}" alt="${review.popupTitle}" class="target-thumb" />
+                        <img src="${popupImageUrl || ""}" alt="${review.popupTitle}" class="target-thumb" />
                     </div>
                     <div class="target-info-wrap">
                         <div class="target-tags">
@@ -248,14 +265,15 @@ function loadReservationList(page = 0) {
                     const card = document.createElement("div");
                     card.className = "reservation-card";
                     card.innerHTML = `
-                        <div class="reservation-card-header">
-                            <p class="reserver-name">${reservation.userName} 님</p>
-                            <span class="reservation-badge ${reservation.status === "CONFIRMED" ? "badge-confirmed" : "badge-canceled"}">
-                                ${reservation.status === "CONFIRMED" ? "예약" : "취소"}
-                            </span>
-                        </div>
-                        <p class="reserve-time">${formatTime(reservation.reserveDate)} 예약</p>
-                    `;
+                                    <div class="reservation-card-header">
+                                        <p class="reserver-name">${reservation.userName} 님</p>
+                                        <span class="reservation-badge ${reservation.status === "CONFIRMED" ? "badge-confirmed" : "badge-canceled"}">
+                                            ${reservation.status === "CONFIRMED" ? "예약" : "취소"}
+                                        </span>
+                                    </div>
+                                    <p class="reserve-time">${formatTime(reservation.reserveDate)} 예약</p>
+                                    <p class="reserve-popup-title">${reservation.popupTitle || ""}</p>
+                                `;
                     card.onclick = () => openReservationModal(reservation);
                     grid.appendChild(card);
                 });
@@ -284,6 +302,9 @@ function loadReservationList(page = 0) {
 // 예약 모달
 function openReservationModal(reservation) {
     const modal = document.createElement("div");
+    const popupImageUrl = reservation.mainImageUrl?.startsWith("http")
+        ? reservation.mainImageUrl
+        : `http://localhost:8080${reservation.mainImageUrl}`;
     modal.className = "modal-overlay";
     modal.innerHTML = `
         <div class="modal-box">
@@ -295,6 +316,14 @@ function openReservationModal(reservation) {
                 <p>${reservation.userName} 님</p>
                 <p>전화번호 : ${reservation.userPhone}</p>
                 <p>예약한 시간 : ${formatDate(reservation.reserveDate)} | ${formatTime(reservation.reserveDate)}</p>
+            </div>
+            <div class="review-target-popup">
+                <div class="target-thumb-wrap">
+                    <img src="${popupImageUrl}" alt="${reservation.popupTitle}" class="target-thumb" />
+                </div>
+                <div class="target-info-wrap">
+                    <h4 class="target-title">${reservation.popupTitle || ""}</h4>
+                </div>
             </div>
             <button class="btn-cancel-reservation"
                 onclick="cancelReservation(${reservation.id}, this)"
@@ -397,6 +426,21 @@ function renderCongestion(container, status) {
     container.innerHTML = html;
 }
 
+// 판매자 페이지 요약 데이터 불러오기
+function loadSummary() {
+    fetch(`${API}/admin/summary?seller_id=${user.userId}`)
+        .then((res) => res.json())
+        .then((data) => {
+            document.getElementById("statMonthlyReservation").textContent =
+                data.monthlyReservationCount;
+            document.getElementById("statAverageRating").textContent =
+                data.averageRating;
+            document.getElementById("statTotalReview").textContent =
+                data.totalReviewCount;
+        });
+}
+
 loadPopupList();
 loadReviewList();
 loadReservationList();
+loadSummary();

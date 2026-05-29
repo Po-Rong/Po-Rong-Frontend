@@ -305,9 +305,17 @@ function registerPopup() {
         );
         btn.style.borderColor = "#e05c5c";
         btn.style.color = "#e05c5c";
+        btn.classList.add("input-error");
         hasError = true;
     }
-    if (hasError) return;
+
+    if (hasError) {
+        const firstError = document.querySelector(".input-error, .error-msg");
+        if (firstError) {
+            firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+        return;
+    }
 
     const formData = new FormData();
     formData.append("sellerId", user.userId);
@@ -426,9 +434,10 @@ function loadPopupDetail(id) {
             // 메인 이미지 미리보기
             if (data.mainImageUrl) {
                 document.getElementById("mainImageCount").textContent = 1;
-                renderMainImagePreview(
-                    `http://localhost:8080${data.mainImageUrl}`,
-                );
+                const mainImageUrl = data.mainImageUrl?.startsWith("http")
+                    ? data.mainImageUrl
+                    : `http://localhost:8080${data.mainImageUrl}`;
+                renderMainImagePreview(`${mainImageUrl}`);
             }
 
             // 상세 이미지 미리보기
@@ -437,8 +446,11 @@ function loadPopupDetail(id) {
                     data.detailImages.length;
 
                 Promise.all(
-                    data.detailImages.map((imageUrl) =>
-                        fetch(`http://localhost:8080${imageUrl}`)
+                    data.detailImages.map((imageUrl) => {
+                        const fullUrl = imageUrl.startsWith("http")
+                            ? imageUrl
+                            : `http://localhost:8080${imageUrl}`;
+                        return fetch(fullUrl)
                             .then((res) => res.blob())
                             .then(
                                 (blob) =>
@@ -447,8 +459,8 @@ function loadPopupDetail(id) {
                                         imageUrl.split("/").pop(),
                                         { type: blob.type },
                                     ),
-                            ),
-                    ),
+                            );
+                    }),
                 ).then((files) => {
                     files.forEach((file) => detailImageFiles.push(file));
                     renderDetailImagePreview();
@@ -517,9 +529,16 @@ function editPopup() {
         );
         btn.style.borderColor = "#e05c5c";
         btn.style.color = "#e05c5c";
+        btn.classList.add("input-error");
         hasError = true;
     }
-    if (hasError) return;
+    if (hasError) {
+        const firstError = document.querySelector(".input-error, .error-msg");
+        if (firstError) {
+            firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+        return;
+    }
 
     const user = JSON.parse(localStorage.getItem("loginUser"));
     const reservationStartDate = document.getElementById(
@@ -572,4 +591,22 @@ function editPopup() {
             showMsg("popupRegisterMsg", "서버 오류가 발생했습니다.", false);
             window.scrollTo({ top: 0, behavior: "smooth" });
         });
+}
+
+// 입력 시 에러 제거
+document.getElementById("popupTitle").addEventListener("input", () => {
+    clearError("popupTitle");
+});
+
+document.getElementById("popupAddress").addEventListener("input", () => {
+    clearError("popupAddress");
+});
+
+function clearError(id) {
+    const input = document.getElementById(id);
+    if (input) {
+        input.classList.remove("input-error");
+        const msg = input.parentElement.querySelector(".error-msg");
+        if (msg) msg.remove();
+    }
 }
