@@ -1,0 +1,247 @@
+@charset "UTF-8";
+
+.explore-content {
+    width: 100%;
+    max-width: 1024px;
+    /* 피그마 표준 가두기 폭 */
+    margin: 0 auto;
+    /* 정중앙 정렬 */
+    padding: 40px 16px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+@media screen and (min-width: 1024px) {
+    .explore-content {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+/* 상단 필터 칩 스타일 */
+.filter-chip-container {
+    display: flex;
+    gap: 12px;
+}
+
+.filter-chip {
+    padding: 12px 24px;
+    border: 1px solid var(--color-border-default);
+    background-color: var(--color-white);
+    color: var(--color-text-main);
+    font-size: 16px;
+    font-weight: var(--weight-regular);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-chip:hover {
+    background-color: var(--color-offwhite);
+}
+
+/* 필터가 선택되어 활성화되었을 때 */
+.filter-chip.active {
+    background-color: var(--color-primary-light2);
+    border-color: var(--color-primary-dark);
+    color: var(--color-primary-dark);
+}
+
+/* 정렬 드롭다운 정렬 라인 */
+.sort-bar-section {
+    display: flex;
+    justify-content: flex-start;
+    border-bottom: 1px solid var(--color-border-default);
+    padding-bottom: 12px;
+}
+
+.sort-select {
+    padding: 6px 12px;
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-weight: var(--weight-regular);
+    outline: none;
+}
+
+/* 팝업 카드 4열 그리드 배치 규격 */
+.popup-grid-container {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    /* 모바일 기본 1열 */
+    gap: 30px 16px;
+    width: 100%;
+}
+
+/* 반응형 (2열 배치) */
+@media screen and (min-width: 480px) {
+    .popup-grid-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 반응형 (3열 배치) */
+@media screen and (min-width: 768px) {
+    .popup-grid-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* 표준 모니터 반응형 */
+@media screen and (min-width: 1024px) {
+    .popup-grid-container {
+        grid-template-columns: repeat(4, 1fr);
+        /* 완벽한 4열 종대 안착 */
+    }
+}
+
+/* 필터 모달 윈도우 */
+.filter-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+
+    /* 기본 상태는 숨김 처리 */
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 모달이 켜졌을 때 자바스크립트로 부착할 클래스 */
+.filter-modal-overlay.show {
+    display: flex;
+}
+
+.filter-modal-window {
+    background-color: var(--color-white);
+    width: 90%;
+    max-width: 500px;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: fadeInModal 0.25s ease;
+    padding: 10px 20px;
+}
+
+@keyframes fadeInModal {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--color-border-default);
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--color-text-main);
+    font-weight: var(--weight-medium);
+}
+
+.modal-close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    line-height: 1;
+}
+
+/* 모달 내부 칩셋 격자 배치 */
+.modal-body-content {
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    /* 칩들이 글자 길이에 맞춰 바인딩 */
+    gap: 10px;
+    max-height: 260px;
+    overflow-y: auto;
+    /* 내용 많으면 스크롤 */
+}
+
+/* 모달 내부 미니 버튼 칩 */
+.modal-body-content .sub-chip {
+    padding: 10px 16px;
+    border: 1px solid var(--color-border-default);
+    background-color: var(--color-white);
+    border-radius: 20px;
+    font-size: 14px;
+    color: var(--color-text-main);
+    cursor: pointer;
+}
+
+.modal-body-content .sub-chip:hover {
+    background-color: var(--color-primary-light2);
+    border-color: var(--color-primary-dark);
+    color: var(--color-primary-dark);
+    font-weight: var(--weight-medium);
+}
+
+.modal-body-content .sub-chip.active {
+    background-color: var(--color-primary-light2);
+    border-color: var(--color-primary-dark);
+    color: var(--color-primary-dark);
+    font-weight: var(--weight-medium);
+}
+
+/* 모달 최하단 액션 하이라이트 바 */
+.modal-footer-actions {
+    padding: 16px 20px;
+    display: flex;
+    gap: 12px;
+    border-top: 1px solid var(--color-border-default);
+}
+
+.btn-action-reset {
+    flex: 1;
+    padding: 12px 0;
+    border: 1px solid var(--color-border-default);
+    background-color: var(--color-white);
+    color: var(--color-text-secondary);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-action-apply {
+    flex: 2;
+    /* 적용하기 버튼을 더 넓게 */
+    padding: 12px 0;
+    border: none;
+    background-color: var(--color-primary-dark);
+    color: var(--color-white);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: var(--weight-regular);
+}
+
+.btn-action-apply:hover {
+    background-color: #8372DE;
+}
+
+.btn-action-reset:hover {
+    background-color: var(--color-offwhite);
+}
