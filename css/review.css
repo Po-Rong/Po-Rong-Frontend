@@ -17,7 +17,7 @@
 .page-main-title {
     width: 100%;
     max-width: 924px;
-    margin-top: 0;
+    margin-top: 30px;
     margin-bottom: var(--space-lg);
     color: var(--color-text-main);
     font-size: 20px;
@@ -36,6 +36,21 @@
     box-sizing: border-box;
     background: var(--color-offwhite);
     border-radius: var(--radius-lg);
+}
+
+.reviews-list-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.review-card {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 12px;
 }
 
 /* ==========================================================================
@@ -154,7 +169,7 @@
 }
 
 .rating-score-display .max-score {
-    color: var(--Text-Secondary, #757575);
+    color: var(--Border-default, #DDD);
     font-size: 32px;
     font-weight: 700;
 }
@@ -168,11 +183,24 @@
 .stars-display-group .star-icon {
     font-size: 24px;
     color: #EAEAEA;
+    width: 30px;
+    height: 30px;
+    margin-right: 6px;
 }
 
 .stars-display-group .star-icon.is-active {
     color: var(--color-primary);
 }
+
+.star-btn {
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    object-fit: contain;
+    margin-right: 4px;
+}
+
+
 
 /* 작성 폼 전용 별점 선택 그룹 */
 .stars-select-group {
@@ -227,7 +255,7 @@
 /* 혼잡도 인물 아이콘 배열 */
 .congestion-icons-row {
     display: flex;
-    gap: 16px;
+    gap: 10px;
     justify-content: center;
 }
 
@@ -240,17 +268,12 @@
     justify-content: center;
     align-items: center;
     transition: transform 0.2s;
+    width: 60px;
+    height: 60px;
 }
 
-.btn-congestion:hover {
-    transform: translateY(-2px);
-}
 
 .icon-person {
-    width: 44px;
-    height: 44px;
-    stroke: #BDC3C7;
-    stroke-width: 1.5;
     fill: none;
     transition: all 0.2s ease;
 }
@@ -281,16 +304,19 @@
     color: var(--Text-Secondary, #757575);
     font-size: 12px;
     font-weight: 500;
+    margin-bottom: 15px;
 }
 
 .prompt-stars {
     font-size: 20px;
     color: #EAEAEA;
     display: flex;
-    gap: 2px;
+    gap: 12px;
 }
 
 .prompt-star-btn {
+    width: 30px;
+    height: 30px;
     cursor: pointer;
     transition: color 0.15s ease;
 }
@@ -423,32 +449,6 @@
     letter-spacing: -0.64px;
 }
 
-/* 리스트 소형 카드 평점 제어 행 */
-.card-stars-row {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-}
-
-.star-small {
-    font-size: 14px;
-    color: #EAEAEA;
-}
-
-.star-small.active {
-    color: var(--color-primary);
-}
-
-.score-small-text {
-    margin-left: 6px;
-    display: flex;
-    align-items: center;
-    color: var(--Text-Main, #4C4C4C);
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: -0.56px;
-}
-
 .badge-row {
     display: flex;
     margin-top: 2px;
@@ -462,11 +462,7 @@
     border-radius: var(--radius-xs);
 }
 
-.review-date-text {
-    color: var(--Text-Secondary, #757575);
-    font-size: 14px;
-    letter-spacing: -0.56px;
-}
+
 
 /* 카드 바디 (텍스트 및 이미지) 구역 */
 .review-card-body {
@@ -555,6 +551,10 @@
     background: var(--color-primary-light2);
     border-radius: var(--radius-sm);
     box-sizing: border-box;
+}
+
+.review-target-popup {
+    width: 100%;
 }
 
 .mini-thumb {
