@@ -17,7 +17,7 @@
 .page-main-title {
     width: 100%;
     max-width: 924px;
-    margin-top: 0;
+    margin-top: 30px;
     margin-bottom: var(--space-lg);
     color: var(--color-text-main);
     font-size: 20px;
@@ -169,7 +169,7 @@
 }
 
 .rating-score-display .max-score {
-    color: var(--Text-Secondary, #757575);
+    color: var(--Border-default, #DDD);
     font-size: 32px;
     font-weight: 700;
 }
@@ -183,11 +183,16 @@
 .stars-display-group .star-icon {
     font-size: 24px;
     color: #EAEAEA;
+    width: 30px;
+    height: 30px;
+    margin-right: 6px;
 }
 
 .stars-display-group .star-icon.is-active {
     color: var(--color-primary);
 }
+
+
 
 /* 작성 폼 전용 별점 선택 그룹 */
 .stars-select-group {
@@ -242,7 +247,7 @@
 /* 혼잡도 인물 아이콘 배열 */
 .congestion-icons-row {
     display: flex;
-    gap: 16px;
+    gap: 10px;
     justify-content: center;
 }
 
@@ -255,17 +260,12 @@
     justify-content: center;
     align-items: center;
     transition: transform 0.2s;
+    width: 60px;
+    height: 60px;
 }
 
-.btn-congestion:hover {
-    transform: translateY(-2px);
-}
 
 .icon-person {
-    width: 44px;
-    height: 44px;
-    stroke: #BDC3C7;
-    stroke-width: 1.5;
     fill: none;
     transition: all 0.2s ease;
 }
@@ -296,16 +296,19 @@
     color: var(--Text-Secondary, #757575);
     font-size: 12px;
     font-weight: 500;
+    margin-bottom: 15px;
 }
 
 .prompt-stars {
     font-size: 20px;
     color: #EAEAEA;
     display: flex;
-    gap: 2px;
+    gap: 12px;
 }
 
 .prompt-star-btn {
+    width: 30px;
+    height: 30px;
     cursor: pointer;
     transition: color 0.15s ease;
 }

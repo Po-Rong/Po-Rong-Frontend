@@ -14,34 +14,33 @@ document.addEventListener('DOMContentLoaded', () => {
    2. API 비동기 통신 함수
    ========================================================================== */
 async function fetchReviewsData(popupId) {
-    const apiUrl = `http://localhost:8080/api/popups/${popupId}/reviews?sort=rating_high`;
+    const reviewsApiUrl = `http://localhost:8080/api/popups/${popupId}/reviews?sort=rating_high`;
+    const congestionApiUrl = `http://localhost:8080/api/popups/${popupId}/congestion`; // 추가된 API
 
     try {
-        const response = await fetch(apiUrl);
+        // 병렬로 API 호출
+        const [reviewsRes, congestionRes] = await Promise.all([
+            fetch(reviewsApiUrl),
+            fetch(congestionApiUrl)
+        ]);
 
-        if (!response.ok) {
-            throw new Error(`HTTP 에러 발생! 상태 코드: ${response.status}`);
-        }
+        if (!reviewsRes.ok || !congestionRes.ok) throw new Error('API 호출 실패');
 
-        const reviewsList = await response.json();
+        const reviewsList = await reviewsRes.json();
+        const congestionData = await congestionRes.json(); // { averageCongestionLevel: "혼잡", ... }
 
-        renderUpperDashboard(reviewsList);
+        renderUpperDashboard(reviewsList, congestionData); // 데이터를 함께 전달
         renderReviews(reviewsList);
 
     } catch (error) {
-        console.error("백엔드 API 서버로부터 리뷰 데이터를 가져오는 중 오류가 발생했습니다:", error);
-
-        const listGroup = document.querySelector('.reviews-list-group');
-        if (listGroup) {
-            listGroup.innerHTML = `<p style="text-align:center; padding: 40px; color: var(--color-text-secondary);">리뷰 데이터를 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</p>`;
-        }
+        console.error("데이터 로드 중 오류 발생:", error);
     }
 }
 
 /* ==========================================================================
    3. 상단 대시보드 실시간 통계 계산 및 동적 주입 함수
    ========================================================================== */
-function renderUpperDashboard(dataList) {
+function renderUpperDashboard(dataList, congestionStats) {
     const avgScoreDisplay = document.getElementById('avgScoreDisplay');
     const avgStarsGroup = document.getElementById('avgStarsGroup');
     const mainCongestionText = document.getElementById('mainCongestionText');
@@ -49,55 +48,39 @@ function renderUpperDashboard(dataList) {
 
     if (!dataList || dataList.length === 0) return;
 
-    let totalScore = 0;
-    dataList.forEach(item => {
-        totalScore += item.rating ? parseInt(item.rating) : 0;
-    });
+    // 점수 계산
+    const totalScore = dataList.reduce((acc, item) => acc + (item.rating ? parseInt(item.rating) : 0), 0);
     const avgScore = totalScore / dataList.length;
 
-    // 📍 정밀 보정: 다른 문자열을 덧붙이지 않고 오직 숫자만 꽂아 넣어 CSS 클래스 꼬임을 방지합니다
-    if (avgScoreDisplay) {
-        avgScoreDisplay.textContent = avgScore.toFixed(1);
-    }
+    if (avgScoreDisplay) avgScoreDisplay.textContent = avgScore.toFixed(1);
 
+    // 상단 평균 별점 렌더링
     if (avgStarsGroup) {
         const roundedAvg = Math.round(avgScore);
         let starsHtml = '';
         for (let i = 1; i <= 5; i++) {
-            starsHtml += `<span class="star-icon ${i <= roundedAvg ? 'is-active' : ''}">★</span>`;
+            const src = i <= roundedAvg ? '/assets/images/icons/icon-star-fill.png' : '/assets/images/icons/icon-star-empty.png';
+            starsHtml += `<img src="${src}" class="star-icon" alt="별점" />`;
         }
         avgStarsGroup.innerHTML = starsHtml;
     }
 
-    const congestionCounts = { LOW: 0, NORMAL: 0, HIGH: 0 };
-    dataList.forEach(item => {
-        if (item.congestionLevel && congestionCounts[item.congestionLevel] !== undefined) {
-            congestionCounts[item.congestionLevel]++;
-        }
-    });
+    // 상단 혼잡도 렌더링
+    const congestionMap = {
+        '여유': { label: '여유', count: 1 },
+        '보통': { label: '보통', count: 2 },
+        '혼잡': { label: '혼잡', count: 3 }
+    };
+    const stats = congestionMap[congestionStats.averageCongestionLevel] || { label: '-', count: 0 };
 
-    let topCongestion = 'NORMAL';
-    let maxCount = -1;
-    for (const key in congestionCounts) {
-        if (congestionCounts[key] > maxCount) {
-            maxCount = congestionCounts[key];
-            topCongestion = key;
-        }
-    }
-
-    if (mainCongestionText) {
-        if (topCongestion === 'LOW') mainCongestionText.textContent = '낮음';
-        if (topCongestion === 'NORMAL') mainCongestionText.textContent = '보통';
-        if (topCongestion === 'HIGH') mainCongestionText.textContent = '높음';
-    }
+    if (mainCongestionText) mainCongestionText.textContent = stats.label;
 
     if (mainCongestionIcons) {
-        mainCongestionIcons.querySelectorAll('.btn-congestion').forEach(btn => {
-            if (btn.getAttribute('data-level') === topCongestion) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
+        const icons = mainCongestionIcons.querySelectorAll('.btn-congestion');
+        icons.forEach((img, index) => {
+            img.src = ((index + 1) <= stats.count) ?
+                '/assets/images/icons/icon-person-fill.png' :
+                '/assets/images/icons/icon-person-empty.png';
         });
     }
 }
@@ -109,7 +92,6 @@ function renderReviews(dataList) {
     const listGroup = document.querySelector('.reviews-list-group');
     if (!listGroup) return;
 
-    // 기존 리스트 초기화
     while (listGroup.firstChild) {
         listGroup.removeChild(listGroup.firstChild);
     }
@@ -120,36 +102,33 @@ function renderReviews(dataList) {
     }
 
     dataList.forEach(item => {
-        // 1. 데이터 준비
         const ratingScore = item.rating ? parseInt(item.rating) : 0;
         const userNickname = item.nickname || '포롱이';
 
-        // 날짜 포맷팅
         let formattedDate = '날짜 없음';
         if (item.reserveDate) {
             const parts = item.reserveDate.split('-');
             formattedDate = parts.length === 3 ? `${parts[0].slice(2)}.${parts[1]}.${parts[2]}` : item.reserveDate;
         }
 
-        // 혼잡도 텍스트 및 인덱스 처리
-        const congestionMap = { 'HIGH': { label: '높음', index: 2 }, 'NORMAL': { label: '보통', index: 1 }, 'LOW': { label: '낮음', index: 0 } };
-        const congestionData = congestionMap[item.congestionLevel] || { label: '정보 없음', index: -1 };
+        const congestionMap = {
+            'HIGH': { label: '높음', filledCount: 3 },
+            'NORMAL': { label: '보통', filledCount: 2 },
+            'LOW': { label: '낮음', filledCount: 1 }
+        };
+        const congestionData = congestionMap[item.congestionLevel] || { label: '정보 없음', filledCount: 0 };
 
-        // 2. 별 아이콘 렌더링 (이미지 사용)
         let starsHtml = '';
         for (let i = 1; i <= 5; i++) {
             const starSrc = i <= ratingScore ? '/assets/images/icons/icon-star-fill.png' : '/assets/images/icons/icon-star-empty.png';
             starsHtml += `<img src="${starSrc}" class="icon-star" alt="별" />`;
         }
 
-        // 3. 혼잡도 아이콘 렌더링 (이미지 사용)
         let congestionIconsHtml = '';
-        for (let i = 0; i < 3; i++) {
-            const personSrc = i <= congestionData.index ? '/assets/images/icons/icon-person-fill.png' : '/assets/images/icons/icon-person-empty.png';
+        for (let i = 1; i <= 3; i++) {
+            const personSrc = i <= congestionData.filledCount ? '/assets/images/icons/icon-person-fill.png' : '/assets/images/icons/icon-person-empty.png';
             congestionIconsHtml += `<img src="${personSrc}" class="icon-person" alt="혼잡도" />`;
         }
-
-        // 4. 리뷰 이미지 처리
         let imageContainerHtml = '';
         if (item.reviewImageUrl && item.reviewImageUrl !== 'NULL') {
             imageContainerHtml = `
@@ -159,7 +138,6 @@ function renderReviews(dataList) {
             `;
         }
 
-        // 5. 카드 생성
         const cardArticle = document.createElement('article');
         cardArticle.className = 'review-item-card';
 
@@ -205,7 +183,7 @@ function renderReviews(dataList) {
             </div>
         `;
 
-        // 6. 펼치기 이벤트 연결
+        // 펼치기 이벤트 연결
         const expandBtn = cardArticle.querySelector('.btn-toggle-expand');
         expandBtn.addEventListener('click', () => {
             const textContentBox = expandBtn.parentElement;
@@ -264,11 +242,9 @@ function initRatingPrompt(popupId) {
         star.addEventListener('mouseenter', () => {
             const currentLevel = parseInt(star.getAttribute('data-value'));
             stars.forEach((s, index) => {
-                if (index < currentLevel) {
-                    s.style.color = 'var(--color-primary, #B8A8FF)';
-                } else {
-                    s.style.color = '#EAEAEA';
-                }
+                s.src = (index < currentLevel) ?
+                    '/assets/images/icons/icon-star-fill.png' :
+                    '/assets/images/icons/icon-star-empty.png';
             });
         });
 
@@ -277,10 +253,9 @@ function initRatingPrompt(popupId) {
             window.location.href = `/pages/review-write.html?popupId=${popupId}&rating=${selectedRating}`;
         });
     });
-
     starsContainer.addEventListener('mouseleave', () => {
         stars.forEach(s => {
-            s.style.color = '#EAEAEA';
+            s.src = '/assets/images/icons/icon-star-empty.png';
         });
     });
 }
