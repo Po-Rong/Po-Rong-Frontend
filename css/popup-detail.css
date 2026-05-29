@@ -74,30 +74,6 @@
     margin-bottom: var(--space-xs);
 }
 
-.rating-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-}
-
-.stars img {
-    width: 20px;
-    height: 20px;
-}
-
-.rating-score {
-    font-weight: var(--weight-bold);
-    color: var(--color-text-main);
-}
-
-.review-count-link {
-    color: var(--color-text-secondary);
-    text-decoration: underline;
-    font-size: 16px;
-    text-decoration: none;
-}
-
 .popup-detail-card-layout {
     display: flex;
     width: 100%;

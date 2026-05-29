@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             if (popupRatingScore) popupRatingScore.innerText = `${(popup.avgRating || 0).toFixed(1)} / 5.0`;
             if (popupReviewCount) {
-                popupReviewCount.innerText = `${popup.reviewCount || 0}개의 리뷰`;
+                popupReviewCount.innerText = `후기 ${popup.reviewCount || 0}개`;
                 popupReviewCount.href = `/pages/review.html?popupId=${popupId}`;
             }
 
