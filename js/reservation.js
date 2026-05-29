@@ -42,16 +42,35 @@ document.addEventListener("DOMContentLoaded", function () {
                 : data.mainImageUrl;
         }
 
+        // 상태값 가져오기
+        const statusInfo = getPopupStatus(data);
+
         const summaryBox = document.getElementById("popup-summary-container");
         if (summaryBox) {
             summaryBox.innerHTML = `
-                <span class="badge-status">${data.status === 'open' ? '운영중' : '종료'}</span>
-                <h1 class="popup-title">${data.title}</h1>
-                <span class="badge-category">${data.categoryName}</span>
-                <p class="popup-location-text">${data.regionName}</p>
-                <p class="popup-period-text">${data.startDate.split('T')[0]} ~ ${data.endDate.split('T')[0]}</p>
-                <p class="popup-desc-text">${data.notice || "공지사항이 없습니다."}</p>
-            `;
+            <span class="card-status ${statusInfo.className}">${statusInfo.label}</span>
+            <h1 class="popup-title">${data.title}</h1>
+            <span class="badge-category">${data.categoryName}</span>
+            <p class="popup-location-text">${data.regionName}</p>
+            <p class="popup-period-text">${data.startDate.split('T')[0]} ~ ${data.endDate.split('T')[0]}</p>
+            <p class="popup-desc-text">${data.notice || "공지사항이 없습니다."}</p>
+        `;
+        }
+    }
+    function getPopupStatus(data) {
+        const now = new Date();
+        const start = new Date(data.startDate);
+        const end = new Date(data.endDate);
+
+        if (now < start) {
+            // 오늘이 시작일 이전
+            return { className: 'is-upcoming', label: '운영 예정' };
+        } else if (now >= start && now <= end) {
+            // 오늘이 기간 내 포함
+            return { className: 'is-running', label: '운영중' };
+        } else {
+            // 오늘이 종료일 이후
+            return { className: 'is-closed', label: '운영 마감' };
         }
     }
 
