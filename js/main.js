@@ -1,16 +1,42 @@
 // API 주소 상수 관리
 const API_BASE_URL = "http://localhost:8080/api";
+// 인기 급상승 팝업 주소
 const API_TREND_POPUPS = `${API_BASE_URL}/popups?status=ongoing&sort=wishlist`;
+// 여유로운 팝업 주소
+const API_LEISURE_POPUPS = `${API_BASE_URL}/popups?status=ongoing&sort=leisurely`;
+// 오픈 예정
+const API_UPCOMING_POPUPS = `${API_BASE_URL}/popups?status=upcoming`;
+// 최근 리뷰
+const API_RECENT_REVIEWS = `${API_BASE_URL}/reviews/recent`;
+
 
 // 초기화 및 메인 실행
 document.addEventListener("DOMContentLoaded", () => {
     // 인기 급상승 팝업 TOP 10
     fetchTrendPopups();
+    // 지금 가기 좋은 여유로운 팝업
+    fetchLeisurePopups();
+    // 오픈 예정 팝업
+    fetchUpcomingPopups();
+    // 최근 리뷰
+    fetchRecentReviews();
 
     // 기존 학습한 정적 데이터 기반 동적 렌더링
     initStaticReviewStats();
 })
 
+// API 날짜 변환
+function formatDateString(isoString) {
+    if (!isoString) return "";
+    // "2026-05-01T10:00" 스플릿 가공 -> ["2026", "05", "01"]
+    const datePart = isoString.split("T")[0];
+    const [year, month, day] = datePart.split("-");
+
+    // 앞자리 "20"을 떼어내고 "26.05.01" 형태로 반환
+    return `${year.slice(2)}.${month}.${day}`;
+}
+
+// 인기 급상승 (찜하기순) 10개
 async function fetchTrendPopups() {
     const trendScrollContainer = document.querySelector(".trend-section .card-scroll-container");
     if (!trendScrollContainer) return;
@@ -29,7 +55,7 @@ async function fetchTrendPopups() {
         trendScrollContainer.innerHTML = "";
         // 데이터가 아예 없는 경우의 방어 코드
         if (displayData.length === 0) {
-            trendScrollContainer.innerHTML = `<p class="no-data-msg" style="color:var(--color-text-secondary); padding: 20px;">현재 집계된 인기 팝업이 없습니다.</p>`;
+            trendScrollContainer.innerHTML = `<p class="no-data-msg">현재 집계된 인기 팝업이 없습니다.</p>`;
             return;
         }
 
@@ -69,14 +95,136 @@ async function fetchTrendPopups() {
         });
     } catch (error) {
         console.error("인기 급상승 팝업 조회 중 치명적 실패: ", error);
-        trendScrollContainer.innerHTML = `<p class="error-msg" style="color:var(--color-primary-dark); padding: 20px;">인기 팝업 정보를 불러오지 못했습니다.</p>`;
+        trendScrollContainer.innerHTML = `<p class="error-msg">인기 팝업 정보를 불러오지 못했습니다.</p>`;
+    }
+}
+
+// 지금 가기 좋은 여유로운 팝업 연동
+async function fetchLeisurePopups() {
+    const leisureScrollContainer = document.querySelector(".leisure-section .card-scroll-container");
+    if (!leisureScrollContainer) return;
+
+    try {
+        const response = await fetch(API_LEISURE_POPUPS);
+        if (!response.ok) {
+            throw new Error(`API 통신 에러 발생: ${response.status}`);
+        }
+
+        const popupsData = await response.json();
+
+        // 10개안으로 동적 커팅
+        const displayData = popupsData.slice(0, 10);
+        leisureScrollContainer.innerHTML = "";
+
+        if (displayData.length === 0) {
+            leisureScrollContainer.innerHTML = `<p class="no-data-msg">현재 여유로운 팝업 정보가 없습니다.</p>`
+            return;
+        }
+
+        displayData.forEach((popup) => {
+            const activeClass = popup.isWishlisted ? "active" : "";
+
+            // 날짜 포멧팅
+            const formattedStartDate = formatDateString(popup.startDate);
+            const formattedEndDate = formatDateString(popup.endDate);
+
+            const cardHtml = `
+                <div class="popup-card leisure-card" data-popup-id="${popup.id}">
+                    <div class="card-image-wrap">
+                        <img
+                            src="${popup.mainImageUrl}"
+                            alt="${popup.title} 썸네일"
+                            class="card-thumb"
+                        />
+                    </div>
+
+                    <button class="wish-btn ${activeClass}" aria-label="찜하기" onclick="toggleWish(${popup.id}, this)">
+                        <span class="heart-icon"></span> 찜하기
+                    </button>
+
+                    <div class="card-body-wrap">
+                        <div class="card-info">
+                            <h3 class="card-title">${popup.title}</h3>
+                            <p class="card-location">${popup.regionName}</p>
+                            <p class="card-date">${formattedStartDate} - ${formattedEndDate}</p>
+                            <span class="card-category">${popup.categoryName}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            leisureScrollContainer.insertAdjacentHTML("beforeend", cardHtml);
+        });
+    } catch (error) {
+        console.error("여유로운 팝업 조회 중 치명적 실패: ", error);
+        leisureScrollContainer.innerHTML = `<p class="error-msg">팝업 정보를 불러오지 못했습니다.</p>`;
+    }
+}
+
+// 오픈 예정 팝업
+async function fetchUpcomingPopups() {
+    const upcomingScrollContainer = document.querySelector(".upcoming-section .card-scroll-container");
+    if (!upcomingScrollContainer) return;
+
+    try {
+        const response = await fetch(API_UPCOMING_POPUPS);
+        if (!response.ok) {
+            throw new Error(`API 통신 에러 발생: ${response.status}`);
+        }
+
+        const popupsData = await response.json();
+
+        // 10개 아래라면 있는 만큼만, 10개를 넘어가면 10개만 출력
+        const displayData = popupsData.slice(0, 10);
+        upcomingScrollContainer.innerHTML = "";
+
+        if (displayData.length === 0) {
+            upcomingScrollContainer.innerHTML = `<p class="no-data-msg">오픈 예정인 팝업 정보가 없습니다.</p>`;
+            return;
+        }
+
+        displayData.forEach((popup) => {
+            const activeClass = popup.isWishlisted ? "active" : "";
+            const formattedStartDate = formatDateString(popup.startDate);
+            const formattedEndDate = formatDateString(popup.endDate);
+
+            // 오픈 예정 팝업 카드
+            const cardHtml = `
+                <div class="popup-card upcoming-card" data-popup-id="${popup.id}">
+                    <div class="card-image-wrap">
+                        <img
+                            src="${popup.mainImageUrl}"
+                            alt="${popup.title} 썸네일"
+                            class="card-thumb"
+                        />
+                        <div class="status-badge new-status"></div>
+                    </div>
+
+                    <button class="wish-btn ${activeClass}" aria-label="찜하기" onclick="toggleWish(${popup.id}, this)">
+                        <span class="heart-icon"></span> 찜하기
+                    </button>
+
+                    <div class="card-body-wrap">
+                        <div class="card-info">
+                            <h3 class="card-title">${popup.title}</h3>
+                            <p class="card-location">${popup.regionName}</p>
+                            <p class="card-date">${formattedStartDate} - ${formattedEndDate}</p>
+                            <span class="card-category">${popup.categoryName}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            upcomingScrollContainer.insertAdjacentHTML("beforeend", cardHtml);
+        });
+    } catch (error) {
+        console.error("오픈 예정 팝업 조회 중 치명적 실패: ", error);
+        upcomingScrollContainer.innerHTML = `<p class="error-msg">팝업 정보를 불러오지 못했습니다.</p>`;
     }
 }
 
 
 // 가로 스크롤 container - 스크롤 적용
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. 페이지 내 모든 가로 스크롤 컨테이너들을 가져옴
+    // 페이지 내 모든 가로 스크롤 컨테이너들을 가져옴
     const scrollContainers = document.querySelectorAll(".card-scroll-container");
 
     scrollContainers.forEach((container) => {
@@ -124,8 +272,6 @@ document.addEventListener("DOMContentLoaded", () => {
         container.style.cursor = "grab";
     });
 });
-
-// 인기 급상승 팝업 TOP 10 가져오기
 
 
 // 리뷰 카드 - 별점, 혼잡도 생성
