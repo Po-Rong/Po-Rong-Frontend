@@ -57,9 +57,9 @@
                 <h1 class="popup-title" id="popup-title"></h1>
 
                 <div class="rating-row">
-                    <span class="stars" id="popup-stars"></span>
+                    <div class="stars" id="popup-stars"></div>
                     <span class="rating-score" id="popup-rating-score"></span>
-                    <a href="#reviews" class="review-count-link" id="popup-review-count"></a>
+                    <a href="/pages/review.html" class="review-count-link" id="popup-review-count"></a>
                 </div>
 
                 <hr class="detail-divider" />
@@ -129,14 +129,10 @@
                 </div>
 
                 <div class="bar-action-group">
-                    <button type="button" class="wish-toggle-btn" aria-label="찜하기">
-                        <svg class="heart-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path
-                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                            </path>
-                        </svg>
-                        <span class="wish-count">201</span>
+                    <button type="button" class="wish-toggle-btn" id="wish-toggle-btn" aria-label="찜하기">
+                        <img id="heart-icon" src="/assets/images/icons/icon-heart-empty.png" alt="찜하기"
+                            style="width: 24px; height: 24px;">
+                        <span class="wish-count" id="wish-count">201</span>
                     </button>
 
                     <a href="/pages/reservation.html" class="reservation-btn">예약하러 가기</a>
@@ -149,22 +145,5 @@
 
     <script src="/js/popup-detail.js"></script>
 </body>
-<footer class="common-footer">
-    <div class="footer-container">
-        <div class="footer-info">
-            <p class="footer-logo">PORONG</p>
-        </div>
-        <div class="footer-info2">
-            <div class="footer-infodng">
-                <p>개발자</p>
-                <p>이주현 | 고유정 | 서지현</p>
-            </div>
-            <div class="footer-infodng">
-                <p>깃허브</p>
-                <a style="text-decoration: none" href="https://github.com/Po-Rong">https://github.com/Po-Rong</a>
-            </div>
-        </div>
-    </div>
-</footer>
 
 </html>
