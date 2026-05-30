@@ -483,6 +483,8 @@ function renderMyKeyrings(dataList) {
 function openReservationModal(item) {
     const detailInfo = document.getElementById('reservation-detail-info');
     const thumbUrl = item.mainImageUrl || '/assets/images/dummies/thumb-dummy01.png';
+    const currentUser = JSON.parse(localStorage.getItem('loginUser'));
+    const userId = currentUser ? currentUser.userId : null;
 
     detailInfo.innerHTML = `
         <div class="popup-info-box">
@@ -494,7 +496,40 @@ function openReservationModal(item) {
             <p>전화번호: ${item.userPhone || '번호 없음'}</p>
             <p>예약한 시간: ${item.reserveDate}</p>
         </div>
+        
+        <div class="modal-actions">
+            <button class="btn-edit" onclick="location.href='/pages/edit-reservation.html?id=${item.id}'">예약 수정하기</button>
+            <button class="btn-cancel" onclick="cancelReservation(${item.id}, ${userId})">예약 취소하기</button>
+        </div>
     `;
 
     document.getElementById('reservation-modal').classList.add('active');
+}
+
+async function cancelReservation(reservationId, userId) {
+    if (!confirm('정말 예약을 취소하시겠습니까?')) return;
+
+    const apiUrl = `http://localhost:8080/api/reservations/${reservationId}/cancel`;
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: userId // 로그인한 사용자의 ID 전달
+            })
+        });
+
+        if (response.ok) {
+            alert('예약이 성공적으로 취소되었습니다.');
+            location.reload(); // 페이지를 새로고침하여 상태 업데이트
+        } else {
+            alert('예약 취소에 실패했습니다. 다시 시도해 주세요.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('서버 오류가 발생했습니다.');
+    }
 }
