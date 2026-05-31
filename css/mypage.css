@@ -692,7 +692,8 @@
     width: 100%;
     max-width: 380px;
     margin: 0 auto;
-    height: auto; /* 마이페이지에서는 본문 높이 가변 */
+    height: auto;
+    /* 마이페이지에서는 본문 높이 가변 */
 }
 
 /* ==========================================================================
@@ -753,7 +754,7 @@
     .activity-counters {
         gap: 20px;
     }
-    
+
     .counter-icon-box {
         width: 50px;
         height: 50px;
