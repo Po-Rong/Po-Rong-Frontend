@@ -28,8 +28,8 @@ document.addEventListener("DOMContentLoaded", () => {
     initCongestionInteraction();
     initFileUpload();
 
-    // 백엔드 단건 조회 대신 우회 처리
-    fetchOriginalReviewFromList(currentReviewId, loginUser.userId || loginUser.id);
+    // 단건 조회
+    fetchOriginalReview(currentReviewId);
 
     const btnSubmit = document.getElementById("btn-submit-review");
     if (btnSubmit) {
@@ -37,30 +37,45 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-async function fetchOriginalReviewFromList(reviewId, userId) {
+// 단건 리뷰 조회 API 연동
+async function fetchOriginalReview(reviewId) {
     try {
-        const response = await fetch(`${API_BASE_URL}/reviews/me?user_id=${userId}`);
-        if (!response.ok) throw new Error("내 리뷰 목록 조회 실패");
-
-        const list = await response.json();
-        const review = list.find(item => String(item.reviewId) === String(reviewId));
-
-        if (!review) {
-            alert("해당 리뷰 데이터를 원격 데이터베이스에서 찾을 수 없습니다.");
-            return;
+        const response = await fetch(`${API_BASE_URL}/reviews/${reviewId}`);
+        if (!response.ok) {
+            if (response.status === 404) {
+                alert("해당 리뷰 데이터를 찾을 수 없습니다.");
+            }
+            throw new Error("리뷰 단건 조회 실패");
         }
 
-        // 기본 정보
-        if (review.popupTitle) document.querySelector(".target-title").textContent = review.popupTitle;
-        if (review.regionName) document.querySelector(".target-location").textContent = review.regionName;
-        if (review.categoryName) document.querySelector(".card-category").textContent = review.categoryName;
-        if (review.popupMainImageUrl) document.querySelector(".target-thumb").src = review.popupMainImageUrl;
-        if (review.content) document.getElementById("review-textarea").value = review.content;
+        const review = await response.json();
 
+        // 팝업 미니 카드 매핑
+        if (review.popupMainImageUrl) {
+            document.querySelector(".target-thumb").src = review.popupMainImageUrl;
+        }
+
+        // 연동
+        if (review.popupTitle) {
+            document.querySelector(".target-title").textContent = review.popupTitle;
+        }
+        if (review.regionName) {
+            document.querySelector(".target-location").textContent = review.regionName;
+        }
+        if (review.categoryName) {
+            document.querySelector(".card-category").textContent = review.categoryName;
+        }
+
+        // 리뷰 본문 양식 복구
+        if (review.content) {
+            document.getElementById("review-textarea").value = review.content;
+        }
+
+        // 별점 및 혼잡도 계량 컴포넌트 복구
         if (review.rating) setRatingStars(Math.floor(review.rating));
         if (review.congestionLevel) setCongestionLevel(review.congestionLevel);
 
-        // 기존 사진 데이터 검증
+        // 사용자가 등록했던 후기 첨부 사진 복구 패널
         if (review.reviewImageUrl && review.reviewImageUrl !== "NULL") {
             uploadedImageUrl = review.reviewImageUrl;
 
@@ -138,7 +153,7 @@ function setCongestionLevel(level) {
     });
 }
 
-// 컴퓨터 내부 파일 트래킹
+// 파일 업로드 설정
 function initFileUpload() {
     const fileInput = document.getElementById("review-file-input");
     const btnDummy = document.getElementById("btn-file-dummy");
@@ -175,6 +190,7 @@ function initFileUpload() {
     }
 }
 
+// 수정 데이터 전송
 async function submitUpdatedReview(userId) {
     const contentText = document.getElementById("review-textarea").value.trim();
 
@@ -182,15 +198,12 @@ async function submitUpdatedReview(userId) {
     if (!selectedCongestion) { alert("현장 혼잡도를 선택해 주세요!"); return; }
     if (contentText === "") { alert("후기 내용을 작성해 주세요!"); return; }
 
-    // FormData 패킹
     const formData = new FormData();
     formData.append("userId", Number(userId));
     formData.append("content", contentText);
     formData.append("rating", Number(selectedRating));
     formData.append("congestionLevel", selectedCongestion);
 
-    // 새 사진 파일을 컴퓨터에서 선택했다면 파일 바이너리를 탑재하고, 
-    // 선택하지 않았다면 보내지 않아 백엔드 image = null (required = false) 기본 사양 충족
     if (rawImageFile) {
         formData.append("image", rawImageFile);
     }
@@ -205,8 +218,7 @@ async function submitUpdatedReview(userId) {
 
         if (!response.ok) throw new Error("리뷰 수정 통신 실패");
 
-        // 백엔드가 던져주는 결과 수신
-        const result = await response.json();
+        await response.json();
 
         alert("리뷰가 성공적으로 수정되었습니다.");
         window.location.href = "/pages/mypage.html";
