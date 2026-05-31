@@ -96,6 +96,74 @@ document.addEventListener("DOMContentLoaded", () => {
             if (popupHours) popupHours.innerText = popup.operatingHours || "10:00 ~ 22:00";
             if (popupIntro) popupIntro.innerText = popup.info || "";
 
+            // 혜택 렌더링
+            const popupBenefit = document.getElementById("popup-benefit");
+            if (popupBenefit) {
+                popupBenefit.innerText = popup.benefit || popup.benefits || "등록된 혜택이 없습니다.";
+            }
+
+            // 공지사항 렌더링
+            const popupNotice = document.getElementById("popup-notice");
+            if (popupNotice) {
+                popupNotice.innerText = popup.notice || "등록된 공지사항이 없습니다.";
+            }
+
+            // 태그 렌더링
+            const popupTags = document.getElementById("popup-tags");
+            if (popupTags) {
+                popupTags.innerHTML = "";
+                const tags = popup.tags || [];
+                if (tags && tags.length > 0) {
+                    tags.forEach(tag => {
+                        const span = document.createElement("span");
+                        span.className = "badge-category";
+                        span.style.marginRight = "6px";
+                        span.style.display = "inline-block";
+                        span.innerText = tag.startsWith("#") ? tag : `#${tag}`;
+                        popupTags.appendChild(span);
+                    });
+                } else {
+                    popupTags.innerText = "등록된 태그가 없습니다.";
+                }
+            }
+
+            // SNS 렌더링
+            const popupSns = document.getElementById("popup-sns");
+            if (popupSns) {
+                const snsUrl = popup.snsUrl || popup.sns_url;
+                if (snsUrl) {
+                    popupSns.href = snsUrl;
+                    popupSns.style.display = "inline-block";
+                } else {
+                    popupSns.style.display = "none";
+                    popupSns.parentElement.innerHTML = "<span class='meta-value'>등록된 SNS가 없습니다.</span>";
+                }
+            }
+
+            // 상세 이미지 렌더링
+            const imageWrapper = document.querySelector(".long-image-wrapper");
+            if (imageWrapper) {
+                imageWrapper.innerHTML = "";
+                const images = popup.detailImages || popup.popupImages || popup.images;
+                if (images && images.length > 0) {
+                    images.forEach(imageUrl => {
+                        const src = typeof imageUrl === "string" ? imageUrl : (imageUrl.detailImageUrl || imageUrl.detail_image_url || imageUrl.imageUrl || imageUrl.url);
+                        if (src) {
+                            const img = document.createElement("img");
+                            img.src = src.startsWith("/") ? `http://localhost:8080${src}` : src;
+                            img.alt = "팝업 상세 이미지";
+                            img.style.width = "100%";
+                            img.style.maxWidth = "480px";
+                            img.style.display = "block";
+                            img.style.margin = "0 auto";
+                            imageWrapper.appendChild(img);
+                        }
+                    });
+                } else {
+                    imageWrapper.innerHTML = "<p style='color: #999; text-align: center; padding: 20px;'>등록된 상세 이미지가 없습니다.</p>";
+                }
+            }
+
             // 별점 및 기타 렌더링
             if (popupStars) {
                 popupStars.innerHTML = "";

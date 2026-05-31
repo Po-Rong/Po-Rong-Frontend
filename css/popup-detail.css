@@ -59,7 +59,7 @@
 }
 
 .badge-category {
-    background-color: var(--color-primary-light2);
+    /* background-color: var(--color-primary-light2); */
     color: var(--color-primary-dark);
     font-size: 11px;
     font-weight: var(--weight-medium);
@@ -203,8 +203,6 @@
 
 .long-image-wrapper img {
     width: 480px;
-    /* height: 600px; */
-    /* aspect-ratio: 4/5; */
 }
 
 .table-scroll-container {
@@ -385,4 +383,35 @@
 /* 팁: 본문 맨 밑이 고정 바에 가려지지 않도록 body에 바닥 여백을 줍니다. */
 body {
     padding-bottom: 120px;
+}
+
+/* ==========================================================================
+   반응형 미디어 쿼리 (Responsive Styles)
+   ========================================================================== */
+@media screen and (max-width: 1023px) {
+    .fixed-bottom-bar {
+        max-width: 100%;
+        left: 0;
+        transform: none;
+        border-radius: 0;
+        padding: 10px 16px;
+        box-sizing: border-box;
+    }
+
+    .bottom-bar-container {
+        min-width: auto;
+        width: 100%;
+        padding: 0;
+        gap: 8px;
+    }
+
+    .reservation-btn {
+        font-size: 16px;
+        padding: 10px 0;
+    }
+
+    .popup-detail-card-layout {
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
 }

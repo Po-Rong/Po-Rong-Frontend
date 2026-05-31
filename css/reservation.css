@@ -338,3 +338,51 @@
 .btn-main-submit:hover {
     background-color: var(--color-primary);
 }
+
+/* ==========================================================================
+   반응형 미디어 쿼리 (Responsive Styles)
+   ========================================================================== */
+@media screen and (max-width: 1023px) {
+    .reservation-container {
+        padding: 16px 12px 30px 12px;
+        box-sizing: border-box;
+    }
+
+    .section-reserve-poster {
+        aspect-ratio: 3 / 1;
+        min-height: 120px;
+        border-radius: 12px;
+    }
+
+    .input-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .input-row label {
+        width: 100%;
+        margin-bottom: 2px;
+    }
+
+    .input-row input {
+        width: 100%;
+        box-sizing: border-box;
+        flex: none;
+    }
+
+    .slots-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    .section-datetime-picker {
+        padding: 16px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .slots-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

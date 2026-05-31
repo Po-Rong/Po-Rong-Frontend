@@ -630,3 +630,81 @@
     line-height: 1;
     padding: 0;
 }
+
+/* ==========================================================================
+   반응형 미디어 쿼리 (Responsive Styles)
+   ========================================================================== */
+@media screen and (max-width: 1023px) {
+    .review-write-wrapper {
+        padding: 20px 12px 40px 12px;
+        box-sizing: border-box;
+        min-width: 360px;
+    }
+
+    .page-main-title {
+        margin-top: 10px;
+        margin-bottom: 16px;
+        padding: 0 4px;
+    }
+
+    .review-write-container {
+        width: 100%;
+        padding: 20px 16px;
+        gap: 20px;
+    }
+
+    .review-content-form {
+        width: 100%;
+        padding: 16px;
+        gap: 12px;
+    }
+
+    #review-textarea {
+        width: 100%;
+        padding: 12px;
+        height: 140px;
+        font-size: 15px;
+    }
+
+    .btn-file-trigger {
+        width: 100%;
+        padding: 12px 0;
+        font-size: 15px;
+    }
+
+    .btn-main-submit {
+        width: 100%;
+        padding: 12px 0;
+        font-size: 15px;
+    }
+
+    #reviews-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 16px;
+    }
+
+    .review-card-body {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .review-image-thumbnail {
+        width: 100% !important;
+        max-width: 250px !important;
+        height: auto !important;
+        aspect-ratio: 1 / 1;
+    }
+
+    .image-modal-content {
+        width: 90vw;
+        height: 90vw;
+        max-width: 500px;
+        max-height: 500px;
+    }
+}
+
+@media screen and (max-width: 599px) {
+    #reviews-grid {
+        grid-template-columns: 1fr !important;
+    }
+}

@@ -815,3 +815,77 @@
     display: block;
     margin-top: 10px;
 }
+
+/* ==========================================================================
+   반응형 미디어 쿼리 (Responsive Styles)
+   ========================================================================== */
+@media screen and (max-width: 1023px) {
+    .mypage-main {
+        padding: 20px 16px;
+        min-width: 360px;
+        box-sizing: border-box;
+    }
+
+    .activity-counters {
+        gap: 40px; /* PC의 120px에서 모바일용 축소 */
+    }
+
+    .keyring-book-section {
+        padding: 20px 16px;
+        width: 100%;
+    }
+
+    .keyring-grid {
+        flex-wrap: wrap; /* 모바일에서 겹침 방지 */
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .tab-section {
+        padding: 20px 0;
+        width: 100%;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr) !important; /* PC 4열 -> 모바일/태블릿 2열 */
+        gap: 16px;
+    }
+
+    #reviews-grid {
+        grid-template-columns: repeat(2, 1fr) !important; /* PC 3열 -> 모바일/태블릿 2열 */
+        gap: 16px;
+    }
+
+    .timeline-card {
+        min-width: auto;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .modal-content {
+        width: 90%;
+        max-width: 490px;
+        padding: 30px 20px;
+        box-sizing: border-box;
+    }
+}
+
+@media screen and (max-width: 599px) {
+    .activity-counters {
+        gap: 20px;
+    }
+    
+    .counter-icon-box {
+        width: 50px;
+        height: 50px;
+        padding: 10px;
+    }
+
+    .grid-container {
+        grid-template-columns: 1fr !important; /* 모바일 1열 */
+    }
+
+    #reviews-grid {
+        grid-template-columns: 1fr !important; /* 모바일 1열 */
+    }
+}
