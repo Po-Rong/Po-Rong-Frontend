@@ -1,3 +1,8 @@
+/* ==========================================================================
+   PORONG - 팝업 상세페이지(popup-detail.css) 스타일 정의 (Refactored)
+   ========================================================================== */
+
+/* 1. 페이지 레이아웃 */
 .detail-wrapper {
     width: 100%;
     min-height: calc(100vh - 70px);
@@ -6,9 +11,7 @@
 .content-body {
     width: 100%;
     max-width: 1024px;
-    /* 전체 최대 너비 */
     margin: 0 auto;
-    /* 중앙 정렬 */
 }
 
 .section-main-poster {
@@ -24,7 +27,6 @@
 .detail-container {
     width: 100%;
     margin: 0 auto;
-    /* 부모의 너비를 자동으로 따름 */
     padding: var(--space-lg) 16px;
     display: flex;
     flex-direction: column;
@@ -43,6 +45,7 @@
     object-fit: cover;
 }
 
+/* 2. 상세 타이틀 및 태그 라인 */
 .status-tag-row {
     display: flex;
     gap: var(--space-xs);
@@ -92,10 +95,11 @@
 
 .detail-divider {
     border: none;
-    border-top: 1px solid var(--color-border-default, #EAEAEA);
+    border-top: 1px solid var(--color-border-default);
     margin: 20px 0;
 }
 
+/* 3. 팝업 메타 정보 리스트 */
 .meta-info-list {
     list-style: none;
     display: flex;
@@ -105,19 +109,17 @@
 .meta-row-layout {
     display: flex;
     align-items: flex-start;
-    color: var(--Text-Main, #4C4C4C);
-    font-family: "Noto Sans KR", sans-serif;
+    color: var(--color-text-main);
     font-size: 16px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: var(--weight-regular);
     line-height: normal;
     letter-spacing: -0.64px;
 }
 
 .meta-label {
     width: 70px;
-    font-weight: 500;
-    /* color: var(--color-text-secondary); */
+    font-weight: var(--weight-medium);
     flex-shrink: 0;
 }
 
@@ -129,8 +131,7 @@
 }
 
 .meta-value {
-    color: var(--Text-Main, #4C4C4C);
-    text-align: right;
+    color: var(--color-text-main);
 }
 
 .time-sub-group {
@@ -139,7 +140,7 @@
     align-items: flex-end;
     text-align: right;
     font-size: 14px;
-    color: #666666;
+    color: var(--color-text-secondary);
     gap: 4px;
 }
 
@@ -154,8 +155,8 @@
     gap: 4px;
 }
 
+/* 4. 정보 패널 카드 */
 .block-title {
-    font-family: "Noto Sans KR", sans-serif;
     font-size: 18px;
     font-weight: var(--weight-bold);
     color: var(--color-text-main);
@@ -166,12 +167,11 @@
 .card-inner-panel {
     width: 100%;
     background-color: var(--color-white);
-    border: 1px solid #EAEAEA;
+    border: 1px solid var(--color-border-default);
     border-radius: var(--radius-sm);
     padding: var(--space-md);
-    font-family: "Noto Sans KR", sans-serif;
     font-size: 15px;
-    color: var(--Text-Main, #4C4C4C);
+    color: var(--color-text-main);
     line-height: 1.6;
     letter-spacing: -0.5px;
 }
@@ -197,16 +197,14 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* gap: 20px; */
     align-self: stretch;
 }
 
 .long-image-wrapper img {
     width: 480px;
-    /* height: 600px; */
-    /* aspect-ratio: 4/5; */
 }
 
+/* 5. 타임테이블 스케줄 */
 .table-scroll-container {
     width: 100%;
     overflow-x: auto;
@@ -258,21 +256,7 @@
     cursor: not-allowed;
 }
 
-@media screen and (min-width: 1024px) {
-    .section-main-poster {
-        padding: 0;
-    }
-
-    .detail-container {
-        max-width: 1024px;
-    }
-
-    .popup-title {
-        font-size: 32px;
-    }
-}
-
-/* 하단 고정 바 전체 영역 */
+/* 6. 하단 고정 바 전체 영역 */
 .fixed-bottom-bar {
     position: fixed;
     bottom: 0;
@@ -291,7 +275,6 @@
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
 }
 
-/* 내부 정렬을 위한 가두기 컨테이너 (헤더 구조와 매칭) */
 .bottom-bar-container {
     width: 100%;
     min-width: 360px;
@@ -304,7 +287,6 @@
     gap: 12px;
 }
 
-/* 상단 알림 텍스트 */
 .bar-notice {
     font-size: 14px;
     color: var(--color-text-main);
@@ -314,11 +296,9 @@
 
 .bar-notice .highlight {
     color: var(--color-primary-dark);
-    /* 강조하는 보라색 색상 적용 */
     font-weight: var(--weight-semibold);
 }
 
-/* 하트와 버튼을 가로로 정렬하는 그룹 */
 .bar-action-group {
     width: 100%;
     display: flex;
@@ -326,7 +306,6 @@
     gap: 16px;
 }
 
-/* 찜하기(하트) 버튼 레이아웃 */
 .wish-toggle-btn {
     background: none;
     border: none;
@@ -346,12 +325,10 @@
     transition: transform 0.2s, color 0.2s;
 }
 
-/* 마우스 오버 및 활성화 상태 스타일 정의 */
 .wish-toggle-btn:hover .heart-icon {
     transform: scale(1.1);
 }
 
-/* 찜 카운트 숫자 스타일 */
 .wish-count {
     font-size: 12px;
     color: var(--color-text-main);
@@ -359,7 +336,6 @@
     font-weight: var(--weight-regular);
 }
 
-/* 예약하러 가기 메인 버튼 */
 .reservation-btn {
     flex-grow: 1;
     background-color: var(--color-primary-dark);
@@ -376,13 +352,58 @@
     font-size: 20px;
 }
 
-/* 마우스 올렸을 때 살짝 더 어두운 보라색으로 변하는 효과 */
-.reservation-btn:hover {
-    background-color: var(--color-primary-dark);
-}
-
-
-/* 팁: 본문 맨 밑이 고정 바에 가려지지 않도록 body에 바닥 여백을 줍니다. */
+/* 7. 팁: 본문 맨 밑이 고정 바에 가려지지 않도록 body에 바닥 여백을 줍니다. */
 body {
     padding-bottom: 120px;
+}
+
+/* ==========================================================================
+   8. 반응형 미디어 쿼리 (Responsive Styles)
+   ========================================================================== */
+@media screen and (min-width: 1024px) {
+    .section-main-poster {
+        padding: 0;
+    }
+
+    .detail-container {
+        max-width: 1024px;
+    }
+
+    .popup-title {
+        font-size: 32px;
+    }
+}
+
+@media screen and (max-width: 1023px) {
+    .fixed-bottom-bar {
+        max-width: 100%;
+        left: 0;
+        transform: none;
+        border-radius: 0;
+        padding: 10px 16px;
+        box-sizing: border-box;
+    }
+
+    .bottom-bar-container {
+        min-width: auto;
+        width: 100%;
+        padding: 0;
+        gap: 8px;
+    }
+
+    .reservation-btn {
+        font-size: 16px;
+        padding: 10px 0;
+    }
+
+    .long-image-wrapper img {
+        width: 100% !important;
+        max-width: 480px !important;
+        height: auto !important;
+    }
+
+    .popup-detail-card-layout {
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
 }

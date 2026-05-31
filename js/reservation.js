@@ -93,7 +93,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const parts = reservation.reserveDate.split(" ");
             const datePart = parts[0]; // e.g. YYYY-MM-DD
             if (dateInput) {
-                dateInput.value = datePart;
+                if (dateInput._flatpickr) {
+                    dateInput._flatpickr.setDate(datePart);
+                } else {
+                    dateInput.value = datePart;
+                }
                 selectedDateStr = datePart;
             }
 
@@ -178,10 +182,19 @@ document.addEventListener("DOMContentLoaded", function () {
     function setupEventListeners() {
         const dateInput = document.getElementById("reserve-date-input");
         if (dateInput) {
-            selectedDateStr = dateInput.value;
-            dateInput.addEventListener("change", function (e) {
-                selectedDateStr = e.target.value;
+            // flatpickr 날짜 인풋 초기화
+            const fp = flatpickr("#reserve-date-input", {
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "Y년 m월 d일",
+                locale: "ko",
+                allowInput: true,
+                defaultDate: dateInput.value || "2026-05-29",
+                onChange: function(selectedDates, dateStr) {
+                    selectedDateStr = dateStr;
+                }
             });
+            selectedDateStr = fp.selectedDates[0] ? fp.formatDate(fp.selectedDates[0], "Y-m-d") : (dateInput.value || "2026-05-29");
         }
 
         const reserveBtn = document.getElementById("btn-final-reserve");
