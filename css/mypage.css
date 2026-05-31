@@ -769,3 +769,88 @@
         grid-template-columns: 1fr !important;
     }
 }
+
+/* 리뷰 카드 CSS 다시 정의 */
+.review-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    position: relative;
+}
+
+.review-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    /* 이름과 방문 날짜 사이의 자잘한 간격 */
+}
+
+/* 유저 이름 스타일 */
+.reviewer-name {
+    font-size: 15px;
+    font-weight: var(--weight-bold);
+    color: var(--color-text-main);
+}
+
+/* 방문 날짜 스타일 */
+.review-date {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+}
+
+/* 메뉴판 */
+.review-more-menu-wrap {
+    position: relative;
+    display: inline-block;
+}
+
+.btn-review-more {
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: 0 4px;
+    line-height: 1;
+}
+
+.btn-review-more:hover {
+    color: var(--color-text-main);
+}
+
+/* 클릭 시 밑으로 떨어지는 드롭다운 메뉴판 */
+.review-menu-dropdown {
+    display: none;
+    position: absolute;
+    top: 24px;
+    right: 0;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    overflow: hidden;
+}
+
+.review-menu-dropdown.show {
+    display: block;
+}
+
+.menu-edit-btn {
+    background: none;
+    border: none;
+    width: 100%;
+    padding: 10px 16px;
+    font-size: 14px;
+    color: var(--color-text-main);
+    text-align: left;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.menu-edit-btn:hover {
+    background-color: var(--color-offwhite);
+    color: #8372DE;
+}

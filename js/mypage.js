@@ -311,26 +311,37 @@ function renderMyReviews(dataList) {
         if (review.popupStatus === "운영 마감" || review.popupStatus === "종료" || review.popupStatus === "closed") statusBadgeClass = "is-closed";
         const displayStatusText = review.popupStatus || "운영중";
 
-        // 글로벌 클래스 기반 최종 동적 바인딩 HTML
         const reviewHtml = `
             <div class="review-card ${noImageClass}" data-review-id="${review.reviewId}" onclick="location.href='/pages/popup-detail.html?id=${review.popupId}'" style="cursor:pointer;">
+                
                 <div class="review-card-header">
-                    <span class="reviewer-name">${review.nickname || '나'}</span>
-                    <span class="review-date">${formattedReviewDate} 방문</span>
+                    <div class="review-header-left">
+                        <span class="reviewer-name">${review.nickname || '나'}</span>
+                        <span class="review-date">${formattedReviewDate} 방문</span>
+                    </div>
+                    
+                    <div class="review-more-menu-wrap" onclick="event.stopPropagation();">
+                        <button class="btn-review-more" onclick="event.stopPropagation(); toggleReviewMenu(this)">•••</button>
+                        <div class="review-menu-dropdown">
+                            <button class="menu-edit-btn" onclick="location.href='/pages/review-edit.html?reviewId=${review.reviewId}'">리뷰 수정하기</button>
+                        </div>
+                    </div>
                 </div>
+                
                 <div class="review-stats-row">
-                    <div class="rating-wrap">
+                    <div class="rating-wrap" style="display:flex; align-items:center;">
                         <div class="rating-stars">${starsHtml}</div>
-                        <span class="rating-num">${parseFloat(review.rating).toFixed(1)}</span>
-                        <span>/</span>
+                        <span class="rating-num" style="margin-left:6px;">${parseFloat(review.rating).toFixed(1)}</span>
+                        <span style="margin:0 2px;">/</span>
                         <span class="rating-max">5.0</span>
                     </div>
-                    <div class="congestion-wrap">
+                    <div class="congestion-wrap" style="display:flex; align-items:center; margin-top:4px;">
                         <div class="congestion-icons">${peopleHtml}</div>
-                        <span class="congestion-text">혼잡도</span>
-                        <span class="congestion-strong">${congestionText}</span>
+                        <span class="congestion-text" style="margin-left:6px;">혼잡도</span>
+                        <span class="congestion-strong" style="margin-left:4px;">${congestionText}</span>
                     </div>
                 </div>
+                
                 <div class="review-content">
                     <p>${review.content}</p>
                 </div>
@@ -353,6 +364,24 @@ function renderMyReviews(dataList) {
         reviewGridContainer.insertAdjacentHTML("beforeend", reviewHtml);
     });
 }
+
+// ... 버튼 드롭다운 함수
+function toggleReviewMenu(button) {
+    // 모든 드롭다운 일단 다 닫기 처리
+    document.querySelectorAll('.review-menu-dropdown').forEach(menu => {
+        if (menu !== button.nextElementSibling) menu.classList.remove('show');
+    });
+    // 현재 누른 버튼의 드롭다운만 토글
+    const currentMenu = button.nextElementSibling;
+    if (currentMenu) {
+        currentMenu.classList.toggle('show');
+    }
+}
+
+// 화면 아무데나 누르면 열려있던 드롭다운 부드럽게 닫기
+document.addEventListener('click', () => {
+    document.querySelectorAll('.review-menu-dropdown').forEach(menu => menu.classList.remove('show'));
+});
 
 async function fetchMyReservations(userId) {
     const apiUrl = `http://localhost:8080/api/reservations/me?user_id=${userId}`;
