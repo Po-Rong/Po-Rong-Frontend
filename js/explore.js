@@ -14,6 +14,22 @@ let tempSelectedItems = [];
 const SEOUL_SUB_REGIONS = ["강남/서초", "성수", "여의도", "용산", "잠실", "홍대/신촌"];
 
 document.addEventListener("DOMContentLoaded", () => {
+    // 홈 화면 카테고리 연동 파라미터 수신
+    const urlParams = new URLSearchParams(window.location.search);
+    const paramCategory = urlParams.get("category"); // 주소창에서 category 키값 추출
+
+    if (paramCategory) {
+        // categories 배열에 홈에서 누른 카테고리 명을 강제 주입
+        currentFilters.categories = [paramCategory];
+
+        // 상단 카테고리 메인 칩을 찾아 활성화 스타일을 입히고 카테고리 1로 텍스트를 바꿈
+        const categoryMainChip = document.getElementById("chip-category");
+        if (categoryMainChip) {
+            categoryMainChip.textContent = `카테고리 1`;
+            categoryMainChip.classList.add("active");
+        }
+    }
+
     // 최초 전체 로드
     fetchFilteredPopups();
 
@@ -158,7 +174,7 @@ async function fetchFilteredPopups() {
 
             const cardHtml = `
                 <div class="popup-card leisure-card" data-popup-id="${popup.id}">
-                    <div class="card-image-wrap" onclick="location.href='/pages/detail.html?id=${popup.id}'" style="cursor:pointer;">
+                    <div class="card-image-wrap" onclick="location.href='/pages/popup-detail.html?id=${popup.id}'" style="cursor:pointer;">
                         <img src="${popup.mainImageUrl}" alt="${popup.title} 썸네일" class="card-thumb" />
                     </div>
                     <button class="wish-btn ${activeClass}" aria-label="찜하기" onclick="toggleWish(${popup.id}, this)">
@@ -167,7 +183,7 @@ async function fetchFilteredPopups() {
                     <div class="card-body-wrap">
                         <div class="card-info">
                             ${statusBadgeHtml}
-                            <h3 class="card-title" onclick="location.href='/pages/detail.html?id=${popup.id}'" style="cursor:pointer;">${popup.title}</h3>
+                            <h3 class="card-title" onclick="location.href='/pages/popup-detail.html?id=${popup.id}'" style="cursor:pointer;">${popup.title}</h3>
                             <p class="card-location">${popup.regionName}</p>
                             <p class="card-date">${formattedStartDate} - ${formattedEndDate}</p>
                             
@@ -350,3 +366,4 @@ function closeModal() {
     tempSelectedItems = [];
     activeModalType = "";
 }
+

@@ -38,7 +38,7 @@ async function fetchTrendPopups() {
 
             const cardHtml = `
                 <div class="popup-card trend-card" data-popup-id="${popup.id}">
-                    <div class="card-image-wrap">
+                    <div class="card-image-wrap" onclick="location.href='/pages/popup-detail.html?id=${popup.id}'">
                         <img src="${popup.mainImageUrl}" alt="${popup.title} 썸네일" class="card-thumb" />
                         <div class="gradient-overlay"></div>
                         <div class="crown-badge rank-${rank}"></div>
@@ -87,7 +87,7 @@ async function fetchLeisurePopups() {
 
             const cardHtml = `
                 <div class="popup-card leisure-card" data-popup-id="${popup.id}">
-                    <div class="card-image-wrap">
+                    <div class="card-image-wrap" onclick="location.href='/pages/popup-detail.html?id=${popup.id}'">
                         <img src="${popup.mainImageUrl}" alt="${popup.title} 썸네일" class="card-thumb" />
                     </div>
                     <button class="wish-btn ${activeClass}" aria-label="찜하기" onclick="toggleWish(${popup.id || popup.popupId}, this)">
@@ -137,7 +137,7 @@ async function fetchUpcomingPopups() {
 
             const cardHtml = `
                 <div class="popup-card upcoming-card" data-popup-id="${popup.id}">
-                    <div class="card-image-wrap">
+                    <div class="card-image-wrap" onclick="location.href='/pages/popup-detail.html?id=${popup.id}'">
                         <img src="${popup.mainImageUrl}" alt="${popup.title} 썸네일" class="card-thumb" />
                         <div class="status-badge new-status"></div>
                     </div>
@@ -160,4 +160,9 @@ async function fetchUpcomingPopups() {
         console.error("오픈 예정 팝업 조회 중 치명적 실패: ", error);
         upcomingScrollContainer.innerHTML = `<p class="error-msg">팝업 정보를 불러오지 못했습니다.</p>`;
     }
+}
+
+// 홈에서 카테고리 클릭 시 찾기 페이지로 이동
+function navigateToExploreWithCategory(categoryName) {
+    window.location.href = `/pages/explore.html?category=${encodeURIComponent(categoryName)}`;
 }
