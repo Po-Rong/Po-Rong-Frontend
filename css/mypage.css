@@ -1,37 +1,17 @@
 /* ==========================================================================
-   PORONG - 마이페이지(mypage.css) 스타일 정의
+   PORONG - 마이페이지(mypage.css) 스타일 정의 (Refactored)
    ========================================================================== */
 
-/* 디자인 시스템 변수 정의 */
-:root {
-    --primary-color: #9C8CF2;
-    --primary-hover: #8A7AE0;
-    --primary-light: #ECE9FC;
-
-    --accent-yellow: #FAF2D6;
-    --accent-yellow-text: #DFA426;
-
-    --bg-light: #F9F9FB;
-    --text-main: #333333;
-    --text-muted: #757575;
-    --border-color: #E2E2E8;
-
-    --badge-open-bg: #EAFDF2;
-    --badge-open-text: #17A24B;
-}
-
-/* 메인 컨테이너 레이아웃 */
+/* 1. 메인 컨테이너 레이아웃 */
 .mypage-main {
     max-width: 1024px;
     width: 100%;
     margin: 0 auto;
-    padding: 40px 20px;
-    background-color: #FFFFFF;
+    padding: 40px var(--space-md);
+    background-color: var(--color-white);
 }
 
-/* ==========================================================================
-   1. 프로필 영역 (Profile Section)
-   ========================================================================== */
+/* 2. 프로필 영역 (Profile Section) */
 .profile-section {
     display: flex;
     flex-direction: column;
@@ -45,57 +25,63 @@
     position: relative;
     width: 120px;
     height: 120px;
-    margin-bottom: 16px;
+    margin-bottom: var(--space-md);
 }
 
 .profile-img {
     width: 100%;
     height: 100%;
-    border-radius: 50%;
+    border-radius: var(--radius-full);
     background: linear-gradient(135deg, #FFE3EC 0%, #F5E3FF 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 4px solid #FFFFFF;
+    border: 4px solid var(--color-white);
     box-shadow: 0 4px 12px rgba(156, 140, 242, 0.15);
     overflow: hidden;
+}
+
+.profile-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .profile-img svg {
     width: 70px;
     height: 70px;
-    fill: #9C8CF2;
+    fill: var(--color-primary-dark);
 }
 
 .profile-name {
     font-size: 24px;
-    font-weight: 700;
-    color: var(--text-main);
-    margin-bottom: 12px;
+    font-weight: var(--weight-bold);
+    color: var(--color-text-main);
+    margin-bottom: var(--space-sm);
 }
 
 .btn-change-nickname {
-    background-color: #ECE9FC;
-    color: var(--primary-color);
+    background-color: var(--color-primary-light2);
+    color: var(--color-primary-dark);
     border: none;
     padding: 8px 18px;
-    border-radius: 20px;
+    border-radius: var(--radius-full);
     font-size: 14px;
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
     cursor: pointer;
     transition: all 0.2s ease;
-    margin-bottom: 16px;
+    margin-bottom: var(--space-md);
 }
 
 .btn-change-nickname:hover {
-    background-color: #DDDAF5;
+    background-color: var(--color-primary-light1);
     transform: translateY(-1px);
 }
 
 .profile-bio {
     font-size: 14px;
     line-height: 1.6;
-    color: var(--text-muted);
+    color: var(--color-text-secondary);
     max-width: 400px;
     margin: 0 auto;
 }
@@ -103,13 +89,11 @@
 .profile-email {
     display: block;
     margin-top: 6px;
-    font-weight: 500;
+    font-weight: var(--weight-medium);
     color: #888898;
 }
 
-/* ==========================================================================
-   2. 활동 카운터 (Activity Counters)
-   ========================================================================== */
+/* 3. 활동 카운터 (Activity Counters) */
 .activity-counters {
     display: flex;
     justify-content: center;
@@ -140,22 +124,17 @@
     align-items: center;
     justify-content: center;
     width: 64px;
-
     height: 64px;
-    border-radius: 18px;
-
-    margin-bottom: 12px;
-    box-shadow: none;
-
+    border-radius: var(--radius-xl);
+    margin-bottom: var(--space-sm);
     transition: transform 0.2s;
-    padding: 16px;
+    padding: var(--space-md);
     gap: 10px;
     align-self: stretch;
 }
 
 .counter-card.wishlist .counter-icon-box {
-    background-color: #F1EDFE;
-
+    background-color: var(--color-primary-light2);
 }
 
 .counter-card.reviews .counter-icon-box {
@@ -163,13 +142,13 @@
 }
 
 .counter-card.wishlist .counter-icon-box svg {
-    fill: var(--primary-color);
+    fill: var(--color-primary-dark);
     width: 28px;
     height: 28px;
 }
 
 .counter-card.reviews .counter-icon-box svg {
-    stroke: var(--accent-yellow-text);
+    stroke: #DFA426;
     fill: none;
     width: 26px;
     height: 26px;
@@ -177,26 +156,23 @@
 
 .counter-text {
     font-size: 14px;
-    font-weight: 500;
-    color: var(--text-main);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-main);
 }
 
 .counter-value {
     font-size: 14px;
-    font-weight: 700;
+    font-weight: var(--weight-bold);
     margin-left: 2px;
 }
 
 .activity-divider {
     width: 1px;
     height: 64px;
-    /* 아이콘 박스 높이와 매칭 */
-    background-color: var(--border-color);
+    background-color: var(--color-border-default);
 }
 
-/* ==========================================================================
-   3. 나의 키링 도감 (My Keyring Book)
-   ========================================================================== */
+/* 4. 나의 키링 도감 (My Keyring Book) */
 .keyring-book-section {
     display: flex;
     flex-direction: column;
@@ -207,16 +183,16 @@
     max-width: 956px;
     padding: 30px;
     box-sizing: border-box;
-    border-radius: 16px;
-    border: 1px solid var(--Primary-Dark-Purple, #9C8CF2);
-    background: var(--White-White, #FFF);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-primary-dark);
+    background: var(--color-white);
     margin: 0 auto;
 }
 
 .keyring-book-title {
     margin: 0;
     font-size: 20px;
-    color: var(--Text-Main, #333);
+    color: var(--color-text-main);
 }
 
 .keyring-grid {
@@ -238,13 +214,10 @@
 
 .keyring-circle.empty-state {
     width: 122px;
-    /* background-color: #F8F9FA; */
-    width: 122px;
     height: 138px;
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
 
 .keyring-text-group {
@@ -256,11 +229,11 @@
 
 .keyring-tag {
     padding: 6px 16px;
-    border-radius: 20px;
+    border-radius: var(--radius-full);
     border: 1px solid #E5E7EB;
-    background: #FFF;
+    background: var(--color-white);
     font-size: 13px;
-    font-weight: 500;
+    font-weight: var(--weight-medium);
     color: #6B7280;
 }
 
@@ -269,10 +242,7 @@
     color: #9CA3AF;
 }
 
-
-/* ==========================================================================
-   4. 탭 메뉴 및 카드 그리드 (Tab Menu & Card Grid)
-   ========================================================================== */
+/* 5. 탭 메뉴 및 카드 그리드 (Tab Menu & Card Grid) */
 .tab-section {
     display: flex;
     padding: 20px 10px;
@@ -280,8 +250,7 @@
     align-items: flex-start;
     gap: 20px;
     align-self: stretch;
-    background: var(--White-White, #FFF);
-
+    background: var(--color-white);
     width: 100%;
     max-width: 956px;
     margin: 0 auto;
@@ -299,14 +268,11 @@
     justify-content: center;
     align-items: center;
     flex: 1 0 0;
-
     color: #888888;
     text-align: center;
-    font-family: "Noto Sans KR", sans-serif;
     font-size: 20px;
-    font-weight: 500;
+    font-weight: var(--weight-medium);
     letter-spacing: -0.8px;
-
     background: transparent;
     border: none;
     border-bottom: 2px solid #E5E7EB;
@@ -315,8 +281,8 @@
 }
 
 .tab-btn.active {
-    color: var(--Text-Main, #4C4C4C);
-    font-weight: 700;
+    color: var(--color-text-main);
+    font-weight: var(--weight-bold);
     border-bottom: 2px solid #333333;
 }
 
@@ -324,21 +290,6 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
-}
-
-.popup-card {
-    display: flex;
-    flex-direction: column;
-    background-color: #FFFFFF;
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
-    cursor: pointer;
-}
-
-.popup-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(156, 140, 242, 0.08);
 }
 
 .popup-poster-placeholder {
@@ -350,9 +301,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-radius: 10px;
+    border-radius: var(--radius-sm);
     overflow: hidden;
-    margin-bottom: 12px;
+    margin-bottom: var(--space-sm);
     box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.02);
 }
 
@@ -373,9 +324,9 @@
     width: 100%;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0) 100%);
     padding: 30px 10px 10px;
-    color: #FFFFFF;
+    color: var(--color-white);
     font-size: 12px;
-    font-weight: 700;
+    font-weight: var(--weight-bold);
     text-align: center;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
@@ -397,45 +348,37 @@
 
 .badge-open {
     display: inline-block;
-    background-color: var(--badge-open-bg);
-    color: var(--badge-open-text);
+    background-color: #EAFDF2;
+    color: #17A24B;
     padding: 3px 8px;
-    border-radius: 4px;
+    border-radius: var(--radius-xs);
     font-size: 11px;
-    font-weight: 700;
-    margin-bottom: 8px;
-}
-
-.popup-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text-main);
-    line-height: 1.4;
-    margin-bottom: 4px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    font-weight: var(--weight-bold);
+    margin-bottom: var(--space-xs);
 }
 
 .popup-loc,
 .popup-date {
     font-size: 12px;
-    color: var(--text-muted);
+    color: var(--color-text-secondary);
     margin-bottom: 2px;
 }
 
-/* ==========================================================================
-   5. 예약 섹션 (Timeline)
-   ========================================================================== */
+/* 6. 예약 섹션 (Timeline) */
 .reservation-section {
     padding: 20px;
-    background: #FFFFFF;
+    background: var(--color-white);
+    max-width: 956px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .reservation-title {
     font-size: 20px;
     margin-bottom: 20px;
+    font-weight: var(--weight-bold);
+    color: var(--color-text-main);
 }
 
 .timeline-container {
@@ -468,59 +411,60 @@
     top: 6px;
     width: 24px;
     height: 24px;
-    border-radius: 50%;
+    border-radius: var(--radius-full);
     background-color: #C8BFF9;
-    border: 3px solid #FFFFFF;
+    border: 3px solid var(--color-white);
     z-index: 2;
 }
 
 .timeline-date {
     font-size: 16px;
-    font-weight: 700;
-    color: var(--text-muted);
-    margin-bottom: 12px;
+    font-weight: var(--weight-bold);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-sm);
 }
 
 .timeline-card {
-    background-color: #FFFFFF;
-    border-radius: 12px;
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
     padding: 16px 20px;
     display: inline-flex;
     flex-direction: column;
     min-width: 320px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    border: 1px solid var(--color-border-default);
 }
 
 .timeline-card-title {
     font-size: 20px;
-    font-weight: 500;
-    color: var(--text-muted);
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
     margin-bottom: 4px;
 }
 
 .timeline-card-time {
     font-size: 16px;
-    font-weight: 500;
-    color: var(--text-muted);
-    margin-bottom: 12px;
+    font-weight: var(--weight-medium);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-sm);
 }
 
 .btn-reservation-action {
     align-self: flex-start;
-    background-color: #FFFFFF;
-    color: var(--primary-color);
-    border: 1.5px solid var(--primary-color);
+    background-color: var(--color-white);
+    color: var(--color-primary-dark);
+    border: 1.5px solid var(--color-primary-dark);
     padding: 6px 16px;
     border-radius: 18px;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
 .btn-reservation-action:hover {
-    background-color: var(--primary-color);
-    color: #FFFFFF;
+    background-color: var(--color-primary-dark);
+    color: var(--color-white);
 }
 
 .btn-reservation-action:disabled {
@@ -534,9 +478,7 @@
     color: var(--color-text-secondary);
 }
 
-/* ==========================================================================
-   6. 닉네임 변경 모달 (Nickname Change Modal)
-   ========================================================================== */
+/* 7. 모달 공통 레이아웃 */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -559,8 +501,8 @@
 }
 
 .modal-container {
-    background-color: #FFFFFF;
-    border-radius: 20px;
+    background-color: var(--color-white);
+    border-radius: var(--radius-xl);
     width: 90%;
     max-width: 440px;
     padding: 32px 24px 24px 24px;
@@ -583,8 +525,9 @@
 
 .modal-title {
     font-size: 18px;
-    font-weight: 700;
-    color: var(--text-main);
+    font-weight: var(--weight-bold);
+    color: var(--color-text-main);
+    margin: 0;
 }
 
 .btn-close-modal {
@@ -600,7 +543,7 @@
 }
 
 .btn-close-modal:hover {
-    color: #4B5563;
+    color: var(--color-text-main);
 }
 
 .modal-body {
@@ -611,10 +554,10 @@
 .input-nickname {
     width: 100%;
     padding: 14px 16px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--color-border-default);
     border-radius: 10px;
     font-size: 15px;
-    color: var(--text-main);
+    color: var(--color-text-main);
     margin-bottom: 24px;
     transition: border-color 0.2s, box-shadow 0.2s;
     outline: none;
@@ -625,35 +568,32 @@
 }
 
 .input-nickname:focus {
-    border-color: var(--primary-color);
+    border-color: var(--color-primary-dark);
     box-shadow: 0 0 0 3px rgba(156, 140, 242, 0.15);
 }
 
 .btn-confirm-nickname {
     width: 100%;
-    background-color: var(--primary-color);
-    color: #FFFFFF;
+    background-color: var(--color-primary-dark);
+    color: var(--color-white);
     border: none;
     padding: 14px;
     border-radius: 10px;
     font-size: 16px;
-    font-weight: 700;
+    font-weight: var(--weight-bold);
     cursor: pointer;
     transition: background-color 0.2s, transform 0.1s;
 }
 
 .btn-confirm-nickname:hover {
-    background-color: var(--primary-hover);
+    background-color: var(--color-primary-hover, #8A7AE0);
 }
 
 .btn-confirm-nickname:active {
     transform: scale(0.98);
 }
 
-/* ==========================================================================
-   7. 모달
-   ========================================================================== */
-/* 모달 레이아웃 */
+/* 8. 예약 확인 조회 모달 */
 .modal {
     display: none;
     position: fixed;
@@ -672,45 +612,28 @@
 }
 
 .modal-content {
-    background: #FFF;
-    border-radius: 16px;
+    background: var(--color-white);
+    border-radius: var(--radius-xl);
     padding: 40px 30px;
     width: 490px;
     display: flex;
     flex-direction: column;
 }
 
-.close-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    cursor: pointer;
-    border: none;
-    background: none;
-}
-
-.modal-title {
-    font-size: 20px;
-    font-weight: 500;
-    color: #4C4C4C;
-    margin: 0;
-}
-
-
 .popup-info-box {
     display: flex;
     align-items: center;
     gap: 15px;
-    background: #F9F8FF;
+    background: var(--color-primary-light2);
     padding: 10px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     margin-bottom: 15px;
 }
 
 .popup-thumb {
     width: 56px;
     height: 56px;
-    border-radius: 7.61px;
+    border-radius: var(--radius-sm);
     background-color: #D9D9D9;
     object-fit: cover;
 }
@@ -731,58 +654,31 @@
     gap: 10px;
     flex: 1 0 0;
     font-size: 15px;
-    font-style: normal;
-    font-weight: 500;
+    font-weight: var(--weight-medium);
 }
 
 .btn-edit {
-    border-radius: 4px;
-    border: 1px solid var(--Border-default, #DDD);
-    background: var(--White-Off-White, #F8F8F8);
+    border-radius: var(--radius-xs);
+    border: 1px solid var(--color-border-default);
+    background: var(--color-offwhite);
+    color: var(--color-text-main);
+    cursor: pointer;
 }
 
 .btn-cancel {
-    border-radius: 4px;
-    background: var(--Primary-Dark-Purple, #9C8CF2);
-    border: 1px solid var(--Border-default, #DDD);
-    color: white;
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    /* 양 끝으로 배치 */
-    align-items: center;
-    /* 세로 중앙 정렬 */
-    margin-bottom: 20px;
-}
-
-.btn-close-modal {
-    position: static;
-    /* absolute에서 static으로 변경하여 flex 흐름에 따르게 함 */
+    border-radius: var(--radius-xs);
+    background: var(--color-primary-dark);
+    border: 1px solid var(--color-border-default);
+    color: var(--color-white);
     cursor: pointer;
-    border: none;
-    background: none;
-    padding: 0;
-    color: #4C4C4C;
-}
-
-.btn-close-modal:hover {
-    color: #000;
-}
-
-.modal-title {
-    margin: 0;
 }
 
 .reservation-info p {
     margin: 0 0 10px 0;
+    color: var(--color-text-main);
 }
 
-/* ==========================================================================
-   8. 재사용 리뷰 카드 css 조절
-   ========================================================================== */
-
+/* 9. 나의 후기 카드 재사용 및 미세 오버라이드 */
 #reviews-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -796,28 +692,11 @@
     width: 100%;
     max-width: 380px;
     margin: 0 auto;
-}
-
-.review-attach-box {
-    width: 266px;
-    height: 144px;
-    margin-top: 10px;
-    overflow: hidden;
-    border-radius: 8px;
-    background-color: white;
-}
-
-.review-attached-img {
-    width: 266px;
-    height: 144px;
-    object-fit: cover;
-    border-radius: 8px;
-    display: block;
-    margin-top: 10px;
+    height: auto; /* 마이페이지에서는 본문 높이 가변 */
 }
 
 /* ==========================================================================
-   반응형 미디어 쿼리 (Responsive Styles)
+   10. 반응형 미디어 쿼리 (Responsive Styles)
    ========================================================================== */
 @media screen and (max-width: 1023px) {
     .mypage-main {
@@ -827,7 +706,7 @@
     }
 
     .activity-counters {
-        gap: 40px; /* PC의 120px에서 모바일용 축소 */
+        gap: 40px;
     }
 
     .keyring-book-section {
@@ -836,7 +715,7 @@
     }
 
     .keyring-grid {
-        flex-wrap: wrap; /* 모바일에서 겹침 방지 */
+        flex-wrap: wrap;
         gap: 20px;
         justify-content: center;
     }
@@ -847,12 +726,12 @@
     }
 
     .grid-container {
-        grid-template-columns: repeat(2, 1fr) !important; /* PC 4열 -> 모바일/태블릿 2열 */
+        grid-template-columns: repeat(2, 1fr) !important;
         gap: 16px;
     }
 
     #reviews-grid {
-        grid-template-columns: repeat(2, 1fr) !important; /* PC 3열 -> 모바일/태블릿 2열 */
+        grid-template-columns: repeat(2, 1fr) !important;
         gap: 16px;
     }
 
@@ -882,10 +761,10 @@
     }
 
     .grid-container {
-        grid-template-columns: 1fr !important; /* 모바일 1열 */
+        grid-template-columns: 1fr !important;
     }
 
     #reviews-grid {
-        grid-template-columns: 1fr !important; /* 모바일 1열 */
+        grid-template-columns: 1fr !important;
     }
 }

@@ -1,3 +1,8 @@
+/* ==========================================================================
+   PORONG - 예약 페이지(reservation.css) 스타일 정의 (Refactored)
+   ========================================================================== */
+
+/* 1. 페이지 레이아웃 및 본문 컨테이너 */
 .reservation-wrapper {
     width: 100%;
     min-height: calc(100vh - 70px);
@@ -14,7 +19,7 @@
     gap: var(--space-lg);
 }
 
-/* 1. 상단 포스터 이미지 폼 */
+/* 2. 상단 포스터 이미지 영역 */
 .section-reserve-poster {
     width: 100%;
     aspect-ratio: 924 / 250;
@@ -29,11 +34,11 @@
     object-fit: cover;
 }
 
-/* 2. 요약 영역 */
+/* 3. 팝업 요약 요약 카드 */
 .section-reserve-summary {
     width: 100%;
-    background-color: var(--color-white, #ffffff);
-    border-radius: var(--radius-sm, 8px);
+    background-color: var(--color-white);
+    border-radius: var(--radius-sm);
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -42,7 +47,7 @@
 
 .status-tag-row {
     display: flex;
-    gap: var(--space-xs, 8px);
+    gap: var(--space-xs);
     margin-bottom: 0;
 }
 
@@ -50,10 +55,8 @@
     margin-top: 4px;
     margin-bottom: 0;
     color: var(--color-text-main);
-    font-family: "Noto Sans KR";
     font-size: 20px;
-    font-style: var(--weight-medium);
-    font-weight: 500;
+    font-weight: var(--weight-medium);
     line-height: normal;
     letter-spacing: -0.8px;
 }
@@ -69,40 +72,34 @@
     justify-content: center;
     align-items: flex-end;
     gap: 14px;
-    background: #F1F5F9;
+    background: var(--color-category-bg);
 }
 
 .popup-location-text,
 .popup-period-text {
     line-height: normal;
     color: var(--color-text-main);
-    font-family: "Noto Sans KR";
     font-size: 16px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
+    font-weight: var(--weight-regular);
     letter-spacing: -0.6px;
-    margin-bottom: px;
 }
 
 .popup-desc-text {
-    font-family: "Noto Sans KR", sans-serif;
     font-size: 14px;
-    color: var(--color-text-main, #4C4C4C);
+    color: var(--color-text-main);
     line-height: 1.6;
     letter-spacing: -0.5px;
     margin-top: 8px;
 }
 
-/* 구분선 */
 .reserve-divider {
     width: 100%;
     border: none;
-    border-top: 1px solid #EAEAEA;
+    border-top: 1px solid var(--color-border-default);
     margin: 10px 0;
 }
 
-/* 3. 인풋 정보 폼 */
+/* 4. 방문객 인풋 폼 영역 */
 .section-visitor-inputs {
     width: 100%;
     display: flex;
@@ -121,13 +118,12 @@
     font-weight: var(--weight-medium);
     color: var(--color-text-main);
     font-size: 16px;
-    font-style: normal;
     line-height: normal;
 }
 
 .input-row input {
-    border: 1px solid #222222;
-    border-radius: var(--radius-xs);
+    border: 1px solid var(--color-text-secondary);
+    border-radius: var(--radius-sm);
     font-size: 14px;
     outline: none;
     display: flex;
@@ -135,15 +131,13 @@
     align-items: center;
     gap: 10px;
     flex: 1 0 0;
-    border-radius: 8px;
-    border: 1px solid var(--color-text-secondary);
 }
 
 .input-row input:focus {
-    border-color: #7B61FF;
+    border-color: var(--color-primary-dark);
 }
 
-/* 4. 달력 및 시간 선택 대블록 */
+/* 5. 날짜/시간 선택 영역 */
 .section-datetime-picker {
     width: 100%;
     background-color: var(--color-white);
@@ -160,10 +154,9 @@
     font-weight: var(--weight-medium);
 }
 
-/* 미니 달력 레이아웃 */
 .calendar-box {
     width: 100%;
-    border: 1px solid #EAEAEA;
+    border: 1px solid var(--color-border-default);
     border-radius: var(--radius-sm);
     padding: var(--space-md);
 }
@@ -198,7 +191,7 @@
 .calendar-table th {
     font-size: 13px;
     font-weight: var(--weight-medium);
-    color: #777777;
+    color: var(--color-text-secondary);
     padding-bottom: var(--space-sm);
     text-align: center;
 }
@@ -210,12 +203,11 @@
     padding-top: 6px;
     font-size: 14px;
     font-weight: var(--weight-medium);
-    color: #333333;
+    color: var(--color-text-main);
     position: relative;
     cursor: pointer;
 }
 
-/* 날짜별 특수 상태 스타일링 */
 .calendar-table td.muted {
     color: #CCCCCC;
 }
@@ -240,7 +232,7 @@
 .today-tag {
     display: block;
     font-size: 9px;
-    color: #2ECC71;
+    color: var(--color-sub-green);
     font-weight: var(--weight-bold);
 }
 
@@ -254,15 +246,14 @@
     color: #AAAAAA;
 }
 
-/* 시안 속 녹색 활성화 선택 날짜 */
 .calendar-table td.active-day {
-    background-color: #00A862;
+    background-color: var(--color-sub-green);
     color: var(--color-white);
     border-radius: var(--radius-xs);
     font-weight: var(--weight-bold);
 }
 
-/* 시간 슬롯 구역 */
+/* 6. 시간 슬롯 선택 그리드 */
 .time-slot-container {
     display: flex;
     flex-direction: column;
@@ -291,7 +282,6 @@
     border-radius: var(--radius-lg);
     border: 1px solid var(--color-border-default);
     background: var(--color-white);
-    font-family: "Noto Sans KR", sans-serif;
     font-size: 14px;
     font-weight: var(--weight-regular);
     color: var(--color-text-main);
@@ -307,13 +297,11 @@
 .btn-time-slot.selected {
     border-color: var(--color-primary-dark) !important;
     background-color: var(--color-primary-light2) !important;
-    /* 연보라 배경 */
     color: var(--color-primary-dark) !important;
-    /* 보라색 글씨 */
     font-weight: var(--weight-bold) !important;
 }
 
-/* 5. 하단 버튼 바 */
+/* 7. 하단 버튼 구역 */
 .fixed-submit-container {
     width: 100%;
     max-width: 924px;
@@ -340,7 +328,7 @@
 }
 
 /* ==========================================================================
-   반응형 미디어 쿼리 (Responsive Styles)
+   8. 반응형 미디어 쿼리 (Responsive Styles)
    ========================================================================== */
 @media screen and (max-width: 1023px) {
     .reservation-container {
