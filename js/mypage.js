@@ -498,7 +498,7 @@ function openReservationModal(item) {
         </div>
         
         <div class="modal-actions">
-            <button class="btn-edit" onclick="location.href='/pages/edit-reservation.html?id=${item.id}'">예약 수정하기</button>
+            <button class="btn-edit" onclick="location.href='/pages/reservation.html?id=${item.popupId}?reservation_id=${item.id}'">예약 수정하기</button>
             <button class="btn-cancel" onclick="cancelReservation(${item.id}, ${userId})">예약 취소하기</button>
         </div>
     `;
