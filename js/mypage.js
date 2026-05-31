@@ -165,6 +165,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+    const reservationModal = document.getElementById('reservation-modal');
+    const btnCloseResModal = document.getElementById('btn-close-reservation-modal');
+
+    if (btnCloseResModal) {
+        btnCloseResModal.addEventListener('click', () => {
+            reservationModal.classList.remove('active');
+        });
+    }
 });
 
 async function fetchMyWishlist(userId) {
@@ -382,9 +390,9 @@ function renderMyReservations(dataList) {
         if (item.status === 'USED') {
             actionButtonHtml = `<button class="btn-reservation-action" onclick="location.href='/pages/review-write.html?popupId=${item.popupId}&reservationId=${item.id}'">후기 쓰기</button>`;
         } else if (item.status === 'CONFIRMED') {
-            actionButtonHtml = `<button class="btn-reservation-action" onclick="alert('예약 상세 확인 기능은 준비 중입니다.')">예약 확인하기</button>`;
+            actionButtonHtml = `<button class="btn-reservation-action" onclick="openReservationModal(${JSON.stringify(item).replace(/"/g, '&quot;')})">예약 확인하기</button>`;
         } else {
-            actionButtonHtml = `<button class="btn-reservation-action" disabled>예약 취소</button>`;
+            actionButtonHtml = `<button class="btn-reservation-action" disabled>예약 취소됨</button>`;
         }
 
         const html = `
@@ -470,4 +478,58 @@ function renderMyKeyrings(dataList) {
 
         grid.insertAdjacentHTML('beforeend', cardHtml);
     });
+}
+
+function openReservationModal(item) {
+    const detailInfo = document.getElementById('reservation-detail-info');
+    const thumbUrl = item.mainImageUrl || '/assets/images/dummies/thumb-dummy01.png';
+    const currentUser = JSON.parse(localStorage.getItem('loginUser'));
+    const userId = currentUser ? currentUser.userId : null;
+
+    detailInfo.innerHTML = `
+        <div class="popup-info-box">
+            <img src="${thumbUrl}" alt="팝업 이미지" class="popup-thumb" />
+            <span class="popup-title">${item.popupTitle}</span>
+        </div>
+        <div class="reservation-info">
+            <p><strong>${item.userName || '이름 없음'} 님</strong></p>
+            <p>전화번호: ${item.userPhone || '번호 없음'}</p>
+            <p>예약한 시간: ${item.reserveDate}</p>
+        </div>
+        
+        <div class="modal-actions">
+            <button class="btn-edit" onclick="location.href='/pages/reservation.html?id=${item.popupId}?reservation_id=${item.id}'">예약 수정하기</button>
+            <button class="btn-cancel" onclick="cancelReservation(${item.id}, ${userId})">예약 취소하기</button>
+        </div>
+    `;
+
+    document.getElementById('reservation-modal').classList.add('active');
+}
+
+async function cancelReservation(reservationId, userId) {
+    if (!confirm('정말 예약을 취소하시겠습니까?')) return;
+
+    const apiUrl = `http://localhost:8080/api/reservations/${reservationId}/cancel`;
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: userId // 로그인한 사용자의 ID 전달
+            })
+        });
+
+        if (response.ok) {
+            alert('예약이 성공적으로 취소되었습니다.');
+            location.reload(); // 페이지를 새로고침하여 상태 업데이트
+        } else {
+            alert('예약 취소에 실패했습니다. 다시 시도해 주세요.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('서버 오류가 발생했습니다.');
+    }
 }
