@@ -169,7 +169,7 @@ async function fetchFilteredPopups() {
             if (popup.status === "ongoing") {
                 statusBadgeHtml = `<span class="card-status is-running" style="margin-bottom: 4px; display: inline-block;">운영중</span>`;
             } else if (popup.status === "upcoming") {
-                statusBadgeHtml = `<span class="card-status is-upcoming" style="margin-bottom: 4px; display: inline-block;">오픈예정</span>`;
+                statusBadgeHtml = `<span class="card-status is-upcoming" style="margin-bottom: 4px; display: inline-block;">운영 예정</span>`;
             } else {
                 statusBadgeHtml = `<span class="card-status is-closed" style="margin-bottom: 4px; display: inline-block;">운영 마감</span>`;
             }
