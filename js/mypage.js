@@ -484,18 +484,22 @@ function renderMyKeyrings(dataList) {
     const grid = document.querySelector('.keyring-grid');
     if (!grid) return;
 
+    // 슬롯 규격 선언
     const keyringSlots = [
-        { tag: '팝업 새내기', desc: '리뷰 1회 작성' },
-        { tag: '팝업 기록자', desc: '리뷰 2회 작성' },
-        { tag: '취향 수집가', desc: '리뷰 3회 작성' },
-        { tag: '팝업 탐험가', desc: '리뷰 4회 작성' },
-        { tag: '팝업 요정', desc: '리뷰 5회 작성' }
+        { id: 1, tag: '팝업 새내기', desc: '리뷰 1회 작성' },
+        { id: 2, tag: '팝업 기록자', desc: '리뷰 2회 작성' },
+        { id: 3, tag: '취향 수집가', desc: '리뷰 3회 작성' },
+        { id: 4, tag: '팝업 탐험가', desc: '리뷰 4회 작성' },
+        { id: 5, tag: '팝업 요정', desc: '리뷰 5회 작성' }
     ];
 
     grid.innerHTML = '';
 
-    keyringSlots.forEach((slot, index) => {
-        const earnedKeyring = dataList[index];
+    keyringSlots.forEach((slot) => {
+        const earnedKeyring = dataList && Array.isArray(dataList)
+            ? dataList.find(item => Number(item.keyringId) === slot.id)
+            : null;
+
         let cardHtml = '';
 
         if (earnedKeyring) {
@@ -505,10 +509,9 @@ function renderMyKeyrings(dataList) {
                 imageUrl = imageUrl;
             } else if (imageUrl && imageUrl.startsWith("/")) {
                 imageUrl = `http://localhost:8080${imageUrl}`;
-            } else {
-                imageUrl = imageUrl;
             }
 
+            // 획득한 키링 카드 출력
             cardHtml = `
                 <div class="keyring-card">
                     <div class="keyring-img-box" style="width: 140px; height: 140px; display: flex; justify-content: center; align-items: center; margin: 0 auto;">
@@ -521,6 +524,7 @@ function renderMyKeyrings(dataList) {
                 </div>
             `;
         } else {
+            // 아직 획득하지 못한 잠금 슬롯 상태 유지
             cardHtml = `
                 <div class="keyring-card locked">
                     <div class="keyring-circle empty-state"></div>

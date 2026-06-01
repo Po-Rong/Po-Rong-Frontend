@@ -212,6 +212,10 @@
     gap: 10px;
 }
 
+.keyring-img-box {
+    padding-right: 20px;
+}
+
 .keyring-circle.empty-state {
     width: 122px;
     height: 138px;
