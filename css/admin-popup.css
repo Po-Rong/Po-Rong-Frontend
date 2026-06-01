@@ -167,6 +167,13 @@ body {
     justify-content: center;
 }
 
+#mainImagePreview .image-preview-wrap img {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+}
+
 /* ── 상세 이미지 미리보기 (여러 장) ── */
 #detailImagePreview {
     display: flex;
