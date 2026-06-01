@@ -75,10 +75,10 @@
 }
 
 .category-item {
-    flex: 0 0 70px;
+    flex: 0 0 80px;
     /* 가로 폭 70px 절대 유지 (찌그러짐 방지) */
-    width: 70px;
-    height: 75px;
+    width: 80px;
+    height: 80px;
 
     display: flex;
     flex-direction: column;
@@ -89,6 +89,11 @@
     gap: 6px;
     /* 아이콘과 글씨 사이의 미니 간격 */
     cursor: pointer;
+    border-radius: var(--radius-full);
+}
+
+.category-item:hover {
+    background-color: var(--color-primary-light2);
 }
 
 /* 카테고리 원형 이미지 규격 */
