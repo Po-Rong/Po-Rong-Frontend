@@ -4,7 +4,8 @@
 let selectedRating = 0;
 let selectedCongestion = "";
 let currentPopupId = null;
-let currentUserId = 1; // 추후 로그인 시스템과 연동 필요
+const loginUser = JSON.parse(localStorage.getItem("loginUser"));
+let currentUserId = loginUser ? loginUser.userId : null;
 
 document.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(window.location.search);

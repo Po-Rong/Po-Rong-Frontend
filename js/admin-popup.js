@@ -299,6 +299,18 @@ function registerPopup() {
         formGroup.appendChild(msg); // afterend → appendChild
         hasError = true;
     }
+
+    if (!reservationStartDate || !reservationEndDate) {
+        const formGroup = document
+            .getElementById("reservationStartDate")
+            .closest(".form-group");
+        const msg = document.createElement("p");
+        msg.className = "error-msg";
+        msg.textContent = "예약 일정을 입력해주세요.";
+        formGroup.appendChild(msg);
+        hasError = true;
+    }
+
     if (!mainImageFile) {
         const btn = document.querySelector(
             ".form-group > button[type='button']",
@@ -484,6 +496,11 @@ function editPopup() {
     const endDate = document.getElementById("endDate").value;
     const categoryId = document.getElementById("selectedCategory").value;
     const regionId = document.getElementById("selectedRegion").value;
+    const reservationStartDate = document.getElementById(
+        "reservationStartDate",
+    ).value;
+    const reservationEndDate =
+        document.getElementById("reservationEndDate").value;
 
     if (!title) {
         showError("popupTitle", "팝업 이름은 필수입니다.");
@@ -523,6 +540,16 @@ function editPopup() {
         formGroup.appendChild(msg); // afterend → appendChild
         hasError = true;
     }
+    if (!reservationStartDate || !reservationEndDate) {
+        const formGroup = document
+            .getElementById("reservationStartDate")
+            .closest(".form-group");
+        const msg = document.createElement("p");
+        msg.className = "error-msg";
+        msg.textContent = "예약 일정을 입력해주세요.";
+        formGroup.appendChild(msg);
+        hasError = true;
+    }
     if (!mainImageFile && !existingMainImageUrl) {
         const btn = document.querySelector(
             ".form-group > button[type='button']",
@@ -541,11 +568,6 @@ function editPopup() {
     }
 
     const user = JSON.parse(localStorage.getItem("loginUser"));
-    const reservationStartDate = document.getElementById(
-        "reservationStartDate",
-    ).value;
-    const reservationEndDate =
-        document.getElementById("reservationEndDate").value;
     const benefit = document.getElementById("popupBenefit").value.trim();
     const notice = document.getElementById("popupNotice").value.trim();
     const info = document.getElementById("popupInfo").value.trim();
@@ -593,11 +615,77 @@ function editPopup() {
         });
 }
 
-// 입력 시 에러 제거
+/* 입력 시 에러 제거 */
+
+// 제목 입력 시 에러 제거
 document.getElementById("popupTitle").addEventListener("input", () => {
     clearError("popupTitle");
 });
 
+// 대표 이미지 선택 시 에러 제거
+document.getElementById("mainImage").addEventListener("change", () => {
+    const btn = document.querySelector(".form-group > button[type='button']");
+    if (btn) {
+        btn.style.borderColor = "";
+        btn.style.color = "";
+        btn.classList.remove("input-error");
+    }
+});
+
+// 일정 입력 시 에러 제거
+document.getElementById("startDate").addEventListener("change", () => {
+    const formGroup = document
+        .getElementById("startDate")
+        .closest(".form-group");
+    const msg = formGroup.querySelector(".error-msg");
+    if (msg) msg.remove();
+});
+
+document.getElementById("endDate").addEventListener("change", () => {
+    const formGroup = document
+        .getElementById("startDate")
+        .closest(".form-group");
+    const msg = formGroup.querySelector(".error-msg");
+    if (msg) msg.remove();
+});
+
+document
+    .getElementById("reservationStartDate")
+    .addEventListener("change", () => {
+        const formGroup = document
+            .getElementById("reservationStartDate")
+            .closest(".form-group");
+        const msg = formGroup.querySelector(".error-msg");
+        if (msg) msg.remove();
+    });
+
+document.getElementById("reservationEndDate").addEventListener("change", () => {
+    const formGroup = document
+        .getElementById("reservationStartDate")
+        .closest(".form-group");
+    const msg = formGroup.querySelector(".error-msg");
+    if (msg) msg.remove();
+});
+
+// 카테고리 선택 시 에러 제거
+document.getElementById("categoryList").addEventListener("click", () => {
+    const formGroup = document
+        .getElementById("categoryList")
+        .closest(".form-group");
+    const msg = formGroup.querySelector(".error-msg");
+    if (msg) msg.remove();
+});
+
+// 지역 선택 시 에러 제거
+document.getElementById("regionList").addEventListener("click", () => {
+    const formGroup = document
+        .getElementById("regionList")
+        .closest(".form-group");
+    const msg = formGroup.querySelector(".error-msg");
+    if (msg) msg.remove();
+});
+
+// 주소 입력시 에러 제거
 document.getElementById("popupAddress").addEventListener("input", () => {
     clearError("popupAddress");
 });

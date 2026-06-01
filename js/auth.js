@@ -39,6 +39,10 @@ function login() {
                 }, 1500);
             } else {
                 showMsg("loginMsg", data.message, false);
+                document
+                    .getElementById("loginEmail")
+                    .classList.add("input-error");
+                document.getElementById("loginPw").classList.add("input-error");
             }
         })
         .catch(() => showMsg("loginMsg", "서버 오류", false));
