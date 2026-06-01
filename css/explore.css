@@ -23,6 +23,8 @@
 /* 상단 필터 칩 스타일 */
 .filter-chip-container {
     display: flex;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 12px;
 }
 
@@ -244,4 +246,27 @@
 
 .btn-action-reset:hover {
     background-color: var(--color-offwhite);
+}
+
+/* all 초기화 */
+.filter-master-reset-btn {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border-default);
+    color: var(--color-text-main);
+    font-size: 16px;
+    font-weight: var(--weight-regular);
+    padding: 12px 24px;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+    transition: all 0.2s ease;
+}
+
+.filter-master-reset-btn:hover {
+    background-color: var(--color-offwhite);
+    border-color: var(--color-text-secondary);
+    color: var(--color-text-main);
 }
