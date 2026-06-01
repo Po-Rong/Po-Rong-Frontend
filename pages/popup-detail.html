@@ -130,6 +130,12 @@
             </section>
             <hr class="detail-divider" />
 
+            <section class="section-card-block" id="map-section" style="display: none;">
+                <h3 class="block-title">찾아오는 길</h3>
+                <div id="map" style="width: 100%; height: 450px; border-radius: 12px; margin-top: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #eee;"></div>
+            </section>
+            <hr class="detail-divider" id="map-divider" style="display: none;" />
+
             <section class="section-detail-content">
                 <h3 class="detail-sub-title">상세 이미지</h3>
                 <div class="long-image-wrapper"></div>
@@ -155,8 +161,11 @@
             </div>
         </div>
     </main>
-    <script src="/js/index.js"></script>
+    <!-- Kakao Map API SDK & 전용 연동 Script -->
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=1cebdf52cbf5671e400707f8a2b06e4d"></script>
+    <script src="/js/kakao-map.js"></script>
 
+    <script src="/js/index.js"></script>
     <script src="/js/popup-detail.js"></script>
 </body>
 
