@@ -445,7 +445,14 @@ function renderMyReservations(dataList) {
             }
 
             if (isPassed) {
-                actionButtonHtml = `<button class="btn-reservation-action" onclick="location.href='/pages/review-write.html?popupId=${item.popupId}&reservationId=${item.id}'">후기 쓰기</button>`;
+                // 백엔드에서 오는 isReviewed 값이 true인지 확인
+                if (item.isReviewed === true) {
+                    // 이미 쓴 거면 후기 완료 버튼으로 바꾸고 disabled 처리하여 클릭을 막음
+                    actionButtonHtml = `<button class="btn-reservation-action" disabled style="background-color: var(--color-offwhite); color: var(--color-text-secondary); cursor: not-allowed;">후기 완료</button>`;
+                } else {
+                    // 아직 안 썼으면 정상적으로 후기 쓰기 버튼
+                    actionButtonHtml = `<button class="btn-reservation-action" onclick="location.href='/pages/review-write.html?popupId=${item.popupId}&reservationId=${item.id}'">후기 쓰기</button>`;
+                }
             } else {
                 actionButtonHtml = `<button class="btn-reservation-action" onclick="openReservationModal(${JSON.stringify(item).replace(/"/g, '&quot;')})">예약 확인하기</button>`;
             }
