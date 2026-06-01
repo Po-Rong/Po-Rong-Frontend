@@ -5,9 +5,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const currentPopupId = urlParams.get('popupId') || 11;
 
-    fetchReviewsData(currentPopupId);
+    // 기본 정렬 값: 최신순 (latest)
+    let currentSort = 'latest';
+    fetchReviewsData(currentPopupId, currentSort);
     initImageModal();
     initRatingPrompt(currentPopupId);
+
+    // 정렬 선택박스 이벤트 감지
+    const sortSelect = document.getElementById('review-sort-select');
+    if (sortSelect) {
+        sortSelect.addEventListener('change', (e) => {
+            currentSort = e.target.value;
+            fetchReviewsData(currentPopupId, currentSort);
+        });
+    }
 });
 
 /* ==========================================================================
@@ -15,8 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
    ========================================================================== */
 let currentPopupDetails = null;
 
-async function fetchReviewsData(popupId) {
-    const reviewsApiUrl = `http://localhost:8080/api/popups/${popupId}/reviews?sort=rating_high`;
+async function fetchReviewsData(popupId, sort = 'latest') {
+    const reviewsApiUrl = `http://localhost:8080/api/popups/${popupId}/reviews?sort=${sort}`;
     const popupDetailUrl = `http://localhost:8080/api/popups/${popupId}`
     const congestionApiUrl = `http://localhost:8080/api/popups/${popupId}/congestion`;
 
