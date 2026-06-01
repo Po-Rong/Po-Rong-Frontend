@@ -1,8 +1,4 @@
-/* ==========================================================================
-   PORONG - 팝업 상세페이지(popup-detail.css) 스타일 정의 (Refactored)
-   ========================================================================== */
-
-/* 1. 페이지 레이아웃 */
+/* 페이지 레이아웃 */
 .detail-wrapper {
     width: 100%;
     min-height: calc(100vh - 70px);
@@ -45,7 +41,7 @@
     object-fit: cover;
 }
 
-/* 2. 상세 타이틀 및 태그 라인 */
+/* 타이틀 및 라인 */
 .status-tag-row {
     display: flex;
     gap: var(--space-xs);
@@ -99,7 +95,7 @@
     margin: 20px 0;
 }
 
-/* 3. 팝업 메타 정보 리스트 */
+/* 팝업 메타 정보 리스트 */
 .meta-info-list {
     list-style: none;
     display: flex;
@@ -108,6 +104,7 @@
 
 .meta-row-layout {
     display: flex;
+    justify-content: space-between;
     align-items: flex-start;
     color: var(--color-text-main);
     font-size: 16px;
@@ -121,24 +118,27 @@
     width: 70px;
     font-weight: var(--weight-medium);
     flex-shrink: 0;
+    line-height: 1;
 }
 
 .meta-value-group {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
+    align-items: flex-end;
 }
 
 .meta-value {
     color: var(--color-text-main);
+    line-height: 1;
 }
 
 .time-sub-group {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    text-align: right;
+    text-align: left;
     font-size: 14px;
     color: var(--color-text-secondary);
     gap: 4px;
@@ -155,7 +155,7 @@
     gap: 4px;
 }
 
-/* 4. 정보 패널 카드 */
+/* 정보 패널 */
 .block-title {
     font-size: 18px;
     font-weight: var(--weight-bold);
@@ -204,7 +204,7 @@
     width: 480px;
 }
 
-/* 5. 타임테이블 스케줄 */
+/* 타임 테이블 */
 .table-scroll-container {
     width: 100%;
     overflow-x: auto;
@@ -352,14 +352,12 @@
     font-size: 20px;
 }
 
-/* 7. 팁: 본문 맨 밑이 고정 바에 가려지지 않도록 body에 바닥 여백을 줍니다. */
+/* 바닥 여백 */
 body {
     padding-bottom: 120px;
 }
 
-/* ==========================================================================
-   8. 반응형 미디어 쿼리 (Responsive Styles)
-   ========================================================================== */
+/* 반응형 */
 @media screen and (min-width: 1024px) {
     .section-main-poster {
         padding: 0;
