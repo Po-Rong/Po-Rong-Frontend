@@ -1,265 +1,183 @@
 <!-- 메인(홈) 페이지 -->
 <!doctype html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PORONG</title>
-    <link rel="stylesheet" href="/css/global.css" />
-    <link rel="stylesheet" href="/css/main.css" />
-  </head>
-  <body>
-    <!-- 공통 헤더 -->
-    <header class="common-header">
-      <div class="header-container">
-        <div class="header-logo">
-          <a href="/index.html" class="logo font-point">PORONG</a>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PORONG</title>
+  <link rel="stylesheet" href="/css/global.css" />
+  <link rel="stylesheet" href="/css/main.css" />
+</head>
+
+<body>
+  <!-- 공통 헤더 -->
+  <header class="common-header">
+    <div class="header-container">
+      <div class="header-logo">
+        <a href="/index.html" class="logo font-point">PORONG</a>
+      </div>
+
+      <input type="checkbox" id="menu-toggle" class="menu-checkbox" />
+
+      <nav class="nav-container">
+        <div class="center-menu">
+          <a href="/index.html">홈</a>
+          <a href="/pages/explore.html">찾기</a>
+          <a href="/pages/wishlist.html">찜</a>
+          <a href="/pages/mypage.html">마이포롱</a>
         </div>
+      </nav>
 
-        <input type="checkbox" id="menu-toggle" class="menu-checkbox" />
+      <div class="header-right-group">
+        <a href="/pages/search.html" class="search-btn" aria-label="검색">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </a>
 
-        <nav class="nav-container">
-          <div class="center-menu">
-            <a href="/index.html">홈</a>
-            <a href="/pages/explore.html">찾기</a>
-            <a href="/pages/wishlist.html">찜</a>
-            <a href="/pages/mypage.html">마이포롱</a>
-          </div>
-        </nav>
+        <a href="/pages/login.html" class="login-link">로그인</a>
 
-        <div class="header-right-group">
-          <a href="/pages/search.html" class="search-btn" aria-label="검색">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-          </a>
+        <label for="menu-toggle" class="hamburger-button">
+          <span></span>
+          <span></span>
+          <span></span>
+        </label>
+      </div>
+    </div>
+  </header>
 
-          <a href="/pages/login.html" class="login-link">로그인</a>
+  <!-- main 화면 -->
+  <main class="main-content">
+    <section class="hero-section">
+      <div class="hero-container">
+        <a href="/pages/explore.html">
+          <img src="/assets/images/banners/main-hero(2).png" alt="PORONG POP-UP STORE" class="hero-img" />
+        </a>
+      </div>
+    </section>
 
-          <label for="menu-toggle" class="hamburger-button">
-            <span></span>
-            <span></span>
-            <span></span>
-          </label>
+    <section class="category-section">
+      <div class="category-container">
+        <div class="category-item" onclick="navigateToExploreWithCategory('뷰티')" style="cursor: pointer">
+          <img src="/assets/images/categories/cat-beauty.png" alt="뷰티" />
+          <p>뷰티</p>
+        </div>
+        <div class="category-item" onclick="navigateToExploreWithCategory('패션')" style="cursor: pointer">
+          <img src="/assets/images/categories/cat-fashion.png" alt="패션" />
+          <p>패션</p>
+        </div>
+        <div class="category-item" onclick="navigateToExploreWithCategory('라이프')" style="cursor: pointer">
+          <img src="/assets/images/categories/cat-life.png" alt="라이프" />
+          <p>라이프</p>
+        </div>
+        <div class="category-item" onclick="navigateToExploreWithCategory('애니/캐릭터')" style="cursor: pointer">
+          <img src="/assets/images/categories/cat-character.png" alt="애니/캐릭터" />
+          <p>애니/캐릭터</p>
+        </div>
+        <div class="category-item" onclick="navigateToExploreWithCategory('문구 아트')" style="cursor: pointer">
+          <img src="/assets/images/categories/cat-stationery.png" alt="문구 아트" />
+          <p>문구 아트</p>
+        </div>
+        <div class="category-item" onclick="navigateToExploreWithCategory('키즈/반려동물')" style="cursor: pointer">
+          <img src="/assets/images/categories/cat-kids-pet.png" alt="키즈/반려동물" />
+          <p>키즈/반려동물</p>
+        </div>
+        <div class="category-item" onclick="navigateToExploreWithCategory('F&B')" style="cursor: pointer">
+          <img src="/assets/images/categories/cat-fnb.png" alt="F&B" />
+          <p>F&B</p>
+        </div>
+        <div class="category-item" onclick="navigateToExploreWithCategory('디지털/테크')" style="cursor: pointer">
+          <img src="/assets/images/categories/cat-tech.png" alt="디지털/테크" />
+          <p>디지털/테크</p>
+        </div>
+        <div class="category-item" onclick="navigateToExploreWithCategory('엔터테인먼트')" style="cursor: pointer">
+          <img src="/assets/images/categories/cat-entertainment.png" alt="엔터테인먼트" />
+          <p>엔터테인먼트</p>
+        </div>
+        <div class="category-item" onclick="navigateToExploreWithCategory('연예인/셀럽')" style="cursor: pointer">
+          <img src="/assets/images/categories/cat-celeb.png" alt="연예인/셀럽" />
+          <p>연예인/셀럽</p>
+        </div>
+        <div class="category-item" onclick="navigateToExploreWithCategory('기타')" style="cursor: pointer">
+          <img src="/assets/images/categories/cat-etc.png" alt="기타" />
+          <p>기타</p>
         </div>
       </div>
-    </header>
+    </section>
 
-    <!-- main 화면 -->
-    <main class="main-content">
-      <section class="hero-section">
-        <div class="hero-container">
-          <a href="/pages/explore.html">
-            <img
-              src="/assets/images/banners/main-hero.png"
-              alt="PORONG POP-UP STORE"
-              class="hero-img"
-            />
-          </a>
-        </div>
-      </section>
+    <!-- 인기 급상승 팝업 TOP 10 -->
+    <section class="scroll-section trend-section">
+      <div class="section-header">
+        <h2>찜하기 폭발! 인기 급상승 팝업 TOP 10</h2>
+      </div>
 
-      <section class="category-section">
-        <div class="category-container">
-          <div
-            class="category-item"
-            onclick="navigateToExploreWithCategory('뷰티')"
-            style="cursor: pointer"
-          >
-            <img src="/assets/images/categories/cat-beauty.png" alt="뷰티" />
-            <p>뷰티</p>
-          </div>
-          <div
-            class="category-item"
-            onclick="navigateToExploreWithCategory('패션')"
-            style="cursor: pointer"
-          >
-            <img src="/assets/images/categories/cat-fashion.png" alt="패션" />
-            <p>패션</p>
-          </div>
-          <div
-            class="category-item"
-            onclick="navigateToExploreWithCategory('라이프')"
-            style="cursor: pointer"
-          >
-            <img src="/assets/images/categories/cat-life.png" alt="라이프" />
-            <p>라이프</p>
-          </div>
-          <div
-            class="category-item"
-            onclick="navigateToExploreWithCategory('애니/캐릭터')"
-            style="cursor: pointer"
-          >
-            <img
-              src="/assets/images/categories/cat-character.png"
-              alt="애니/캐릭터"
-            />
-            <p>애니/캐릭터</p>
-          </div>
-          <div
-            class="category-item"
-            onclick="navigateToExploreWithCategory('문구 아트')"
-            style="cursor: pointer"
-          >
-            <img
-              src="/assets/images/categories/cat-stationery.png"
-              alt="문구 아트"
-            />
-            <p>문구 아트</p>
-          </div>
-          <div
-            class="category-item"
-            onclick="navigateToExploreWithCategory('키즈/반려동물')"
-            style="cursor: pointer"
-          >
-            <img
-              src="/assets/images/categories/cat-kids-pet.png"
-              alt="키즈/반려동물"
-            />
-            <p>키즈/반려동물</p>
-          </div>
-          <div
-            class="category-item"
-            onclick="navigateToExploreWithCategory('F&B')"
-            style="cursor: pointer"
-          >
-            <img src="/assets/images/categories/cat-fnb.png" alt="F&B" />
-            <p>F&B</p>
-          </div>
-          <div
-            class="category-item"
-            onclick="navigateToExploreWithCategory('디지털/테크')"
-            style="cursor: pointer"
-          >
-            <img
-              src="/assets/images/categories/cat-tech.png"
-              alt="디지털/테크"
-            />
-            <p>디지털/테크</p>
-          </div>
-          <div
-            class="category-item"
-            onclick="navigateToExploreWithCategory('엔터테인먼트')"
-            style="cursor: pointer"
-          >
-            <img
-              src="/assets/images/categories/cat-entertainment.png"
-              alt="엔터테인먼트"
-            />
-            <p>엔터테인먼트</p>
-          </div>
-          <div
-            class="category-item"
-            onclick="navigateToExploreWithCategory('연예인/셀럽')"
-            style="cursor: pointer"
-          >
-            <img
-              src="/assets/images/categories/cat-celeb.png"
-              alt="연예인/셀럽"
-            />
-            <p>연예인/셀럽</p>
-          </div>
-          <div
-            class="category-item"
-            onclick="navigateToExploreWithCategory('기타')"
-            style="cursor: pointer"
-          >
-            <img src="/assets/images/categories/cat-etc.png" alt="기타" />
-            <p>기타</p>
-          </div>
-        </div>
-      </section>
+      <div class="card-scroll-container"></div>
+    </section>
 
-      <!-- 인기 급상승 팝업 TOP 10 -->
-      <section class="scroll-section trend-section">
+    <!-- 지금 가기 좋은 여유로운 팝업 -->
+    <section class="scroll-section leisure-section">
+      <div class="section-header">
+        <h2>지금 가기 좋은 여유로운 팝업</h2>
+      </div>
+
+      <div class="card-scroll-container"></div>
+    </section>
+
+    <section class="banner-section">
+      <div class="banner-container">
+        <a href="/pages/mypage.html" class="event-banner-link">
+          <img src="/assets/images/banners/event-banner.png" alt="포롱에 후기 쓰고 키링 받으러 가자" class="event-img" />
+        </a>
+      </div>
+    </section>
+
+    <section class="scroll-section upcoming-section">
+      <div class="section-header">
+        <h2>오픈 예정인 팝업</h2>
+        <a href="/pages/explore.html" class="see-more-btn">팝업 더보기 ❯</a>
+      </div>
+
+      <div class="card-scroll-container"></div>
+    </section>
+
+    <div class="bottom-gradient-container">
+      <section class="review-section">
         <div class="section-header">
-          <h2>찜하기 폭발! 인기 급상승 팝업 TOP 10</h2>
+          <h2>최근 올라온 리뷰</h2>
         </div>
 
-        <div class="card-scroll-container"></div>
+        <div class="review-grid-container"></div>
       </section>
 
-      <!-- 지금 가기 좋은 여유로운 팝업 -->
-      <section class="scroll-section leisure-section">
-        <div class="section-header">
-          <h2>지금 가기 좋은 여유로운 팝업</h2>
+      <div class="bottom-illust-wrap">
+        <img src="/assets/images/banners/bottom-characters.png" alt="산리오 캐릭터즈 포롱 마을" class="bottom-illust-img" />
+      </div>
+    </div>
+  </main>
+
+  <footer class="common-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p class="footer-logo">PORONG</p>
+      </div>
+      <div class="footer-info2">
+        <div class="footer-infodng">
+          <p>개발자</p>
+          <p>이주현 | 고유정 | 서지현</p>
         </div>
-
-        <div class="card-scroll-container"></div>
-      </section>
-
-      <section class="banner-section">
-        <div class="banner-container">
-          <a href="/pages/mypage.html" class="event-banner-link">
-            <img
-              src="/assets/images/banners/event-banner.png"
-              alt="포롱에 후기 쓰고 키링 받으러 가자"
-              class="event-img"
-            />
-          </a>
-        </div>
-      </section>
-
-      <section class="scroll-section upcoming-section">
-        <div class="section-header">
-          <h2>오픈 예정인 팝업</h2>
-          <a href="/pages/explore.html" class="see-more-btn">팝업 더보기 ❯</a>
-        </div>
-
-        <div class="card-scroll-container"></div>
-      </section>
-
-      <div class="bottom-gradient-container">
-        <section class="review-section">
-          <div class="section-header">
-            <h2>최근 올라온 리뷰</h2>
-          </div>
-
-          <div class="review-grid-container"></div>
-        </section>
-
-        <div class="bottom-illust-wrap">
-          <img
-            src="/assets/images/banners/bottom-characters.png"
-            alt="산리오 캐릭터즈 포롱 마을"
-            class="bottom-illust-img"
-          />
+        <div class="footer-infodng">
+          <p>깃허브</p>
+          <a style="text-decoration: none" href="https://github.com/Po-Rong">https://github.com/Po-Rong</a>
         </div>
       </div>
-    </main>
+    </div>
+  </footer>
 
-    <footer class="common-footer">
-      <div class="footer-container">
-        <div class="footer-info">
-          <p class="footer-logo">PORONG</p>
-        </div>
-        <div class="footer-info2">
-          <div class="footer-infodng">
-            <p>개발자</p>
-            <p>이주현 | 고유정 | 서지현</p>
-          </div>
-          <div class="footer-infodng">
-            <p>깃허브</p>
-            <a style="text-decoration: none" href="https://github.com/Po-Rong"
-              >https://github.com/Po-Rong</a
-            >
-          </div>
-        </div>
-      </div>
-    </footer>
+  <script src="/js/index.js"></script>
+  <script src="/js/main.js"></script>
+</body>
 
-    <script src="/js/index.js"></script>
-    <script src="/js/main.js"></script>
-  </body>
 </html>
