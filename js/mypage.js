@@ -217,7 +217,7 @@ function renderWishlist(dataList) {
         if (imageUrl.startsWith("/")) imageUrl = `http://localhost:8080${imageUrl}`;
 
         const cardHtml = `
-            <div class="popup-card leisure-card">
+            <div class="popup-card leisure-card" onclick="location.href='/pages/popup-detail.html?id=${item.popupId || item.id}'" style="cursor: pointer;">
                 <div class="card-image-wrap">
                     <img src="${imageUrl}" alt="팝업 썸네일" class="card-thumb" />
                 </div>
