@@ -217,6 +217,23 @@ body {
     border-radius: var(--radius-sm);
 }
 
+.detail-image-order {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 22px;
+    height: 22px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: var(--color-white);
+    font-size: 12px;
+    font-weight: var(--weight-semibold);
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
 /* ── 카테고리 / 지역 태그 버튼 그룹 ── */
 .category-group,
 .region-group {

@@ -188,6 +188,12 @@ function createDetailImageDiv(src, index) {
     div.draggable = true;
     div.dataset.index = index;
 
+    // 순서 번호 추가
+    const order = document.createElement("span");
+    order.className = "detail-image-order";
+    order.textContent = index + 1;
+    div.appendChild(order);
+
     div.addEventListener("dragstart", (e) => {
         e.dataTransfer.setData("text/plain", index);
         div.classList.add("dragging");
