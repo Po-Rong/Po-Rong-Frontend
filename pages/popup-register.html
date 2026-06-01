@@ -1,210 +1,240 @@
 <!doctype html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PORONG</title>
-    <link rel="stylesheet" href="/css/global.css" />
-    <link rel="stylesheet" href="/css/admin-popup.css" />
-    <!-- flatpickr CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Jua&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <header class="common-header">
-      <div class="header-container">
-        <div class="header-logo">
-          <a href="/index.html" class="logo font-point">PORONG</a>
-        </div>
-        <input type="checkbox" id="menu-toggle" class="menu-checkbox" />
-        <nav class="nav-container">
-          <div class="center-menu">
-            <a href="/index.html">홈</a>
-            <a href="/pages/explore.html">팝업 찾기</a>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>PORONG</title>
+        <link rel="stylesheet" href="/css/global.css" />
+        <link rel="stylesheet" href="/css/admin-popup.css" />
+        <!-- flatpickr CSS -->
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Jua&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+    <body>
+        <header class="common-header">
+            <div class="header-container">
+                <div class="header-logo">
+                    <a href="/index.html" class="logo font-point">PORONG</a>
+                </div>
+                <input type="checkbox" id="menu-toggle" class="menu-checkbox" />
+                <nav class="nav-container">
+                    <div class="center-menu">
+                        <a href="/index.html">홈</a>
+                        <a href="/pages/explore.html">팝업 찾기</a>
 
-            <a href="/pages/mypage.html">마이포롱</a>
-          </div>
-        </nav>
-        <div class="header-right-group">
-          <a href="/pages/search.html" class="search-btn" aria-label="검색">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-          </a>
-          <a href="/pages/login.html" class="login-link">로그인</a>
-          <label for="menu-toggle" class="hamburger-button">
-            <span></span><span></span><span></span>
-          </label>
-        </div>
-      </div>
-    </header>
-
-    <main>
-      <div class="popup-container">
-        <div class="popup-box">
-          <h2>팝업스토어 등록</h2>
-          <div id="popupRegisterMsg" class="msg"></div>
-
-          <div class="form-group">
-            <label>이름</label>
-            <input
-              type="text"
-              id="popupTitle"
-              placeholder="팝업 스토어 이름을 입력해주세요"
-            />
-          </div>
-
-          <div class="form-group">
-            <label>대표 사진</label>
-            <input
-              type="file"
-              id="mainImage"
-              accept="image/*"
-              style="display: none"
-              onchange="handleMainImage(this)"
-            />
-            <button
-              type="button"
-              onclick="document.getElementById('mainImage').click()"
-            >
-              눌러서 대표 이미지 올리기 (<span id="mainImageCount">0</span>/1)
-            </button>
-            <div id="mainImagePreview"></div>
-          </div>
-
-          <div class="form-group">
-            <label>일정</label>
-            <div class="date-group">
-              <input type="text" id="startDate" placeholder="시작일" />
-              <input type="text" id="endDate" placeholder="종료일" />
+                        <a href="/pages/mypage.html">마이포롱</a>
+                    </div>
+                </nav>
+                <div class="header-right-group">
+                    <a
+                        href="/pages/search.html"
+                        class="search-btn"
+                        aria-label="검색"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </a>
+                    <a href="/pages/login.html" class="login-link">로그인</a>
+                    <label for="menu-toggle" class="hamburger-button">
+                        <span></span><span></span><span></span>
+                    </label>
+                </div>
             </div>
-          </div>
+        </header>
 
-          <div class="form-group">
-            <label>예약</label>
-            <div class="date-group">
-              <input
-                type="text"
-                id="reservationStartDate"
-                placeholder="시작일"
-              />
-              <input type="text" id="reservationEndDate" placeholder="종료일" />
+        <main>
+            <div class="popup-container">
+                <div class="popup-box">
+                    <h2>팝업스토어 등록</h2>
+                    <div id="popupRegisterMsg" class="msg"></div>
+
+                    <div class="form-group">
+                        <label>이름</label>
+                        <input
+                            type="text"
+                            id="popupTitle"
+                            placeholder="팝업 스토어 이름을 입력해주세요"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label>대표 사진</label>
+                        <input
+                            type="file"
+                            id="mainImage"
+                            accept="image/*"
+                            style="display: none"
+                            onchange="handleMainImage(this)"
+                        />
+                        <button
+                            type="button"
+                            onclick="
+                                document.getElementById('mainImage').click()
+                            "
+                        >
+                            눌러서 대표 이미지 올리기 (<span id="mainImageCount"
+                                >0</span
+                            >/1)
+                        </button>
+                        <div id="mainImagePreview"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>일정</label>
+                        <div class="date-group">
+                            <input
+                                type="text"
+                                id="startDate"
+                                placeholder="시작일"
+                            />
+                            <input
+                                type="text"
+                                id="endDate"
+                                placeholder="종료일"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>예약</label>
+                        <div class="date-group">
+                            <input
+                                type="text"
+                                id="reservationStartDate"
+                                placeholder="시작일"
+                            />
+                            <input
+                                type="text"
+                                id="reservationEndDate"
+                                placeholder="종료일"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>카테고리</label>
+                        <div
+                            id="categoryList"
+                            class="category-group admin-category"
+                        ></div>
+                        <input type="hidden" id="selectedCategory" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>지역</label>
+                        <div
+                            id="regionList"
+                            class="region-group admin-region"
+                        ></div>
+                        <input type="hidden" id="selectedRegion" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>주소</label>
+                        <input
+                            type="text"
+                            id="popupAddress"
+                            placeholder="주소를 입력해주세요 | 예) 서울시 성동구 성수일로 89"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label>혜택</label>
+                        <textarea
+                            id="popupBenefit"
+                            placeholder="혜택을 입력해주세요"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>공지사항</label>
+                        <textarea
+                            id="popupNotice"
+                            placeholder="공지사항을 입력해주세요"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>정보</label>
+                        <textarea
+                            id="popupInfo"
+                            placeholder="정보를 입력해주세요"
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>상세이미지 등록(선택)</label>
+                        <input
+                            type="file"
+                            id="detailImages"
+                            accept="image/*"
+                            multiple
+                            style="display: none"
+                            onchange="handleDetailImages(this)"
+                        />
+                        <button
+                            type="button"
+                            onclick="
+                                document.getElementById('detailImages').click()
+                            "
+                        >
+                            눌러서 상세 이미지 올리기 (<span
+                                id="detailImageCount"
+                                >0</span
+                            >/3)
+                        </button>
+                        <div id="detailImagePreview"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>SNS</label>
+                        <input
+                            type="text"
+                            id="popupSNS"
+                            placeholder="SNS 링크를 입력해주세요"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label>태그</label>
+                        <input
+                            type="text"
+                            id="popupTag"
+                            placeholder="태그를 입력하고 엔터를 눌러주세요"
+                            onkeydown="if (event.key === 'Enter') addTag();"
+                        />
+                    </div>
+                    <div id="tagList"></div>
+
+                    <button class="btn-submit" onclick="registerPopup()">
+                        등록하기
+                    </button>
+                </div>
             </div>
-          </div>
+        </main>
 
-          <div class="form-group">
-            <label>카테고리</label>
-            <div id="categoryList" class="category-group admin-category"></div>
-            <input type="hidden" id="selectedCategory" />
-          </div>
-
-          <div class="form-group">
-            <label>지역</label>
-            <div id="regionList" class="region-group admin-region"></div>
-            <input type="hidden" id="selectedRegion" />
-          </div>
-
-          <div class="form-group">
-            <label>주소</label>
-            <input
-              type="text"
-              id="popupAddress"
-              placeholder="주소를 입력해주세요 | 예) 서울시 성동구 성수일로 89"
-            />
-          </div>
-
-          <div class="form-group">
-            <label>혜택</label>
-            <input
-              type="text"
-              id="popupBenefit"
-              placeholder="혜택을 입력해주세요"
-            />
-          </div>
-
-          <div class="form-group">
-            <label>공지사항</label>
-            <input
-              type="text"
-              id="popupNotice"
-              placeholder="공지사항을 입력해주세요"
-            />
-          </div>
-
-          <div class="form-group">
-            <label>정보</label>
-            <input
-              type="text"
-              id="popupInfo"
-              placeholder="정보를 입력해주세요"
-            />
-          </div>
-
-          <div class="form-group">
-            <label>상세이미지 등록(선택)</label>
-            <input
-              type="file"
-              id="detailImages"
-              accept="image/*"
-              multiple
-              style="display: none"
-              onchange="handleDetailImages(this)"
-            />
-            <button
-              type="button"
-              onclick="document.getElementById('detailImages').click()"
-            >
-              눌러서 상세 이미지 올리기 (<span id="detailImageCount">0</span>/3)
-            </button>
-            <div id="detailImagePreview"></div>
-          </div>
-
-          <div class="form-group">
-            <label>SNS</label>
-            <input
-              type="text"
-              id="popupSNS"
-              placeholder="SNS 링크를 입력해주세요"
-            />
-          </div>
-
-          <div class="form-group">
-            <label>태그</label>
-            <input
-              type="text"
-              id="popupTag"
-              placeholder="태그를 입력하고 엔터를 눌러주세요"
-              onkeydown="if (event.key === 'Enter') addTag();"
-            />
-          </div>
-          <div id="tagList"></div>
-
-          <button class="btn-submit" onclick="registerPopup()">등록하기</button>
-        </div>
-      </div>
-    </main>
-
-    <!-- flatpickr JS -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
-    <script src="/js/index.js"></script>
-    <script src="/js/admin-popup.js"></script>
-  </body>
+        <!-- flatpickr JS -->
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
+        <script src="/js/index.js"></script>
+        <script src="/js/admin-popup.js"></script>
+    </body>
 </html>
