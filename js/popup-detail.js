@@ -235,6 +235,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     reservationBtn.innerText = "예약하러 가기";
                 }
             }
+
+            // 지도 초기화 함수 호출
+            if (typeof initKakaoMap === "function") {
+                initKakaoMap(popup);
+            }
         })
         .catch(err => console.error("데이터 로드 실패:", err));
 });
