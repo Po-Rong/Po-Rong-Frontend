@@ -352,6 +352,22 @@
     font-size: 20px;
 }
 
+/* 예약 버튼 비활성화 상태 (오픈 대기) */
+.reservation-btn.disabled {
+    background-color: #CCCCCC !important;
+    color: #FFFFFF !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
+
+/* 예약 버튼 비활성화 상태 (마감 완료) */
+.reservation-btn.ended {
+    background-color: #E0E0E0 !important;
+    color: #888888 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+}
+
 /* 바닥 여백 */
 body {
     padding-bottom: 120px;

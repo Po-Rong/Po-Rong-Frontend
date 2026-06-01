@@ -102,8 +102,8 @@ document.addEventListener("DOMContentLoaded", () => {
             // 예약 기간 조건부 데이터 렌더링 로직 추가
             if (popupReservationPeriod) {
                 if (popup.reservationStartDate && popup.reservationEndDate) {
-                    const resStart = popup.reservationStartDate.split('T')[0];
-                    const resEnd = popup.reservationEndDate.split('T')[0];
+                    const resStart = popup.reservationStartDate.replace('T', ' ');
+                    const resEnd = popup.reservationEndDate.replace('T', ' ');
                     popupReservationPeriod.innerText = `${resStart} ~ ${resEnd}`;
                 } else {
                     popupReservationPeriod.innerText = "예약 일정 정보가 없습니다.";
@@ -212,7 +212,28 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             const reservationBtn = document.querySelector('.reservation-btn');
             if (reservationBtn) {
-                reservationBtn.href = `/pages/reservation.html?id=${popupId}`;
+                const now = new Date();
+                const resStartDate = popup.reservationStartDate ? new Date(popup.reservationStartDate.replace(' ', 'T')) : null;
+                const resEndDate = popup.reservationEndDate ? new Date(popup.reservationEndDate.replace(' ', 'T')) : null;
+
+                // 기존 상태 초기화
+                reservationBtn.classList.remove('disabled', 'ended');
+
+                if (resStartDate && now < resStartDate) {
+                    // 아직 예약 오픈 전
+                    reservationBtn.removeAttribute('href');
+                    reservationBtn.innerText = "예약 오픈 대기중";
+                    reservationBtn.classList.add('disabled');
+                } else if (resEndDate && now > resEndDate) {
+                    // 예약 마감 완료
+                    reservationBtn.removeAttribute('href');
+                    reservationBtn.innerText = "예약 기간 마감";
+                    reservationBtn.classList.add('ended');
+                } else {
+                    // 예약 가능
+                    reservationBtn.href = `/pages/reservation.html?id=${popupId}`;
+                    reservationBtn.innerText = "예약하러 가기";
+                }
             }
         })
         .catch(err => console.error("데이터 로드 실패:", err));
