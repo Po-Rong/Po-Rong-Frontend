@@ -540,13 +540,38 @@ function renderMyKeyrings(dataList) {
     const grid = document.querySelector('.keyring-grid');
     if (!grid) return;
 
-    // 슬롯 규격 선언
+    // 슬롯 규격 및 쉐도우(잠금) 이미지 매핑 선언
     const keyringSlots = [
-        { id: 1, tag: '팝업 새내기', desc: '리뷰 1회 작성' },
-        { id: 2, tag: '팝업 기록자', desc: '리뷰 2회 작성' },
-        { id: 3, tag: '취향 수집가', desc: '리뷰 3회 작성' },
-        { id: 4, tag: '팝업 탐험가', desc: '리뷰 4회 작성' },
-        { id: 5, tag: '팝업 요정', desc: '리뷰 5회 작성' }
+        { 
+            id: 1, 
+            tag: '팝업 새내기', 
+            desc: '리뷰 1회 작성', 
+            shadowImg: '/assets/images/keyrings/shadow-hellokitty.png'
+        },
+        { 
+            id: 2, 
+            tag: '팝업 기록자', 
+            desc: '리뷰 2회 작성', 
+            shadowImg: '/assets/images/keyrings/shadow-pochacco.png'
+        },
+        { 
+            id: 3, 
+            tag: '취향 수집가', 
+            desc: '리뷰 3회 작성', 
+            shadowImg: '/assets/images/keyrings/shadow-pompompurin.png'
+        },
+        { 
+            id: 4, 
+            tag: '팝업 탐험가', 
+            desc: '리뷰 4회 작성', 
+            shadowImg: '/assets/images/keyrings/shadow-kuromi.png'
+        },
+        { 
+            id: 5, 
+            tag: '팝업 요정', 
+            desc: '리뷰 5회 작성', 
+            shadowImg: '/assets/images/keyrings/shadow-keroppi.png'
+        }
     ];
 
     grid.innerHTML = '';
@@ -567,7 +592,7 @@ function renderMyKeyrings(dataList) {
                 imageUrl = `http://localhost:8080${imageUrl}`;
             }
 
-            // 획득한 키링 카드 출력
+            // 획득한 키링 카드는 DB에 저장된 이미지(imageUrl)를 그대로 100% 활용
             cardHtml = `
                 <div class="keyring-card">
                     <div class="keyring-img-box" style="width: 140px; height: 140px; display: flex; justify-content: center; align-items: center; margin: 0 auto;">
@@ -580,10 +605,12 @@ function renderMyKeyrings(dataList) {
                 </div>
             `;
         } else {
-            // 아직 획득하지 못한 잠금 슬롯 상태 유지
+            // 아직 획득하지 못한 잠금 슬롯 상태: 사용자가 마련해 둔 쉐도우 이미지 적용
             cardHtml = `
                 <div class="keyring-card locked">
-                    <div class="keyring-circle empty-state"></div>
+                    <div class="keyring-circle empty-state" style="display: flex; justify-content: center; align-items: center; width: 140px; height: 140px; margin: 0 auto;">
+                        <img src="${slot.shadowImg}" alt="${slot.tag} 잠금" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+                    </div>
                     <div class="keyring-text-group">
                         <span class="keyring-tag">${slot.tag}</span>
                         <span class="keyring-desc">${slot.desc}</span>
