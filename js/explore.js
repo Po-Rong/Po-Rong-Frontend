@@ -171,7 +171,7 @@ async function fetchFilteredPopups() {
             } else if (popup.status === "upcoming") {
                 statusBadgeHtml = `<span class="card-status is-upcoming" style="margin-bottom: 4px; display: inline-block;">오픈예정</span>`;
             } else {
-                statusBadgeHtml = `<span class="card-status is-closed" style="margin-bottom: 4px; display: inline-block;">종료</span>`;
+                statusBadgeHtml = `<span class="card-status is-closed" style="margin-bottom: 4px; display: inline-block;">운영 마감</span>`;
             }
 
             // 평균 별점
