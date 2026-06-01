@@ -13,6 +13,7 @@ function loadPopupList() {
         .then((res) => res.json())
         .then((data) => {
             const popupList = document.getElementById("popupList");
+            popupList.innerHTML = "";
             if (data.length === 0) {
                 popupList.innerHTML =
                     '<p class="empty-msg">등록한 팝업스토어가 없습니다.</p>';
@@ -68,6 +69,7 @@ function deletePopup(popupId) {
                 loadPopupList();
             } else {
                 alert(data.message);
+                location.reload();
             }
         })
         .catch(() => alert("서버 오류"));
