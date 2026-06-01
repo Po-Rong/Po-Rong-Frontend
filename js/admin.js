@@ -52,6 +52,8 @@ function loadPopupList() {
         });
 }
 
+addScrollHint("popupList");
+
 // 팝업 삭제
 function deletePopup(popupId) {
     if (!confirm("정말 삭제하시겠습니까?")) return;
@@ -150,6 +152,7 @@ function loadReviewList() {
             });
         });
 }
+addScrollHint("reviewList");
 
 // 리뷰 모달
 function openReviewModal(review) {
@@ -444,3 +447,103 @@ loadPopupList();
 loadReviewList();
 loadReservationList();
 loadSummary();
+initDragScroll("popupList");
+initDragScroll("reviewList");
+
+// 관리자 페이지 전용 드래그 스크롤 + 클릭 방지
+function initDragScroll(containerId) {
+    const container = document.getElementById(containerId);
+    let isDown = false;
+    let isDragging = false;
+    let startX;
+    let scrollLeft;
+
+    container.addEventListener("mousedown", (e) => {
+        isDown = true;
+        isDragging = false;
+        startX = e.pageX - container.offsetLeft;
+        scrollLeft = container.scrollLeft;
+        container.style.cursor = "grabbing";
+        container.style.userSelect = "none";
+    });
+
+    container.addEventListener("mouseleave", () => {
+        isDown = false;
+        container.style.cursor = "grab";
+    });
+
+    container.addEventListener("mouseup", () => {
+        isDown = false;
+        container.style.cursor = "grab";
+    });
+
+    container.addEventListener("mousemove", (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        isDragging = true;
+        const x = e.pageX - container.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        container.scrollLeft = scrollLeft - walk;
+    });
+
+    container.addEventListener(
+        "click",
+        (e) => {
+            if (isDragging) {
+                e.stopPropagation();
+                e.preventDefault();
+                isDragging = false;
+            }
+        },
+        true,
+    );
+
+    container.style.cursor = "grab";
+}
+
+// 가로 스크롤 화살표 힌트
+function addScrollHint(containerId) {
+    const container = document.getElementById(containerId);
+    const wrapper = container.closest(".admin-section");
+
+    const isReview = containerId === "reviewList";
+    const offset = isReview ? "-16px" : "0";
+
+    const hintRight = document.createElement("div");
+    hintRight.className = "scroll-hint scroll-hint-right";
+    hintRight.style.right = offset;
+    wrapper.style.position = "relative";
+    wrapper.appendChild(hintRight);
+
+    const hintLeft = document.createElement("div");
+    hintLeft.className = "scroll-hint scroll-hint-left";
+    hintLeft.style.left = offset;
+    hintLeft.style.opacity = "0";
+    wrapper.appendChild(hintLeft);
+
+    // 스크롤 필요 없으면 오른쪽 화살표도 숨기기
+    setTimeout(() => {
+        if (container.scrollWidth <= container.clientWidth) {
+            hintRight.style.opacity = "0";
+        }
+    }, 100);
+
+    hintRight.addEventListener("click", (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+    });
+    hintLeft.addEventListener("click", (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+    });
+
+    container.addEventListener("scroll", () => {
+        const isStart = container.scrollLeft === 0;
+        const isEnd =
+            container.scrollLeft + container.clientWidth >=
+            container.scrollWidth - 10;
+
+        hintRight.style.opacity = isEnd ? "0" : "1";
+        hintLeft.style.opacity = isStart ? "0" : "1";
+    });
+}

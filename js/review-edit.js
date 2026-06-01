@@ -33,7 +33,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const btnSubmit = document.getElementById("btn-submit-review");
     if (btnSubmit) {
-        btnSubmit.addEventListener("click", () => submitUpdatedReview(loginUser.userId || loginUser.id));
+        btnSubmit.addEventListener("click", () =>
+            submitUpdatedReview(loginUser.userId || loginUser.id),
+        );
     }
 });
 
@@ -52,18 +54,22 @@ async function fetchOriginalReview(reviewId) {
 
         // 팝업 미니 카드 매핑
         if (review.popupMainImageUrl) {
-            document.querySelector(".target-thumb").src = review.popupMainImageUrl;
+            document.querySelector(".target-thumb").src =
+                review.popupMainImageUrl;
         }
 
         // 연동
         if (review.popupTitle) {
-            document.querySelector(".target-title").textContent = review.popupTitle;
+            document.querySelector(".target-title").textContent =
+                review.popupTitle;
         }
         if (review.regionName) {
-            document.querySelector(".target-location").textContent = review.regionName;
+            document.querySelector(".target-location").textContent =
+                review.regionName;
         }
         if (review.categoryName) {
-            document.querySelector(".card-category").textContent = review.categoryName;
+            document.querySelector(".card-category").textContent =
+                review.categoryName;
         }
 
         // 리뷰 본문 양식 복구
@@ -79,14 +85,10 @@ async function fetchOriginalReview(reviewId) {
         if (review.reviewImageUrl && review.reviewImageUrl !== "NULL") {
             uploadedImageUrl = review.reviewImageUrl;
 
-            const previewContainer = document.getElementById("image-preview-container");
-            const imgPreview = document.getElementById("img-preview");
             const btnFile = document.getElementById("btn-file-dummy");
-
-            if (previewContainer && imgPreview && btnFile) {
-                imgPreview.src = uploadedImageUrl;
-                previewContainer.style.display = "block";
-                btnFile.textContent = "사진 수정하기";
+            if (btnFile) {
+                const fileName = review.reviewImageUrl.split("/").pop();
+                btnFile.textContent = `사진 첨부 완료 (${fileName})`;
             }
         }
     } catch (error) {
@@ -97,7 +99,7 @@ async function fetchOriginalReview(reviewId) {
 // 별점 제어
 function initRatingInteraction() {
     const stars = document.querySelectorAll("#stars-container .star-btn");
-    stars.forEach(star => {
+    stars.forEach((star) => {
         star.addEventListener("click", () => {
             const val = parseInt(star.getAttribute("data-value"), 10);
             setRatingStars(val);
@@ -110,7 +112,7 @@ function setRatingStars(rating) {
     document.getElementById("score-text").textContent = `${rating}.0`;
 
     const stars = document.querySelectorAll("#stars-container .star-btn");
-    stars.forEach(star => {
+    stars.forEach((star) => {
         const starVal = parseInt(star.getAttribute("data-value"), 10);
         if (starVal <= rating) {
             star.src = "/assets/images/icons/icon-star-fill.png";
@@ -122,8 +124,10 @@ function setRatingStars(rating) {
 
 // 혼잡도 제어
 function initCongestionInteraction() {
-    const icons = document.querySelectorAll("#mainCongestionIcons .btn-congestion");
-    icons.forEach(icon => {
+    const icons = document.querySelectorAll(
+        "#mainCongestionIcons .btn-congestion",
+    );
+    icons.forEach((icon) => {
         icon.addEventListener("click", () => {
             const level = icon.getAttribute("data-level");
             setCongestionLevel(level);
@@ -135,11 +139,20 @@ function setCongestionLevel(level) {
     selectedCongestion = level;
     const txt = document.getElementById("congestion-text");
 
-    if (level === "LOW") { txt.textContent = "낮음"; txt.className = "status-text-blue"; }
-    else if (level === "NORMAL") { txt.textContent = "보통"; txt.className = "status-text-green"; }
-    else if (level === "HIGH") { txt.textContent = "높음"; txt.className = "status-text-red"; }
+    if (level === "LOW") {
+        txt.textContent = "낮음";
+        txt.className = "status-text-blue";
+    } else if (level === "NORMAL") {
+        txt.textContent = "보통";
+        txt.className = "status-text-green";
+    } else if (level === "HIGH") {
+        txt.textContent = "높음";
+        txt.className = "status-text-red";
+    }
 
-    const icons = document.querySelectorAll("#mainCongestionIcons .btn-congestion");
+    const icons = document.querySelectorAll(
+        "#mainCongestionIcons .btn-congestion",
+    );
     let activeThreshold = 1;
     if (level === "NORMAL") activeThreshold = 2;
     if (level === "HIGH") activeThreshold = 3;
@@ -157,9 +170,6 @@ function setCongestionLevel(level) {
 function initFileUpload() {
     const fileInput = document.getElementById("review-file-input");
     const btnDummy = document.getElementById("btn-file-dummy");
-    const previewContainer = document.getElementById("image-preview-container");
-    const imgPreview = document.getElementById("img-preview");
-    const btnDeleteFile = document.getElementById("btn-delete-file");
 
     if (!fileInput || !btnDummy) return;
 
@@ -167,36 +177,31 @@ function initFileUpload() {
 
     fileInput.addEventListener("change", () => {
         if (fileInput.files.length > 0) {
-            const file = fileInput.files[0];
-            rawImageFile = file;
-
-            const localPreviewUrl = URL.createObjectURL(file);
-            imgPreview.src = localPreviewUrl;
-            previewContainer.style.display = "block";
-
-            btnDummy.textContent = "사진 수정하기";
+            rawImageFile = fileInput.files[0];
+            btnDummy.textContent = `사진 첨부 완료 (${rawImageFile.name})`;
+        } else {
+            rawImageFile = null;
+            btnDummy.textContent = "눌러서 사진 올리기 (0/1)";
         }
     });
-
-    if (btnDeleteFile) {
-        btnDeleteFile.addEventListener("click", (e) => {
-            e.stopPropagation();
-            fileInput.value = "";
-            rawImageFile = null;
-            uploadedImageUrl = null;
-            previewContainer.style.display = "none";
-            btnDummy.textContent = "눌러서 사진 올리기 (0/1)";
-        });
-    }
 }
 
 // 수정 데이터 전송
 async function submitUpdatedReview(userId) {
     const contentText = document.getElementById("review-textarea").value.trim();
 
-    if (selectedRating === 0) { alert("별점 평점을 선택해 주세요!"); return; }
-    if (!selectedCongestion) { alert("현장 혼잡도를 선택해 주세요!"); return; }
-    if (contentText === "") { alert("후기 내용을 작성해 주세요!"); return; }
+    if (selectedRating === 0) {
+        alert("별점 평점을 선택해 주세요!");
+        return;
+    }
+    if (!selectedCongestion) {
+        alert("현장 혼잡도를 선택해 주세요!");
+        return;
+    }
+    if (contentText === "") {
+        alert("후기 내용을 작성해 주세요!");
+        return;
+    }
 
     const formData = new FormData();
     formData.append("userId", Number(userId));
@@ -213,7 +218,7 @@ async function submitUpdatedReview(userId) {
     try {
         const response = await fetch(submitUrl, {
             method: "PATCH",
-            body: formData
+            body: formData,
         });
 
         if (!response.ok) throw new Error("리뷰 수정 통신 실패");
@@ -222,7 +227,6 @@ async function submitUpdatedReview(userId) {
 
         alert("리뷰가 성공적으로 수정되었습니다.");
         window.location.href = "/pages/mypage.html";
-
     } catch (error) {
         console.error("수정 요청 에러:", error);
         alert("서버 통신 중 오류가 발생했습니다.");
