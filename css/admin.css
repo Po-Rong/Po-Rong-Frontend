@@ -172,9 +172,58 @@ main {
 }
 
 /* ── 후기 카드 ── */
+.review-tab-container {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.review-tab-container::-webkit-scrollbar {
+    display: none;
+}
+
+.review-tab-btn {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-full);
+    background-color: var(--color-white);
+    color: var(--color-text-secondary);
+    font-size: 14px;
+    font-weight: var(--weight-medium);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.review-tab-btn:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.review-tab-btn.active {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.review-tab-content {
+    position: relative;
+    margin-top: 16px;
+}
+
 .scroll-container .review-card {
     min-width: 300px;
     max-width: 300px;
+}
+
+#reviewList {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
 .review-card {

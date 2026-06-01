@@ -188,6 +188,12 @@ function createDetailImageDiv(src, index) {
     div.draggable = true;
     div.dataset.index = index;
 
+    // 순서 번호 추가
+    const order = document.createElement("span");
+    order.className = "detail-image-order";
+    order.textContent = index + 1;
+    div.appendChild(order);
+
     div.addEventListener("dragstart", (e) => {
         e.dataTransfer.setData("text/plain", index);
         div.classList.add("dragging");
@@ -307,6 +313,17 @@ function registerPopup() {
         const msg = document.createElement("p");
         msg.className = "error-msg";
         msg.textContent = "예약 일정을 입력해주세요.";
+        formGroup.appendChild(msg);
+        hasError = true;
+    }
+
+    if (reservationEndDate && endDate && reservationEndDate > endDate) {
+        const formGroup = document
+            .getElementById("reservationEndDate")
+            .closest(".form-group");
+        const msg = document.createElement("p");
+        msg.className = "error-msg";
+        msg.textContent = "예약 종료일은 팝업 종료일보다 늦을 수 없습니다.";
         formGroup.appendChild(msg);
         hasError = true;
     }
@@ -547,6 +564,17 @@ function editPopup() {
         const msg = document.createElement("p");
         msg.className = "error-msg";
         msg.textContent = "예약 일정을 입력해주세요.";
+        formGroup.appendChild(msg);
+        hasError = true;
+    }
+
+    if (reservationEndDate && endDate && reservationEndDate > endDate) {
+        const formGroup = document
+            .getElementById("reservationEndDate")
+            .closest(".form-group");
+        const msg = document.createElement("p");
+        msg.className = "error-msg";
+        msg.textContent = "예약 종료일은 팝업 종료일보다 늦을 수 없습니다.";
         formGroup.appendChild(msg);
         hasError = true;
     }
