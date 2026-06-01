@@ -429,6 +429,15 @@ function loadPopupDetail(id) {
                 document.getElementById("popupNotice").value = data.notice;
             if (data.info)
                 document.getElementById("popupInfo").value = data.info;
+
+            // 기존 데이터에 맞게 textarea 높이 자동 조절
+            ["popupBenefit", "popupNotice", "popupInfo"].forEach((id) => {
+                const textarea = document.getElementById(id);
+                if (!textarea || !textarea.value) return;
+                textarea.style.height = "48px";
+                textarea.style.height = textarea.scrollHeight + "px";
+            });
+
             if (data.snsUrl)
                 document.getElementById("popupSNS").value = data.snsUrl;
 
@@ -726,3 +735,13 @@ function clearError(id) {
         if (msg) msg.remove();
     }
 }
+
+// textarea 자동 높이 조절
+["popupBenefit", "popupNotice", "popupInfo"].forEach((id) => {
+    const textarea = document.getElementById(id);
+    if (!textarea) return;
+    textarea.addEventListener("input", () => {
+        textarea.style.height = "48px"; // 초기화
+        textarea.style.height = textarea.scrollHeight + "px"; // 내용에 맞게 늘리기
+    });
+});

@@ -174,6 +174,41 @@ body {
     border-radius: var(--radius-sm);
 }
 
+/* 혜택, 공지사항, 정보 입력 창 */
+#popupBenefit,
+#popupNotice,
+#popupInfo {
+    flex: 1;
+    padding: 12px var(--space-md);
+    border: 1px solid var(--color-text-secondary);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-family: "Noto Sans KR", sans-serif;
+    color: var(--color-text-main);
+    background-color: var(--color-white);
+    outline: none;
+    transition: border-color 0.2s;
+    resize: none; /* 수동 조절 막기 */
+    overflow: hidden; /* 스크롤바 숨기기 */
+    min-height: 48px;
+    height: 48px;
+    box-sizing: border-box;
+}
+
+#popupBenefit::placeholder,
+#popupNotice::placeholder,
+#popupInfo::placeholder {
+    color: #bbbbbb;
+    font-size: 14px;
+}
+
+#popupBenefit:focus,
+#popupNotice:focus,
+#popupInfo:focus {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-light2);
+}
+
 /* ── 상세 이미지 미리보기 (여러 장) ── */
 #detailImagePreview {
     display: flex;
