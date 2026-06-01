@@ -331,3 +331,23 @@
     border: none !important;
     border-radius: 0 !important;
 }
+
+/* 키링 받기 배너 */
+.banner-section {
+    /* 정중앙 정렬 */
+    align-items: center;
+}
+
+.event-banner-link {
+    display: block;
+    text-align: center;
+    width: fit-content;
+}
+
+.event-img {
+    height: auto;
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+    object-fit: contain;
+}
