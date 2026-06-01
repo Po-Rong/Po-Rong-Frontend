@@ -13,6 +13,14 @@ function loadPopupList() {
         .then((res) => res.json())
         .then((data) => {
             const popupList = document.getElementById("popupList");
+            popupList.innerHTML = "";
+
+            // 기존 힌트 제거
+            const wrapper = popupList.closest(".admin-section");
+            wrapper
+                .querySelectorAll(".scroll-hint")
+                .forEach((el) => el.remove());
+
             if (data.length === 0) {
                 popupList.innerHTML =
                     '<p class="empty-msg">등록한 팝업스토어가 없습니다.</p>';
@@ -49,10 +57,11 @@ function loadPopupList() {
                 `;
                 popupList.appendChild(div);
             });
+
+            addScrollHint("popupList");
+            initDragScroll("popupList");
         });
 }
-
-addScrollHint("popupList");
 
 // 팝업 삭제
 function deletePopup(popupId) {
@@ -79,81 +88,194 @@ function loadReviewList() {
         .then((res) => res.json())
         .then((data) => {
             const reviewList = document.getElementById("reviewList");
+            reviewList.innerHTML = "";
+
             if (data.length === 0) {
                 reviewList.innerHTML =
                     '<p class="empty-msg">달린 후기가 없습니다.</p>';
                 return;
             }
+
+            // 팝업별로 그룹화
+            const grouped = {};
             data.forEach((review) => {
-                const div = document.createElement("div");
-                const reviewImageUrl = review.reviewImageUrl?.startsWith("http")
-                    ? review.reviewImageUrl
-                    : `http://localhost:8080${review.reviewImageUrl}`;
-                const popupImageUrl = review.popupMainImageUrl?.startsWith(
-                    "http",
-                )
-                    ? review.popupMainImageUrl
-                    : `http://localhost:8080${review.popupMainImageUrl}`;
-                div.className = "review-card";
-                div.innerHTML = `
-                    <div class="review-card-header">
-                        <span class="reviewer-name">${review.nickname || "이름"}</span>
-                        <span class="review-date">${formatDate(review.createdAt)}</span>
-                    </div>
-                    <div class="review-stats-row">
-                        <div class="rating-wrap">
-                            <div class="rating-stars"></div>
-                            <span class="rating-num">${review.rating}.0</span>
-                            <span>/</span>
-                            <span class="rating-max">5.0</span>
-                        </div>
-                        <div class="congestion-wrap">
-                            <div class="congestion-icons"></div>
-                            <span class="congestion-text">혼잡도</span>
-                            <span class="congestion-strong">${getCongestionText(review.congestionLevel)}</span>
-                        </div>
-                    </div>
-                    <div class="review-content">
-                        <p>${review.content}</p>
-                    </div>
-                    ${
-                        review.reviewImageUrl
-                            ? `
-                    <div class="review-attach-box">
-                        <img src="${reviewImageUrl}" alt="리뷰 첨부 사진" class="review-attached-img" />
-                    </div>`
-                            : ""
-                    }
-                    <div class="review-target-popup">
-                        <div class="target-thumb-wrap">
-                            <img src="${popupImageUrl || ""}" alt="${review.popupTitle}" class="target-thumb" />
-                        </div>
-                        <div class="target-info-wrap">
-                            <div class="target-tags">
-                                <span class="card-category">${review.categoryName || ""}</span>
-                                <span class="card-status ${getStatusClass(review.popupStatus)}">${getStatusText(review.popupStatus)}</span>
-                            </div>
-                            <h4 class="target-title">${review.popupTitle || ""}</h4>
-                            <p class="target-location">${review.regionName || ""}</p>
-                        </div>
-                    </div>
-                `;
-
-                renderStars(div.querySelector(".rating-stars"), review.rating);
-                renderCongestion(
-                    div.querySelector(".congestion-icons"),
-                    review.congestionLevel,
-                );
-
-                div.style.cursor = "pointer";
-                div.onclick = () => openReviewModal(review);
-
-                reviewList.appendChild(div);
+                const key = review.popupTitle;
+                if (!grouped[key]) {
+                    grouped[key] = {
+                        popupTitle: review.popupTitle,
+                        popupMainImageUrl: review.popupMainImageUrl,
+                        popupStatus: review.popupStatus,
+                        categoryName: review.categoryName,
+                        regionName: review.regionName,
+                        reviews: [],
+                    };
+                }
+                grouped[key].reviews.push(review);
             });
+
+            const groups = Object.values(grouped);
+
+            // 탭 컨테이너
+            const tabContainer = document.createElement("div");
+            tabContainer.className = "review-tab-container";
+
+            // 후기 컨테이너
+            const reviewContainer = document.createElement("div");
+            reviewContainer.className = "review-tab-content";
+            reviewContainer.id = "reviewTabContent";
+
+            // 전체 탭 먼저 추가
+            const allTab = document.createElement("button");
+            allTab.className = "review-tab-btn active";
+            allTab.textContent = `전체 (${data.length})`;
+            allTab.addEventListener("click", () => {
+                document
+                    .querySelectorAll(".review-tab-btn")
+                    .forEach((t) => t.classList.remove("active"));
+                allTab.classList.add("active");
+                renderReviewCards(data, "all");
+            });
+            tabContainer.appendChild(allTab);
+
+            // 팝업별 탭
+            groups.forEach((group, groupIndex) => {
+                const tab = document.createElement("button");
+                tab.className = "review-tab-btn";
+                tab.textContent = `${group.popupTitle} (${group.reviews.length})`;
+                tab.addEventListener("click", () => {
+                    document
+                        .querySelectorAll(".review-tab-btn")
+                        .forEach((t) => t.classList.remove("active"));
+                    tab.classList.add("active");
+                    renderReviewCards(group.reviews, groupIndex);
+                });
+                tabContainer.appendChild(tab);
+            });
+
+            // 탭 드래그 스크롤
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            tabContainer.addEventListener("mousedown", (e) => {
+                isDown = true;
+                startX = e.pageX - tabContainer.offsetLeft;
+                scrollLeft = tabContainer.scrollLeft;
+                tabContainer.style.cursor = "grabbing";
+            });
+
+            tabContainer.addEventListener("mouseleave", () => {
+                isDown = false;
+                tabContainer.style.cursor = "grab";
+            });
+
+            tabContainer.addEventListener("mouseup", () => {
+                isDown = false;
+                tabContainer.style.cursor = "grab";
+            });
+
+            tabContainer.addEventListener("mousemove", (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - tabContainer.offsetLeft;
+                const walk = (x - startX) * 1.5;
+                tabContainer.scrollLeft = scrollLeft - walk;
+            });
+
+            tabContainer.style.cursor = "grab";
+
+            reviewList.appendChild(tabContainer);
+            reviewList.appendChild(reviewContainer);
+
+            // 기본 전체 탭 렌더링
+            renderReviewCards(data, "all");
+
+            function renderReviewCards(reviews, groupIndex) {
+                const reviewContainer =
+                    document.getElementById("reviewTabContent");
+                reviewContainer.innerHTML = "";
+
+                const scrollBox = document.createElement("div");
+                const scrollId = `reviewGroup_${groupIndex}`;
+                scrollBox.id = scrollId;
+                scrollBox.className = "scroll-container card-scroll-container";
+                reviewContainer.appendChild(scrollBox);
+
+                reviews.forEach((review) => {
+                    const div = document.createElement("div");
+                    const reviewImageUrl = review.reviewImageUrl?.startsWith(
+                        "http",
+                    )
+                        ? review.reviewImageUrl
+                        : `http://localhost:8080${review.reviewImageUrl}`;
+                    const popupImageUrl = review.popupMainImageUrl?.startsWith(
+                        "http",
+                    )
+                        ? review.popupMainImageUrl
+                        : `http://localhost:8080${review.popupMainImageUrl}`;
+                    div.className = "review-card";
+                    div.innerHTML = `
+                        <div class="review-card-header">
+                            <span class="reviewer-name">${review.nickname || "이름"}</span>
+                            <span class="review-date">${formatDate(review.createdAt)}</span>
+                        </div>
+                        <div class="review-stats-row">
+                            <div class="rating-wrap">
+                                <div class="rating-stars"></div>
+                                <span class="rating-num">${review.rating}.0</span>
+                                <span>/</span>
+                                <span class="rating-max">5.0</span>
+                            </div>
+                            <div class="congestion-wrap">
+                                <div class="congestion-icons"></div>
+                                <span class="congestion-text">혼잡도</span>
+                                <span class="congestion-strong">${getCongestionText(review.congestionLevel)}</span>
+                            </div>
+                        </div>
+                        <div class="review-content">
+                            <p>${review.content}</p>
+                        </div>
+                        ${
+                            review.reviewImageUrl
+                                ? `
+                        <div class="review-attach-box">
+                            <img src="${reviewImageUrl}" alt="리뷰 첨부 사진" class="review-attached-img" />
+                        </div>`
+                                : ""
+                        }
+                        <div class="review-target-popup">
+                            <div class="target-thumb-wrap">
+                                <img src="${popupImageUrl || ""}" alt="${review.popupTitle}" class="target-thumb" />
+                            </div>
+                            <div class="target-info-wrap">
+                                <div class="target-tags">
+                                    <span class="card-category">${review.categoryName || ""}</span>
+                                    <span class="card-status ${getStatusClass(review.popupStatus)}">${getStatusText(review.popupStatus)}</span>
+                                </div>
+                                <h4 class="target-title">${review.popupTitle || ""}</h4>
+                                <p class="target-location">${review.regionName || ""}</p>
+                            </div>
+                        </div>
+                    `;
+
+                    renderStars(
+                        div.querySelector(".rating-stars"),
+                        review.rating,
+                    );
+                    renderCongestion(
+                        div.querySelector(".congestion-icons"),
+                        review.congestionLevel,
+                    );
+                    div.style.cursor = "pointer";
+                    div.onclick = () => openReviewModal(review);
+                    scrollBox.appendChild(div);
+                });
+
+                addScrollHint(scrollId);
+                initDragScroll(scrollId);
+            }
         });
 }
-addScrollHint("reviewList");
-
 // 리뷰 모달
 function openReviewModal(review) {
     const modal = document.createElement("div");
@@ -447,8 +569,6 @@ loadPopupList();
 loadReviewList();
 loadReservationList();
 loadSummary();
-initDragScroll("popupList");
-initDragScroll("reviewList");
 
 // 관리자 페이지 전용 드래그 스크롤 + 클릭 방지
 function initDragScroll(containerId) {
@@ -504,9 +624,12 @@ function initDragScroll(containerId) {
 // 가로 스크롤 화살표 힌트
 function addScrollHint(containerId) {
     const container = document.getElementById(containerId);
-    const wrapper = container.closest(".admin-section");
+    const wrapper = containerId.startsWith("reviewGroup")
+        ? container.closest(".review-tab-content")
+        : container.closest(".admin-section");
 
-    const isReview = containerId === "reviewList";
+    const isReview =
+        containerId === "reviewList" || containerId.startsWith("reviewGroup");
     const offset = isReview ? "-16px" : "0";
 
     const hintRight = document.createElement("div");
