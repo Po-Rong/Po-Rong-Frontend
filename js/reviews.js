@@ -249,10 +249,10 @@ function initRatingPrompt(popupId) {
             });
         });
 
-        star.addEventListener('click', () => {
-            const selectedRating = star.getAttribute('data-value');
-            window.location.href = `/pages/review-write.html?popupId=${popupId}&rating=${selectedRating}`;
-        });
+        // star.addEventListener('click', () => {
+        //     const selectedRating = star.getAttribute('data-value');
+        //     window.location.href = `/pages/review-write.html?popupId=${popupId}&rating=${selectedRating}`;
+        // });
     });
     starsContainer.addEventListener('mouseleave', () => {
         stars.forEach(s => {
