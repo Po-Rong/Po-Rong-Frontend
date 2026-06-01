@@ -6,9 +6,24 @@ document.addEventListener("DOMContentLoaded", function () {
     const POPUP_API = `${BASE_URL}/popups`;
     const RESERVE_API = `${BASE_URL}/reservations`;
 
-    // URL에서 파라미터 추출
-    const urlParams = new URLSearchParams(window.location.search);
-    const popupId = urlParams.get('id');
+    // URL에서 파라미터 추출 (?id=106?reservation_id=108 또는 ?id=106&reservation_id=108 지원)
+    const queryString = window.location.search;
+    let popupId = null;
+    let reservationId = null;
+
+    if (queryString) {
+        const urlParams = new URLSearchParams(queryString);
+        popupId = urlParams.get('id');
+        reservationId = urlParams.get('reservation_id');
+
+        // ?id=106?reservation_id=108 형태 대응
+        if (!reservationId && popupId && popupId.includes('?')) {
+            const parts = popupId.split('?');
+            popupId = parts[0];
+            const secondaryParams = new URLSearchParams('?' + parts[1]);
+            reservationId = secondaryParams.get('reservation_id');
+        }
+    }
 
     let selectedDateStr = "";
     let selectedTimeStr = "";
@@ -28,8 +43,78 @@ document.addEventListener("DOMContentLoaded", function () {
             renderSummary(popupData);
             renderTimeSlots();
             setupEventListeners();
+
+            if (reservationId) {
+                await loadAndPreFillReservation();
+            }
         } catch (error) {
             console.error("데이터 로드 실패:", error);
+        }
+    }
+
+    async function loadAndPreFillReservation() {
+        const reserveBtn = document.getElementById("btn-final-reserve");
+        if (reserveBtn) {
+            reserveBtn.textContent = "예약 수정하기";
+        }
+
+        let reservation = null;
+        const loginUserStr = localStorage.getItem("loginUser");
+
+        if (loginUserStr) {
+            const loginUser = JSON.parse(loginUserStr);
+            const currentUserId = loginUser.userId || loginUser.id;
+            try {
+                // 단일 조회 API가 없으므로 본인 예약 목록 조회에서 검색
+                const res = await fetch(`${RESERVE_API}/me?user_id=${currentUserId}`);
+                if (res.ok) {
+                    const list = await res.json();
+                    reservation = list.find(item => String(item.id) === String(reservationId));
+                }
+            } catch (err) {
+                console.error("예약 목록 조회 실패:", err);
+            }
+        }
+
+        if (!reservation) {
+            alert("예약 정보를 불러오는데 실패했습니다.");
+            return;
+        }
+
+        // 폼 필드 채우기
+        const visitorNameInput = document.getElementById("visitor-name");
+        const visitorPhoneInput = document.getElementById("visitor-phone");
+        const dateInput = document.getElementById("reserve-date-input");
+
+        if (visitorNameInput) visitorNameInput.value = reservation.userName || "";
+        if (visitorPhoneInput) visitorPhoneInput.value = reservation.userPhone || "";
+
+        if (reservation.reserveDate) {
+            const parts = reservation.reserveDate.split(" ");
+            const datePart = parts[0]; // e.g. YYYY-MM-DD
+            if (dateInput) {
+                if (dateInput._flatpickr) {
+                    dateInput._flatpickr.setDate(datePart);
+                } else {
+                    dateInput.value = datePart;
+                }
+                selectedDateStr = datePart;
+            }
+
+            if (parts[1]) {
+                const timePart = parts[1].substring(0, 5); // e.g. HH:mm
+                selectedTimeStr = timePart;
+
+                // 시간 슬롯 버튼 선택 처리
+                const timeButtons = document.querySelectorAll(".btn-time-slot");
+                timeButtons.forEach(btn => {
+                    if (btn.textContent.trim() === timePart) {
+                        btn.classList.add("selected");
+                    } else {
+                        btn.classList.remove("selected");
+                    }
+                });
+            }
         }
     }
 
@@ -97,10 +182,19 @@ document.addEventListener("DOMContentLoaded", function () {
     function setupEventListeners() {
         const dateInput = document.getElementById("reserve-date-input");
         if (dateInput) {
-            selectedDateStr = dateInput.value;
-            dateInput.addEventListener("change", function (e) {
-                selectedDateStr = e.target.value;
+            // flatpickr 날짜 인풋 초기화
+            const fp = flatpickr("#reserve-date-input", {
+                dateFormat: "Y-m-d",
+                altInput: true,
+                altFormat: "Y년 m월 d일",
+                locale: "ko",
+                allowInput: true,
+                defaultDate: dateInput.value || "2026-05-29",
+                onChange: function(selectedDates, dateStr) {
+                    selectedDateStr = dateStr;
+                }
             });
+            selectedDateStr = fp.selectedDates[0] ? fp.formatDate(fp.selectedDates[0], "Y-m-d") : (dateInput.value || "2026-05-29");
         }
 
         const reserveBtn = document.getElementById("btn-final-reserve");
@@ -114,30 +208,63 @@ document.addEventListener("DOMContentLoaded", function () {
                     return;
                 }
 
-                const payload = {
-                    userId: 1,
-                    reserveDate: `${selectedDateStr} ${selectedTimeStr}:00`,
-                    userName: userName,
-                    userPhone: userPhone
-                };
+                const loginUserStr = localStorage.getItem("loginUser");
+                const loginUser = loginUserStr ? JSON.parse(loginUserStr) : null;
+                const currentUserId = loginUser ? (loginUser.userId || loginUser.id) : 1;
 
-                try {
-                    // 변수로 선언해 둔 RESERVE_API 주소를 활용하여 노션 명세서 규격대로 요청을 보냅니다.
-                    const response = await fetch(`${RESERVE_API}/popups/${popupId}`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(payload)
-                    });
+                if (reservationId) {
+                    // 수정 모드 (PATCH)
+                    const payload = {
+                        userId: currentUserId,
+                        reserveDate: `${selectedDateStr} ${selectedTimeStr}:00`, // 백엔드 DTO 매핑용 (SQL reserve_date 컬럼 대응)
+                        reservedDate: `${selectedDateStr} ${selectedTimeStr}:00`, // 노션 명세 문서 준수용
+                        userName: userName,
+                        userPhone: userPhone
+                    };
 
-                    if (response.ok) {
-                        alert("예약이 완료되었습니다!");
-                        location.href = "/pages/mypage.html";
-                    } else {
-                        alert("예약에 실패했습니다. 입력 정보를 확인해주세요.");
+                    try {
+                        const response = await fetch(`${RESERVE_API}/${reservationId}`, {
+                            method: "PATCH",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (response.ok) {
+                            alert("예약이 수정되었습니다!");
+                            location.href = "/pages/mypage.html";
+                        } else {
+                            alert("예약 수정에 실패했습니다. 입력 정보를 확인해주세요.");
+                        }
+                    } catch (error) {
+                        console.error("네트워크 전송 오류:", error);
+                        alert("서버 통신 중 오류가 발생했습니다.");
                     }
-                } catch (error) {
-                    console.error("네트워크 전송 오류:", error);
-                    alert("서버 통신 중 오류가 발생했습니다.");
+                } else {
+                    // 신규 예약 등록 모드 (POST)
+                    const payload = {
+                        userId: currentUserId,
+                        reserveDate: `${selectedDateStr} ${selectedTimeStr}:00`,
+                        userName: userName,
+                        userPhone: userPhone
+                    };
+
+                    try {
+                        const response = await fetch(`${RESERVE_API}/popups/${popupId}`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (response.ok) {
+                            alert("예약이 완료되었습니다!");
+                            location.href = "/pages/mypage.html";
+                        } else {
+                            alert("예약에 실패했습니다. 입력 정보를 확인해주세요.");
+                        }
+                    } catch (error) {
+                        console.error("네트워크 전송 오류:", error);
+                        alert("서버 통신 중 오류가 발생했습니다.");
+                    }
                 }
             });
         }

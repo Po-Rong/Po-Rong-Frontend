@@ -19,7 +19,6 @@ async function fetchTrendPopups() {
     if (!trendScrollContainer) return;
 
     try {
-        // 호출하는 시점의 최신 유저 ID 쿼리를 붙임
         const response = await fetch(`${API_BASE_URL}/popups?status=ongoing&sort=wishlist${getUserQuery()}`);
         if (!response.ok) throw new Error(`API 통신 에러 발생: ${response.status}`);
 
@@ -36,12 +35,18 @@ async function fetchTrendPopups() {
             const rank = index + 1;
             const activeClass = popup.isWishlisted ? "active" : "";
 
+            // 1, 2, 3위에만 왕관 뱃지
+            let crownHtml = "";
+            if (rank === 1) crownHtml = `<div class="crown-badge rank-gold"></div>`;
+            else if (rank === 2) crownHtml = `<div class="crown-badge rank-silver"></div>`;
+            else if (rank === 3) crownHtml = `<div class="crown-badge rank-bronze"></div>`;
+
             const cardHtml = `
                 <div class="popup-card trend-card" data-popup-id="${popup.id}">
-                    <div class="card-image-wrap">
+                    <div class="card-image-wrap" onclick="location.href='/pages/popup-detail.html?id=${popup.id}'">
                         <img src="${popup.mainImageUrl}" alt="${popup.title} 썸네일" class="card-thumb" />
                         <div class="gradient-overlay"></div>
-                        <div class="crown-badge rank-${rank}"></div>
+                        ${crownHtml} 
                         <div class="card-overlay-info">
                             <span class="trend-rank-num">${rank}</span>
                             <h3 class="trend-card-title">${popup.title}</h3>
@@ -67,7 +72,6 @@ async function fetchLeisurePopups() {
     if (!leisureScrollContainer) return;
 
     try {
-        // 호출하는 시점의 최신 유저 ID 쿼리를 붙임
         const response = await fetch(`${API_BASE_URL}/popups?status=ongoing&sort=leisurely${getUserQuery()}`);
         if (!response.ok) throw new Error(`API 통신 에러 발생: ${response.status}`);
 
@@ -87,8 +91,9 @@ async function fetchLeisurePopups() {
 
             const cardHtml = `
                 <div class="popup-card leisure-card" data-popup-id="${popup.id}">
-                    <div class="card-image-wrap">
+                    <div class="card-image-wrap" onclick="location.href='/pages/popup-detail.html?id=${popup.id}'">
                         <img src="${popup.mainImageUrl}" alt="${popup.title} 썸네일" class="card-thumb" />
+                        <div class="leisure-status-badge"></div>
                     </div>
                     <button class="wish-btn ${activeClass}" aria-label="찜하기" onclick="toggleWish(${popup.id || popup.popupId}, this)">
                         <span class="heart-icon"></span> 찜하기
@@ -117,7 +122,6 @@ async function fetchUpcomingPopups() {
     if (!upcomingScrollContainer) return;
 
     try {
-        // 호출하는 시점의 최신 유저 ID 쿼리를 붙임
         const response = await fetch(`${API_BASE_URL}/popups?status=upcoming${getUserQuery()}`);
         if (!response.ok) throw new Error(`API 통신 에러 발생: ${response.status}`);
 
@@ -137,7 +141,7 @@ async function fetchUpcomingPopups() {
 
             const cardHtml = `
                 <div class="popup-card upcoming-card" data-popup-id="${popup.id}">
-                    <div class="card-image-wrap">
+                    <div class="card-image-wrap" onclick="location.href='/pages/popup-detail.html?id=${popup.id}'">
                         <img src="${popup.mainImageUrl}" alt="${popup.title} 썸네일" class="card-thumb" />
                         <div class="status-badge new-status"></div>
                     </div>
@@ -160,4 +164,9 @@ async function fetchUpcomingPopups() {
         console.error("오픈 예정 팝업 조회 중 치명적 실패: ", error);
         upcomingScrollContainer.innerHTML = `<p class="error-msg">팝업 정보를 불러오지 못했습니다.</p>`;
     }
+}
+
+// 홈에서 카테고리 클릭 시 찾기 페이지로 이동
+function navigateToExploreWithCategory(categoryName) {
+    window.location.href = `/pages/explore.html?category=${encodeURIComponent(categoryName)}`;
 }

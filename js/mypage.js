@@ -20,11 +20,12 @@ document.addEventListener('DOMContentLoaded', function () {
         bioDisplayName.textContent = loginUser.nickname;
     }
 
-    fetchMyWishlist(loginUser.userId);
-    fetchMyReviews(loginUser.userId);
-    fetchMyReservations(loginUser.userId);
-    fetchMyKeyrings(loginUser.userId);
+    const currentUserId = loginUser.userId || loginUser.id;
 
+    fetchMyWishlist(currentUserId);
+    fetchMyReviews(currentUserId);
+    fetchMyReservations(currentUserId);
+    fetchMyKeyrings(currentUserId);
 
     const tabWishlist = document.getElementById('tab-wishlist');
     const tabReviews = document.getElementById('tab-reviews');
@@ -165,6 +166,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+    const reservationModal = document.getElementById('reservation-modal');
+    const btnCloseResModal = document.getElementById('btn-close-reservation-modal');
+
+    if (btnCloseResModal) {
+        btnCloseResModal.addEventListener('click', () => {
+            reservationModal.classList.remove('active');
+        });
+    }
 });
 
 async function fetchMyWishlist(userId) {
@@ -208,7 +217,7 @@ function renderWishlist(dataList) {
         if (imageUrl.startsWith("/")) imageUrl = `http://localhost:8080${imageUrl}`;
 
         const cardHtml = `
-            <div class="popup-card leisure-card">
+            <div class="popup-card leisure-card" onclick="location.href='/pages/popup-detail.html?id=${item.popupId || item.id}'" style="cursor: pointer;">
                 <div class="card-image-wrap">
                     <img src="${imageUrl}" alt="팝업 썸네일" class="card-thumb" />
                 </div>
@@ -248,85 +257,131 @@ async function fetchMyReviews(userId) {
     }
 }
 
+// 나의 리뷰 렌더링
 function renderMyReviews(dataList) {
-    const grid = document.getElementById('reviews-grid');
-    if (!grid) return;
-    grid.innerHTML = '';
+    const reviewGridContainer = document.getElementById('reviews-grid');
+    if (!reviewGridContainer) return;
+    reviewGridContainer.innerHTML = "";
 
     if (!dataList || dataList.length === 0) {
-        grid.innerHTML = `<p style="text-align:center; padding:40px; color:#999;">작성한 후기가 없습니다.</p>`;
+        reviewGridContainer.innerHTML = `<p class="no-data-msg" style="grid-column:1/-1; text-align:center; padding:40px; color:#999;">작성한 후기가 없습니다.</p>`;
         return;
     }
 
-    dataList.forEach(item => {
-        // 데이터 전처리
-        const ratingScore = parseFloat(item.rating) || 0;
-        const formattedDate = item.createdAt ? item.createdAt.split('T')[0].replace(/-/g, '.').substring(2) : '날짜 없음';
+    dataList.forEach((review) => {
+        const formattedReviewDate = review.createdAt || "날짜 없음";
 
-        let congestionLabel = '정보 없음';
-        if (item.congestionLevel === 'HIGH') congestionLabel = '높음';
-        else if (item.congestionLevel === 'NORMAL') congestionLabel = '보통';
-        else if (item.congestionLevel === 'LOW') congestionLabel = '낮음';
+        // 별점 계산
+        let starsHtml = "";
+        const score = Math.floor(review.rating || 0);
+        for (let i = 1; i <= 5; i++) {
+            starsHtml += i <= score
+                ? `<img src="/assets/images/icons/icon-star-fill.png" alt="별">`
+                : `<img src="/assets/images/icons/icon-star-empty.png" alt="빈 별">`;
+        }
 
-        // 이미지 경로 처리
-        const reviewImg = (item.reviewImageUrl && item.reviewImageUrl !== 'NULL')
-            ? (item.reviewImageUrl.startsWith("/") ? `http://localhost:8080${item.reviewImageUrl}` : item.reviewImageUrl)
-            : null;
+        // 혼잡도 뱃지 계산 및 사람 아이콘 이식
+        let fillCount = 1;
+        let congestionText = "낮음";
+        if (review.congestionLevel === "NORMAL") { fillCount = 2; congestionText = "보통"; }
+        if (review.congestionLevel === "HIGH") { fillCount = 3; congestionText = "높음"; }
 
-        const popupImg = (item.popupMainImageUrl || item.main_image_url)
-            ? (item.popupMainImageUrl || item.main_image_url).startsWith("/") ? `http://localhost:8080${item.popupMainImageUrl || item.main_image_url}` : (item.popupMainImageUrl || item.main_image_url)
-            : '/assets/images/dummies/thumb-dummy01.png';
+        let peopleHtml = "";
+        for (let i = 1; i <= 3; i++) {
+            peopleHtml += i <= fillCount
+                ? `<img src="/assets/images/icons/icon-person-fill.png" alt="사람 채움">`
+                : `<img src="/assets/images/icons/icon-person-empty.png" alt="사람 비움">`;
+        }
 
-        // 카드 생성
-        const cardArticle = document.createElement('article');
-        cardArticle.className = 'review-card'; // 요청하신 재사용 클래스명
-
-        cardArticle.innerHTML = `
-            <div class="review-card-header">
-                <span class="reviewer-name">${item.nickname || '나'}</span>
-                <span class="review-date">${formattedDate}</span>
-            </div>
-            
-            <div class="review-stats-row">
-                <div class="rating-wrap">
-                    <span class="rating-stars">${'★'.repeat(Math.round(ratingScore))}</span>
-                    <span class="rating-num">${ratingScore.toFixed(1)}</span>
-                    <span class="rating-max">/ 5.0</span>
-                </div>
-                <div class="congestion-wrap">
-                    <span class="congestion-text">혼잡도</span>
-                    <span class="congestion-strong">${congestionLabel}</span>
-                </div>
-            </div>
-
-            <div class="review-content">
-                <p>${item.content || '내용 없음'}</p>
-            </div>
-
-            ${reviewImg ? `
+        let attachBoxHtml = "";
+        let noImageClass = "";
+        if (review.reviewImageUrl && review.reviewImageUrl !== "NULL") {
+            attachBoxHtml = `
                 <div class="review-attach-box">
-                    <img src="${reviewImg}" alt="리뷰 첨부 사진" class="review-attached-img" />
+                    <img src="${review.reviewImageUrl}" alt="리뷰 첨부 사진" class="review-attached-img" />
                 </div>
-            ` : ''}
+            `;
+        } else {
+            noImageClass = "has-no-image";
+        }
 
-            <div class="review-target-popup">
-                <div class="target-thumb-wrap">
-                    <img src="${popupImg}" alt="팝업 썸네일" class="target-thumb" />
-                </div>
-                <div class="target-info-wrap">
-                    <div class="target-tags">
-                        <span class="card-category">${item.categoryName || '기타'}</span>
-                        <span class="card-status is-running">운영중</span>
+        // 팝업스토어 상태 값 테마 클래스 스위치
+        let statusBadgeClass = "is-running";
+        if (review.popupStatus === "오픈 예정" || review.popupStatus === "upcoming") statusBadgeClass = "is-upcoming";
+        if (review.popupStatus === "운영 마감" || review.popupStatus === "종료" || review.popupStatus === "closed") statusBadgeClass = "is-closed";
+        const displayStatusText = review.popupStatus || "운영중";
+
+        const reviewHtml = `
+            <div class="review-card ${noImageClass}" data-review-id="${review.reviewId}" onclick="location.href='/pages/popup-detail.html?id=${review.popupId}'" style="cursor:pointer;">
+                
+                <div class="review-card-header">
+                    <div class="review-header-left">
+                        <span class="reviewer-name">${review.nickname || '나'}</span>
+                        <span class="review-date">${formattedReviewDate} 방문</span>
                     </div>
-                    <h4 class="target-title">${item.popupTitle || '팝업 이름'}</h4>
-                    <p class="target-location">${item.popupRegion || ''}</p>
+                    
+                    <div class="review-more-menu-wrap" onclick="event.stopPropagation();">
+                        <button class="btn-review-more" onclick="event.stopPropagation(); toggleReviewMenu(this)">•••</button>
+                        <div class="review-menu-dropdown">
+                            <button class="menu-edit-btn" onclick="location.href='/pages/review-edit.html?reviewId=${review.reviewId}'">리뷰 수정하기</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="review-stats-row">
+                    <div class="rating-wrap" style="display:flex; align-items:center;">
+                        <div class="rating-stars">${starsHtml}</div>
+                        <span class="rating-num" style="margin-left:6px;">${parseFloat(review.rating).toFixed(1)}</span>
+                        <span style="margin:0 2px;">/</span>
+                        <span class="rating-max">5.0</span>
+                    </div>
+                    <div class="congestion-wrap" style="display:flex; align-items:center; margin-top:4px;">
+                        <div class="congestion-icons">${peopleHtml}</div>
+                        <span class="congestion-text" style="margin-left:6px;">혼잡도</span>
+                        <span class="congestion-strong" style="margin-left:4px;">${congestionText}</span>
+                    </div>
+                </div>
+                
+                <div class="review-content">
+                    <p>${review.content}</p>
+                </div>
+                ${attachBoxHtml} 
+                <div class="review-target-popup">
+                    <div class="target-thumb-wrap">
+                        <img src="${review.popupMainImageUrl || '/assets/images/dummies/thumb-dummy01.png'}" alt="팝업 미니 썸네일" class="target-thumb" />
+                    </div>
+                    <div class="target-info-wrap">
+                        <div class="target-tags">
+                            <span class="card-category" style="padding:2px 6px; font-size:11px;">${review.categoryName || '기타'}</span>
+                            <span class="card-status ${statusBadgeClass}" style="padding:2px 6px; font-size:11px;">${displayStatusText}</span>
+                        </div>
+                        <h4 class="target-title">${review.popupTitle}</h4>
+                        <p class="target-location">${review.regionName || '지역 정보 없음'}</p>
+                    </div>
                 </div>
             </div>
         `;
-
-        grid.appendChild(cardArticle);
+        reviewGridContainer.insertAdjacentHTML("beforeend", reviewHtml);
     });
 }
+
+// ... 버튼 드롭다운 함수
+function toggleReviewMenu(button) {
+    // 모든 드롭다운 일단 다 닫기 처리
+    document.querySelectorAll('.review-menu-dropdown').forEach(menu => {
+        if (menu !== button.nextElementSibling) menu.classList.remove('show');
+    });
+    // 현재 누른 버튼의 드롭다운만 토글
+    const currentMenu = button.nextElementSibling;
+    if (currentMenu) {
+        currentMenu.classList.toggle('show');
+    }
+}
+
+// 화면 아무데나 누르면 열려있던 드롭다운 부드럽게 닫기
+document.addEventListener('click', () => {
+    document.querySelectorAll('.review-menu-dropdown').forEach(menu => menu.classList.remove('show'));
+});
 
 async function fetchMyReservations(userId) {
     const apiUrl = `http://localhost:8080/api/reservations/me?user_id=${userId}`;
@@ -379,12 +434,21 @@ function renderMyReservations(dataList) {
         }
 
         let actionButtonHtml = '';
-        if (item.status === 'USED') {
-            actionButtonHtml = `<button class="btn-reservation-action" onclick="location.href='/pages/review-write.html?popupId=${item.popupId}&reservationId=${item.id}'">후기 쓰기</button>`;
-        } else if (item.status === 'CONFIRMED') {
-            actionButtonHtml = `<button class="btn-reservation-action" onclick="alert('예약 상세 확인 기능은 준비 중입니다.')">예약 확인하기</button>`;
+        if (item.status === 'CANCELED') {
+            actionButtonHtml = `<button class="btn-reservation-action" disabled>예약 취소됨</button>`;
         } else {
-            actionButtonHtml = `<button class="btn-reservation-action" disabled>예약 취소</button>`;
+            let isPassed = false;
+            if (item.reserveDate) {
+                const reserveTime = new Date(item.reserveDate.replace(' ', 'T'));
+                const now = new Date();
+                isPassed = reserveTime < now;
+            }
+
+            if (isPassed) {
+                actionButtonHtml = `<button class="btn-reservation-action" onclick="location.href='/pages/review-write.html?popupId=${item.popupId}&reservationId=${item.id}'">후기 쓰기</button>`;
+            } else {
+                actionButtonHtml = `<button class="btn-reservation-action" onclick="openReservationModal(${JSON.stringify(item).replace(/"/g, '&quot;')})">예약 확인하기</button>`;
+            }
         }
 
         const html = `
@@ -420,18 +484,22 @@ function renderMyKeyrings(dataList) {
     const grid = document.querySelector('.keyring-grid');
     if (!grid) return;
 
+    // 슬롯 규격 선언
     const keyringSlots = [
-        { tag: '팝업 새내기', desc: '리뷰 1회 작성' },
-        { tag: '팝업 기록자', desc: '리뷰 2회 작성' },
-        { tag: '취향 수집가', desc: '리뷰 3회 작성' },
-        { tag: '팝업 탐험가', desc: '리뷰 4회 작성' },
-        { tag: '팝업 요정', desc: '리뷰 5회 작성' }
+        { id: 1, tag: '팝업 새내기', desc: '리뷰 1회 작성' },
+        { id: 2, tag: '팝업 기록자', desc: '리뷰 2회 작성' },
+        { id: 3, tag: '취향 수집가', desc: '리뷰 3회 작성' },
+        { id: 4, tag: '팝업 탐험가', desc: '리뷰 4회 작성' },
+        { id: 5, tag: '팝업 요정', desc: '리뷰 5회 작성' }
     ];
 
     grid.innerHTML = '';
 
-    keyringSlots.forEach((slot, index) => {
-        const earnedKeyring = dataList[index];
+    keyringSlots.forEach((slot) => {
+        const earnedKeyring = dataList && Array.isArray(dataList)
+            ? dataList.find(item => Number(item.keyringId) === slot.id)
+            : null;
+
         let cardHtml = '';
 
         if (earnedKeyring) {
@@ -441,10 +509,9 @@ function renderMyKeyrings(dataList) {
                 imageUrl = imageUrl;
             } else if (imageUrl && imageUrl.startsWith("/")) {
                 imageUrl = `http://localhost:8080${imageUrl}`;
-            } else {
-                imageUrl = imageUrl;
             }
 
+            // 획득한 키링 카드 출력
             cardHtml = `
                 <div class="keyring-card">
                     <div class="keyring-img-box" style="width: 140px; height: 140px; display: flex; justify-content: center; align-items: center; margin: 0 auto;">
@@ -457,6 +524,7 @@ function renderMyKeyrings(dataList) {
                 </div>
             `;
         } else {
+            // 아직 획득하지 못한 잠금 슬롯 상태 유지
             cardHtml = `
                 <div class="keyring-card locked">
                     <div class="keyring-circle empty-state"></div>
@@ -470,4 +538,58 @@ function renderMyKeyrings(dataList) {
 
         grid.insertAdjacentHTML('beforeend', cardHtml);
     });
+}
+
+function openReservationModal(item) {
+    const detailInfo = document.getElementById('reservation-detail-info');
+    const thumbUrl = item.mainImageUrl || '/assets/images/dummies/thumb-dummy01.png';
+    const currentUser = JSON.parse(localStorage.getItem('loginUser'));
+    const userId = currentUser ? currentUser.userId : null;
+
+    detailInfo.innerHTML = `
+        <div class="popup-info-box">
+            <img src="${thumbUrl}" alt="팝업 이미지" class="popup-thumb" />
+            <span class="popup-title">${item.popupTitle}</span>
+        </div>
+        <div class="reservation-info">
+            <p><strong>${item.userName || '이름 없음'} 님</strong></p>
+            <p>전화번호: ${item.userPhone || '번호 없음'}</p>
+            <p>예약한 시간: ${item.reserveDate}</p>
+        </div>
+        
+        <div class="modal-actions">
+            <button class="btn-edit" onclick="location.href='/pages/reservation.html?id=${item.popupId}?reservation_id=${item.id}'">예약 수정하기</button>
+            <button class="btn-cancel" onclick="cancelReservation(${item.id}, ${userId})">예약 취소하기</button>
+        </div>
+    `;
+
+    document.getElementById('reservation-modal').classList.add('active');
+}
+
+async function cancelReservation(reservationId, userId) {
+    if (!confirm('정말 예약을 취소하시겠습니까?')) return;
+
+    const apiUrl = `http://localhost:8080/api/reservations/${reservationId}/cancel`;
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userId: userId // 로그인한 사용자의 ID 전달
+            })
+        });
+
+        if (response.ok) {
+            alert('예약이 성공적으로 취소되었습니다.');
+            location.reload(); // 페이지를 새로고침하여 상태 업데이트
+        } else {
+            alert('예약 취소에 실패했습니다. 다시 시도해 주세요.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('서버 오류가 발생했습니다.');
+    }
 }

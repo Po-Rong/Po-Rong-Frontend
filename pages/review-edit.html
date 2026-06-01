@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PORONG</title>
+    <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/review.css" />
+</head>
+
+<body>
+    <header class="common-header">
+        <div class="header-container">
+            <div class="header-logo">
+                <a href="/index.html" class="logo font-point">PORONG</a>
+            </div>
+            <nav class="nav-container">
+                <div class="center-menu">
+                    <a href="/index.html">홈</a>
+                    <a href="/pages/explore.html">찾기</a>
+                    <a href="/pages/wishlist.html">찜</a>
+                    <a href="/pages/mypage.html">마이포롱</a>
+                </div>
+            </nav>
+            <div class="header-right-group">
+                <a href="/pages/login.html" class="login-link">로그인</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="review-write-wrapper">
+        <h1 class="page-main-title">후기 수정하기</h1>
+        <div class="review-write-container">
+
+            <div class="review-target-popup">
+                <div class="target-thumb-wrap">
+                    <img src="/assets/images/dummies/thumb-dummy01.png" alt="팝업 미니 썸네일" class="target-thumb" />
+                </div>
+                <div class="target-info-wrap">
+                    <div class="target-tags">
+                        <span class="card-category">애니/캐릭터</span>
+                        <span class="card-status is-running">운영중</span>
+                    </div>
+                    <h4 class="target-title">산리오 팝업</h4>
+                    <p class="target-location">홍대</p>
+                </div>
+            </div>
+
+            <section class="review-rating-card">
+
+                <div class="rating-content-box">
+                    <div class="rating-score-display">
+                        <span class="current-score" id="score-text">0.0</span>
+                        <span class="max-score"> / 5.0</span>
+                    </div>
+                    <div class="stars-display-group" id="stars-container">
+                        <img src="/assets/images/icons/icon-star-empty.png" class="star-btn" data-value="1" alt="1점" />
+                        <img src="/assets/images/icons/icon-star-empty.png" class="star-btn" data-value="2" alt="2점" />
+                        <img src="/assets/images/icons/icon-star-empty.png" class="star-btn" data-value="3" alt="3점" />
+                        <img src="/assets/images/icons/icon-star-empty.png" class="star-btn" data-value="4" alt="4점" />
+                        <img src="/assets/images/icons/icon-star-empty.png" class="star-btn" data-value="5" alt="5점" />
+                    </div>
+                    <div class="congestion-stats-group">
+                        <p class="congestion-title">혼잡도 <span class="status-text-blue" id="congestion-text">-</span></p>
+                        </p>
+                        <div class="congestion-icons-row" id="mainCongestionIcons">
+                            <img src="/assets/images/icons/icon-person-empty.png" class="btn-congestion"
+                                data-level="LOW" alt="낮음" />
+                            <img src="/assets/images/icons/icon-person-empty.png" class="btn-congestion"
+                                data-level="NORMAL" alt="보통" />
+                            <img src="/assets/images/icons/icon-person-empty.png" class="btn-congestion"
+                                data-level="HIGH" alt="높음" />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="review-content-form">
+                <div class="textarea-wrapper">
+                    <textarea id="review-textarea" placeholder="팝업 스토어에 대한 후기를 남겨주세요!"></textarea>
+                </div>
+
+                <div class="file-upload-wrapper">
+                    <input type="file" id="review-file-input" accept="image/*" style="display: none;" />
+                    <button type="button" class="btn-file-trigger" id="btn-file-dummy">눌러서 사진 올리기 (0/1)</button>
+                </div>
+
+                <div class="submit-action-row">
+                    <button type="button" id="btn-submit-review" class="btn-main-submit">후기 수정하기</button>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script src="/js/index.js"></script>
+    <script src="/js/review-edit.js"></script>
+</body>
+
+</html>

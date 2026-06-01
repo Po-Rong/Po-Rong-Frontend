@@ -106,3 +106,24 @@ function selectRole(role) {
         document.getElementById("btnSeller").classList.add("active");
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const loginEmailInput = document.getElementById("loginEmail");
+    const loginPwInput = document.getElementById("loginPw");
+
+    if (loginEmailInput) {
+        loginEmailInput.addEventListener("keyup", (event) => {
+            if (event.key === "Enter") {
+                login();
+            }
+        });
+    }
+
+    if (loginPwInput) {
+        loginPwInput.addEventListener("keyup", (event) => {
+            if (event.key === "Enter") {
+                login();
+            }
+        });
+    }
+});
