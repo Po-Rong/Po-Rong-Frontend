@@ -13,10 +13,22 @@ let tempSelectedItems = [];
 // 서울 전체 선택 시 하위 필터링에 매핑될 세부 지역 리스트
 const SEOUL_SUB_REGIONS = ["강남/서초", "성수", "여의도", "용산", "잠실", "홍대/신촌"];
 
+// 카테고리 순서 고정
+const CATEGORY_ORDER = [
+    '애니/캐릭터', '연예인/셀럽', 'F&B', '뷰티', '패션',
+    '디지털/테크', '엔터테인먼트', '문구/아트', '라이프스타일',
+    '키즈/반려동물', '기타'
+];
+
 document.addEventListener("DOMContentLoaded", () => {
     // 홈 화면 카테고리 연동 파라미터 수신
     const urlParams = new URLSearchParams(window.location.search);
     const paramCategory = urlParams.get("category"); // 주소창에서 category 키값 추출
+
+    const btnMasterReset = document.getElementById("btn-master-reset");
+    if (btnMasterReset) {
+        btnMasterReset.addEventListener("click", resetAllFiltersMaster);
+    }
 
     if (paramCategory) {
         // categories 배열에 홈에서 누른 카테고리 명을 강제 주입
@@ -157,9 +169,9 @@ async function fetchFilteredPopups() {
             if (popup.status === "ongoing") {
                 statusBadgeHtml = `<span class="card-status is-running" style="margin-bottom: 4px; display: inline-block;">운영중</span>`;
             } else if (popup.status === "upcoming") {
-                statusBadgeHtml = `<span class="card-status is-upcoming" style="margin-bottom: 4px; display: inline-block;">오픈예정</span>`;
+                statusBadgeHtml = `<span class="card-status is-upcoming" style="margin-bottom: 4px; display: inline-block;">운영 예정</span>`;
             } else {
-                statusBadgeHtml = `<span class="card-status is-closed" style="margin-bottom: 4px; display: inline-block;">종료</span>`;
+                statusBadgeHtml = `<span class="card-status is-closed" style="margin-bottom: 4px; display: inline-block;">운영 마감</span>`;
             }
 
             // 평균 별점
@@ -240,13 +252,24 @@ async function loadModalSubChips(apiUrl, jsonKeyName) {
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error("마스터 데이터 조회 실패");
-        const data = await response.json();
+        let data = await response.json();
 
         chipGrid.innerHTML = "";
 
+        // 타입이 카테고리일 경우 서버 데이터를 커스텀 순서 배열 인덱스 기반으로 재정렬
+        if (activeModalType === "category") {
+            data.sort((a, b) => {
+                const idxA = CATEGORY_ORDER.indexOf(a[jsonKeyName]);
+                const idxB = CATEGORY_ORDER.indexOf(b[jsonKeyName]);
+                // 정의되지 않은 카테고리가 있을 경우 맨 뒤로 밀어내기 처리
+                const posA = idxA === -1 ? 999 : idxA;
+                const posB = idxB === -1 ? 999 : idxB;
+                return posA - posB;
+            });
+        }
+
         data.forEach(item => {
             const chipValue = item[jsonKeyName];
-
             const isSelected = tempSelectedItems.includes(chipValue);
             const activeClass = isSelected ? "active" : "";
 
@@ -262,6 +285,26 @@ async function loadModalSubChips(apiUrl, jsonKeyName) {
         console.error("마스터 데이터 파싱 에러:", error);
         chipGrid.innerHTML = `<p style="font-size:13px; color:red;">목록을 가져오지 못했습니다.</p>`;
     }
+}
+
+// 완전 초기화
+function resetAllFiltersMaster() {
+    // 상태값 전면 초기화
+    currentFilters.regions = [];
+    currentFilters.categories = [];
+    currentFilters.status = "";
+
+    // 메인 칩 텍스트 및 활성화 상태 백토글 복구
+    const chipRegion = document.getElementById("chip-region");
+    const chipCategory = document.getElementById("chip-category");
+    const chipStatus = document.getElementById("chip-status");
+
+    if (chipRegion) { chipRegion.textContent = "지역"; chipRegion.classList.remove("active"); }
+    if (chipCategory) { chipCategory.textContent = "카테고리"; chipCategory.classList.remove("active"); }
+    if (chipStatus) { chipStatus.textContent = "운영 상태"; chipStatus.classList.remove("active"); }
+
+    // 서버 원격 재필터링 호출하여 그리드 목록 리렌더링
+    fetchFilteredPopups();
 }
 
 // 운영 상태 칩 생성

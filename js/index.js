@@ -139,11 +139,14 @@ async function toggleWish(popupId, buttonElement) {
         return;
     }
 
+    // 광클 방지 + 동일한 popupId를 가진 모든 찜 버튼을 제어하기 위함
+    const siblingButtons = document.querySelectorAll(`.wish-btn[onclick*="toggleWish(${popupId},"]`);
+
     // 현재 버튼이 찜이 된 상태인지 확인
     const isCurrentlyStarred = buttonElement.classList.contains("active");
 
-    // 유저 경험을 위해 통신 중 버튼 여러 번 광클 방지 잠금
-    buttonElement.disabled = true;
+    // 수집된 모든 동일 팝업 찜 버튼 잠금
+    siblingButtons.forEach(btn => btn.disabled = true);
 
     try {
         // 엔드포인트로 요청 송신
@@ -161,8 +164,14 @@ async function toggleWish(popupId, buttonElement) {
             throw new Error(`서버 응답 실패 상태코드: ${response.status}`);
         }
 
-        // 백엔드 처리가 정상 완료된 경우에만 화면의 하트 불빛을 끄고 켬
-        buttonElement.classList.toggle("active");
+        // 단일 버튼 대신 화면에 노출된 동일 popupId 카드 버튼 전체를 동시에 제어
+        siblingButtons.forEach(btn => {
+            if (!isCurrentlyStarred) {
+                btn.classList.add("active"); // 동시에 하트 불빛 켜기
+            } else {
+                btn.classList.remove("active"); // 동시에 하트 불빛 끄기
+            }
+        });
 
         console.log(`[찜 API 연동 성공] 팝업 ID: ${popupId} | 결과 상태: ${!isCurrentlyStarred ? "찜 등록완료" : "찜 해제완료"}`);
 
@@ -170,8 +179,8 @@ async function toggleWish(popupId, buttonElement) {
         console.error("찜하기 처리 중 통신 에러 발생:", error);
         alert("찜하기 처리 중 오류가 발생했습니다. 다시 시도해 주세요.");
     } finally {
-        // 통신이 완료되면 다시 버튼 클릭 잠금 해제
-        buttonElement.disabled = false;
+        // 통신 마감 후 모든 버튼 잠금 해제
+        siblingButtons.forEach(btn => btn.disabled = false);
     }
 }
 
