@@ -317,6 +317,17 @@ function registerPopup() {
         hasError = true;
     }
 
+    if (reservationEndDate && endDate && reservationEndDate > endDate) {
+        const formGroup = document
+            .getElementById("reservationEndDate")
+            .closest(".form-group");
+        const msg = document.createElement("p");
+        msg.className = "error-msg";
+        msg.textContent = "예약 종료일은 팝업 종료일보다 늦을 수 없습니다.";
+        formGroup.appendChild(msg);
+        hasError = true;
+    }
+
     if (!mainImageFile) {
         const btn = document.querySelector(
             ".form-group > button[type='button']",
@@ -553,6 +564,17 @@ function editPopup() {
         const msg = document.createElement("p");
         msg.className = "error-msg";
         msg.textContent = "예약 일정을 입력해주세요.";
+        formGroup.appendChild(msg);
+        hasError = true;
+    }
+
+    if (reservationEndDate && endDate && reservationEndDate > endDate) {
+        const formGroup = document
+            .getElementById("reservationEndDate")
+            .closest(".form-group");
+        const msg = document.createElement("p");
+        msg.className = "error-msg";
+        msg.textContent = "예약 종료일은 팝업 종료일보다 늦을 수 없습니다.";
         formGroup.appendChild(msg);
         hasError = true;
     }
