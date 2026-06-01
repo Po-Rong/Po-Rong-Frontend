@@ -267,6 +267,4 @@
 
 .filter-master-reset-btn:hover {
     background-color: var(--color-offwhite);
-    border-color: var(--color-text-secondary);
-    color: var(--color-text-main);
 }
