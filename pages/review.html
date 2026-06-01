@@ -72,7 +72,16 @@
                 </div>
             </section>
 
-            <div class="reviews-list-group"></div>
+            <div class="reviews-list-wrap" style="width: 100%;">
+                <div class="sort-select-row" style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 15px;">
+                    <select id="review-sort-select" style="padding: 8px 12px; border-radius: 6px; border: 1px solid #ddd; font-family: inherit; font-size: 14px; color: #4C4C4C; background-color: #fff; cursor: pointer; outline: none; transition: border-color 0.2s;">
+                        <option value="latest">최신순</option>
+                        <option value="rating_high">별점 높은 순</option>
+                        <option value="rating_low">별점 낮은 순</option>
+                    </select>
+                </div>
+                <div class="reviews-list-group"></div>
+            </div>
         </div>
     </main>
 

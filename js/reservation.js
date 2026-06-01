@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             renderSummary(popupData);
             renderTimeSlots();
-            setupEventListeners();
+            setupEventListeners(popupData);
 
             if (reservationId) {
                 await loadAndPreFillReservation();
@@ -179,9 +179,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function setupEventListeners() {
+    function setupEventListeners(popupData) {
         const dateInput = document.getElementById("reserve-date-input");
         if (dateInput) {
+            // 백엔드에서 전달하는 예약 시작일/종료일 추출 (기본값 설정 제공)
+            const minD = popupData && popupData.reservationStartDate ? popupData.reservationStartDate.split('T')[0] : "2026-05-29";
+            const maxD = popupData && popupData.reservationEndDate ? popupData.reservationEndDate.split('T')[0] : null;
+
             // flatpickr 날짜 인풋 초기화
             const fp = flatpickr("#reserve-date-input", {
                 dateFormat: "Y-m-d",
@@ -189,12 +193,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 altFormat: "Y년 m월 d일",
                 locale: "ko",
                 allowInput: true,
-                defaultDate: dateInput.value || "2026-05-29",
+                minDate: minD,
+                maxDate: maxD,
+                defaultDate: dateInput.value || minD, // 이미 선택되어 온 값이 있다면 그것을 우선 사용
                 onChange: function(selectedDates, dateStr) {
                     selectedDateStr = dateStr;
                 }
             });
-            selectedDateStr = fp.selectedDates[0] ? fp.formatDate(fp.selectedDates[0], "Y-m-d") : (dateInput.value || "2026-05-29");
+            selectedDateStr = fp.selectedDates[0] ? fp.formatDate(fp.selectedDates[0], "Y-m-d") : minD;
         }
 
         const reserveBtn = document.getElementById("btn-final-reserve");
