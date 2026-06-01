@@ -11,6 +11,23 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchUpcomingPopups();
     // 최근 리뷰
     renderReviews(`${API_BASE_URL}/reviews/recent`, ".review-grid-container");
+
+    // 히어로 배너 스크롤 릴리즈 스케일 다운 효과 (Option 3)
+    const heroContainer = document.querySelector(".hero-container");
+
+    if (heroContainer) {
+        function checkScroll() {
+            if (window.scrollY > 80) {
+                heroContainer.classList.add("shrunk");
+            } else {
+                heroContainer.classList.remove("shrunk");
+            }
+        }
+
+        // 초기 실행 및 스크롤 이벤트 바인딩
+        checkScroll();
+        window.addEventListener("scroll", checkScroll, { passive: true });
+    }
 })
 
 // 인기 급상승 10개
