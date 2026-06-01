@@ -260,3 +260,69 @@
     object-fit: contain;
     background-color: #E6DAF9;
 }
+
+/* 뱃지 */
+.card-image-wrap {
+    position: relative;
+    overflow: hidden;
+}
+
+/* 인기 급상승 - 왕관 */
+.crown-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 40px;
+    height: 40px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* 금, 은, 동 개별 파일 */
+.crown-badge.rank-gold {
+    background-image: url('/assets/images/badges/badge-crown-gold.png');
+}
+
+.crown-badge.rank-silver {
+    background-image: url('/assets/images/badges/badge-crown-silver.png');
+}
+
+.crown-badge.rank-bronze {
+    background-image: url('/assets/images/badges/badge-crown-bronze.png');
+}
+
+/* 여유로운 팝업 뱃지 */
+.leisure-status-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 70px;
+    height: 36px;
+    background-image: url('/assets/images/badges/badge-leisure.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* 오픈 예정 뱃지 */
+.status-badge.new-status {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 50px;
+    height: 50px;
+    background-image: url('/assets/images/badges/badge-new.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 10;
+    pointer-events: none;
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+}
