@@ -46,7 +46,7 @@ function updateHeader() {
         );
         if (mypageLink && user.role === "seller") {
             mypageLink.href = "/pages/admin.html";
-            mypageLink.textContent = "팝업관리";
+            mypageLink.textContent = "팝업 관리";
         }
     } else {
         // 비로그인 상태

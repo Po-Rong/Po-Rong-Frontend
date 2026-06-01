@@ -1,114 +1,104 @@
 <!doctype html>
 <html lang="ko">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>PORONG</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PORONG</title>
 
-        <!-- 모든 페이지 공통 스타일 (폰트, 여백 초기화) -->
-        <link rel="stylesheet" href="/css/global.css" />
-        <link rel="stylesheet" href="/css/auth.css" />
+    <!-- 모든 페이지 공통 스타일 (폰트, 여백 초기화) -->
+    <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/auth.css" />
 
-        <!-- 이 페이지 전용 CSS가 필요하다면 여기에 추가 (예: main.css 나 board.css) -->
-        <!-- <link rel="stylesheet" href="/css/main.css"> -->
-    </head>
-    <body>
-        <!-- [공통 헤더] 모든 파일에 동일하게 복붙해서 사용합니다. -->
-        <header class="common-header">
-            <div class="header-container">
-                <div class="header-logo">
-                    <a href="/index.html" class="logo font-point">PORONG</a>
-                </div>
+    <!-- 이 페이지 전용 CSS가 필요하다면 여기에 추가 (예: main.css 나 board.css) -->
+    <!-- <link rel="stylesheet" href="/css/main.css"> -->
+  </head>
+  <body>
+    <!-- [공통 헤더] 모든 파일에 동일하게 복붙해서 사용합니다. -->
+    <header class="common-header">
+      <div class="header-container">
+        <div class="header-logo">
+          <a href="/index.html" class="logo font-point">PORONG</a>
+        </div>
 
-                <input type="checkbox" id="menu-toggle" class="menu-checkbox" />
+        <input type="checkbox" id="menu-toggle" class="menu-checkbox" />
 
-                <nav class="nav-container">
-                    <div class="center-menu">
-                        <a href="/index.html">홈</a>
-                        <a href="/pages/explore.html">찾기</a>
-                        <a href="/pages/wishlist.html">찜</a>
-                        <a href="/pages/mypage.html">마이포롱</a>
-                    </div>
-                </nav>
+        <nav class="nav-container">
+          <div class="center-menu">
+            <a href="/index.html">홈</a>
+            <a href="/pages/explore.html">팝업 찾기</a>
 
-                <div class="header-right-group">
-                    <a
-                        href="/pages/search.html"
-                        class="search-btn"
-                        aria-label="검색"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                    </a>
+            <a href="/pages/mypage.html">마이포롱</a>
+          </div>
+        </nav>
 
-                    <a href="/pages/register.html" class="login-link"
-                        >회원가입</a
-                    >
+        <div class="header-right-group">
+          <a href="/pages/search.html" class="search-btn" aria-label="검색">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </a>
 
-                    <label for="menu-toggle" class="hamburger-button">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </label>
-                </div>
+          <a href="/pages/register.html" class="login-link">회원가입</a>
+
+          <label for="menu-toggle" class="hamburger-button">
+            <span></span>
+            <span></span>
+            <span></span>
+          </label>
+        </div>
+      </div>
+    </header>
+
+    <!-- [본문 영역] 각자 페이지에 맞는 내용을 여기 안에 작성하세요 -->
+    <main>
+      <div class="auth-container">
+        <div class="auth-box">
+          <div class="auth-header">
+            <div class="auth-logo">
+              <a href="/index.html" class="logo font-point">PORONG</a>
             </div>
-        </header>
+            <h2>로그인</h2>
+            <div id="loginMsg" class="msg"></div>
+          </div>
 
-        <!-- [본문 영역] 각자 페이지에 맞는 내용을 여기 안에 작성하세요 -->
-        <main>
-            <div class="auth-container">
-                <div class="auth-box">
-                    <div class="auth-header">
-                        <div class="auth-logo">
-                            <a href="/index.html" class="logo font-point"
-                                >PORONG</a
-                            >
-                        </div>
-                        <h2>로그인</h2>
-                        <div id="loginMsg" class="msg"></div>
-                    </div>
+          <input
+            type="text"
+            id="loginEmail"
+            placeholder="이메일을 입력해주세요"
+          />
 
-                    <input
-                        type="text"
-                        id="loginEmail"
-                        placeholder="이메일을 입력해주세요"
-                    />
+          <input
+            type="password"
+            id="loginPw"
+            placeholder="비밀번호를 입력해주세요"
+          />
 
-                    <input
-                        type="password"
-                        id="loginPw"
-                        placeholder="비밀번호를 입력해주세요"
-                    />
+          <button class="btn-submit" onclick="login()">로그인 하기</button>
+          <p class="auth-link">
+            회원이 아니신가요?
+            <a href="register.html">회원가입하기</a>
+          </p>
+        </div>
+        <div class="auth-banner">
+          <p>PORONG에 로그인하고</p>
+          <p>나만의 키링 도감을 채워보자 !</p>
+        </div>
+      </div>
+    </main>
 
-                    <button class="btn-submit" onclick="login()">
-                        로그인 하기
-                    </button>
-                    <p class="auth-link">
-                        회원이 아니신가요?
-                        <a href="register.html">회원가입하기</a>
-                    </p>
-                </div>
-                <div class="auth-banner">
-                    <p>PORONG에 로그인하고</p>
-                    <p>나만의 키링 도감을 채워보자 !</p>
-                </div>
-            </div>
-        </main>
-
-        <!-- 이 페이지 전용 JS가 필요하다면 여기에 추가 -->
-        <script src="/js/index.js"></script>
-        <script src="/js/auth.js"></script>
-    </body>
+    <!-- 이 페이지 전용 JS가 필요하다면 여기에 추가 -->
+    <script src="/js/index.js"></script>
+    <script src="/js/auth.js"></script>
+  </body>
 </html>

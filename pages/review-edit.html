@@ -18,8 +18,8 @@
             <nav class="nav-container">
                 <div class="center-menu">
                     <a href="/index.html">홈</a>
-                    <a href="/pages/explore.html">찾기</a>
-                    <a href="/pages/wishlist.html">찜</a>
+                    <a href="/pages/explore.html">팝업 찾기</a>
+                    
                     <a href="/pages/mypage.html">마이포롱</a>
                 </div>
             </nav>
@@ -84,6 +84,12 @@
                 <div class="file-upload-wrapper">
                     <input type="file" id="review-file-input" accept="image/*" style="display: none;" />
                     <button type="button" class="btn-file-trigger" id="btn-file-dummy">눌러서 사진 올리기 (0/1)</button>
+
+                        <!-- 추가 -->
+                    <div id="image-preview-container" style="display: none;">
+                        <img id="img-preview" src="" alt="미리보기" style="width: 100%; border-radius: 8px;" />
+                        <button type="button" id="btn-delete-file">삭제</button>
+                    </div>
                 </div>
 
                 <div class="submit-action-row">
