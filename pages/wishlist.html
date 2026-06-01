@@ -1,73 +1,69 @@
 <!doctype html>
 <html lang="ko">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>PORONG</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PORONG</title>
 
-        <!-- 모든 페이지 공통 스타일 (폰트, 여백 초기화) -->
-        <link rel="stylesheet" href="/css/global.css" />
+    <!-- 모든 페이지 공통 스타일 (폰트, 여백 초기화) -->
+    <link rel="stylesheet" href="/css/global.css" />
 
-        <!-- 이 페이지 전용 CSS가 필요하다면 여기에 추가 (예: main.css 나 board.css) -->
-        <!-- <link rel="stylesheet" href="/css/main.css"> -->
-    </head>
-    <body>
-        <!-- [공통 헤더] 모든 파일에 동일하게 복붙해서 사용합니다. -->
-        <header class="common-header">
-            <div class="header-container">
-                <div class="header-logo">
-                    <a href="/index.html" class="logo font-point">PORONG</a>
-                </div>
+    <!-- 이 페이지 전용 CSS가 필요하다면 여기에 추가 (예: main.css 나 board.css) -->
+    <!-- <link rel="stylesheet" href="/css/main.css"> -->
+  </head>
+  <body>
+    <!-- [공통 헤더] 모든 파일에 동일하게 복붙해서 사용합니다. -->
+    <header class="common-header">
+      <div class="header-container">
+        <div class="header-logo">
+          <a href="/index.html" class="logo font-point">PORONG</a>
+        </div>
 
-                <input type="checkbox" id="menu-toggle" class="menu-checkbox" />
+        <input type="checkbox" id="menu-toggle" class="menu-checkbox" />
 
-                <nav class="nav-container">
-                    <div class="center-menu">
-                        <a href="/index.html">홈</a>
-                        <a href="/pages/explore.html">찾기</a>
-                        <a href="/pages/wishlist.html">찜</a>
-                        <a href="/pages/mypage.html">마이포롱</a>
-                    </div>
-                </nav>
+        <nav class="nav-container">
+          <div class="center-menu">
+            <a href="/index.html">홈</a>
+            <a href="/pages/explore.html">팝업 찾기</a>
 
-                <div class="header-right-group">
-                    <a
-                        href="/pages/search.html"
-                        class="search-btn"
-                        aria-label="검색"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                    </a>
+            <a href="/pages/mypage.html">마이포롱</a>
+          </div>
+        </nav>
 
-                    <a href="/pages/login.html" class="login-link">로그인</a>
+        <div class="header-right-group">
+          <a href="/pages/search.html" class="search-btn" aria-label="검색">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </a>
 
-                    <label for="menu-toggle" class="hamburger-button">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </label>
-                </div>
-            </div>
-        </header>
+          <a href="/pages/login.html" class="login-link">로그인</a>
 
-        <!-- [본문 영역] 각자 페이지에 맞는 내용을 여기 안에 작성하세요 -->
-        <main>찜 목록 페이지</main>
+          <label for="menu-toggle" class="hamburger-button">
+            <span></span>
+            <span></span>
+            <span></span>
+          </label>
+        </div>
+      </div>
+    </header>
 
-        <!-- 이 페이지 전용 JS가 필요하다면 여기에 추가 -->
-        <!-- <script src="/js/main.js"></script> -->
-        <script src="/js/index.js"></script>
-    </body>
+    <!-- [본문 영역] 각자 페이지에 맞는 내용을 여기 안에 작성하세요 -->
+    <main>찜 목록 페이지</main>
+
+    <!-- 이 페이지 전용 JS가 필요하다면 여기에 추가 -->
+    <!-- <script src="/js/main.js"></script> -->
+    <script src="/js/index.js"></script>
+  </body>
 </html>

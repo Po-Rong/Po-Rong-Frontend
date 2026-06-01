@@ -120,7 +120,7 @@ body {}
     width: 100%;
     height: 70px;
     background-color: var(--color-white);
-    /* border-bottom: 1px solid #f0f0f0; */
+    border-bottom: 1px solid #dbdbdb;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -238,19 +238,29 @@ body {}
 @media screen and (min-width: 1024px) {
     .common-header {
         height: 70px;
+        width: 100%;
     }
 
     .header-container {
-        max-width: 1024px;
-        /* 최소 1024px 핏에 맞춤형 가두기 */
+        max-width: 100%;
         width: 100%;
-        padding: 0 20px;
-        /* 피그마 맞춤형 안쪽 여백 */
+        padding: 0 40px;
         display: flex;
         justify-content: space-between;
-        /* 좌, 우, 가운데 요소를 가로폭 끝과 끝으로 배치 */
         align-items: center;
-        /* 전체 컴포넌트 70px 정중앙 수직 정렬 */
+    }
+
+    .nav-container {
+        position: static;
+        width: auto;
+        max-height: none;
+        overflow: visible;
+        border: none;
+        background: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-grow: 1;
     }
 
     /* 햄버거 버튼 완전 제거 */
@@ -281,7 +291,7 @@ body {}
     /* 가운데 메뉴 4개 가로 정렬 및 수직 중앙 맞춤 */
     .center-menu {
         flex-direction: row;
-        gap: 40px;
+        gap: 60px;
         /* 메뉴 간격 */
     }
 

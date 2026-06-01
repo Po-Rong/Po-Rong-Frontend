@@ -1,128 +1,155 @@
 <!doctype html>
 <html lang="ko">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PORONG</title>
     <link rel="stylesheet" href="/css/global.css" />
     <link rel="stylesheet" href="/css/reservation.css" />
     <!-- flatpickr CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
-</head>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+  </head>
 
-<body>
+  <body>
     <header class="common-header">
-        <div class="header-container">
-            <div class="header-logo">
-                <a href="/index.html" class="logo font-point">PORONG</a>
-            </div>
-            <input type="checkbox" id="menu-toggle" class="menu-checkbox" />
-            <nav class="nav-container">
-                <div class="center-menu">
-                    <a href="/index.html">홈</a>
-                    <a href="/pages/explore.html">찾기</a>
-                    <a href="/pages/wishlist.html">찜</a>
-                    <a href="/pages/mypage.html">마이포롱</a>
-                </div>
-            </nav>
-            <div class="header-right-group">
-                <a href="/pages/search.html" class="search-btn" aria-label="검색">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                </a>
-                <a href="/pages/login.html" class="login-link">로그인</a>
-                <label for="menu-toggle" class="hamburger-button">
-                    <span></span><span></span><span></span>
-                </label>
-            </div>
+      <div class="header-container">
+        <div class="header-logo">
+          <a href="/index.html" class="logo font-point">PORONG</a>
         </div>
+        <input type="checkbox" id="menu-toggle" class="menu-checkbox" />
+        <nav class="nav-container">
+          <div class="center-menu">
+            <a href="/index.html">홈</a>
+            <a href="/pages/explore.html">팝업 찾기</a>
+
+            <a href="/pages/mypage.html">마이포롱</a>
+          </div>
+        </nav>
+        <div class="header-right-group">
+          <a href="/pages/search.html" class="search-btn" aria-label="검색">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </a>
+          <a href="/pages/login.html" class="login-link">로그인</a>
+          <label for="menu-toggle" class="hamburger-button">
+            <span></span><span></span><span></span>
+          </label>
+        </div>
+      </div>
     </header>
 
     <main class="reservation-wrapper">
-        <div class="reservation-container">
+      <div class="reservation-container">
+        <section class="section-reserve-poster">
+          <img src="" alt="팝업 대표 이미지" id="reserve-main-thumb" />
+        </section>
 
-            <section class="section-reserve-poster">
-                <img src="" alt="팝업 대표 이미지" id="reserve-main-thumb" />
-            </section>
+        <section
+          class="section-reserve-summary"
+          id="popup-summary-container"
+        ></section>
 
-            <section class="section-reserve-summary" id="popup-summary-container">
-            </section>
+        <hr class="reserve-divider" />
 
-            <hr class="reserve-divider" />
+        <section class="section-visitor-inputs">
+          <div class="input-row">
+            <label for="visitor-name">이름</label>
+            <input
+              type="text"
+              id="visitor-name"
+              placeholder="성함을 입력해주세요"
+            />
+          </div>
+          <div class="input-row">
+            <label for="visitor-phone">연락처</label>
+            <input
+              type="text"
+              id="visitor-phone"
+              placeholder="연락처를 입력해주세요(000-0000-0000)"
+            />
+          </div>
+        </section>
 
-            <section class="section-visitor-inputs">
-                <div class="input-row">
-                    <label for="visitor-name">이름</label>
-                    <input type="text" id="visitor-name" placeholder="성함을 입력해주세요" />
-                </div>
-                <div class="input-row">
-                    <label for="visitor-phone">연락처</label>
-                    <input type="text" id="visitor-phone" placeholder="연락처를 입력해주세요(000-0000-0000)" />
-                </div>
-            </section>
+        <hr class="reserve-divider" />
 
-            <hr class="reserve-divider" />
+        <section class="section-datetime-picker">
+          <h3 class="picker-title">날짜와 시간을 선택해주세요</h3>
+          <div class="calendar-box">
+            <label for="reserve-date-input" class="date-input-label"
+              >방문 날짜 선택</label
+            >
+            <div class="date-input-wrapper">
+              <input
+                type="text"
+                id="reserve-date-input"
+                value="2026-05-29"
+                placeholder="날짜를 선택해주세요"
+              />
+            </div>
+          </div>
 
-            <section class="section-datetime-picker">
-                <h3 class="picker-title">날짜와 시간을 선택해주세요</h3>
-                <div class="calendar-box">
-                    <label for="reserve-date-input" class="date-input-label">방문 날짜 선택</label>
-                    <div class="date-input-wrapper">
-                        <input type="text" id="reserve-date-input" value="2026-05-29" placeholder="날짜를 선택해주세요" />
-                    </div>
-                </div>
-
-                <div class="time-slot-container">
-                    <div class="time-block-group">
-                        <h4 class="time-period-label">오전</h4>
-                        <div class="slots-grid">
-                            <button class="btn-time-slot">10:00</button>
-                            <button class="btn-time-slot">10:30</button>
-                            <button class="btn-time-slot">11:00</button>
-                            <button class="btn-time-slot">11:30</button>
-                        </div>
-                    </div>
-
-                    <div class="time-block-group">
-                        <h4 class="time-period-label">오후</h4>
-                        <div class="slots-grid">
-                            <button class="btn-time-slot">12:00</button>
-                            <button class="btn-time-slot">12:30</button>
-                            <button class="btn-time-slot">13:00</button>
-                            <button class="btn-time-slot">13:30</button>
-                            <button class="btn-time-slot">14:00</button>
-                            <button class="btn-time-slot">14:30</button>
-                            <button class="btn-time-slot">15:00</button>
-                            <button class="btn-time-slot">15:30</button>
-                            <button class="btn-time-slot">16:00</button>
-                            <button class="btn-time-slot">16:30</button>
-                            <button class="btn-time-slot">17:00</button>
-                            <button class="btn-time-slot">17:30</button>
-                            <button class="btn-time-slot">18:00</button>
-                            <button class="btn-time-slot">18:30</button>
-                            <button class="btn-time-slot">19:00</button>
-                            <button class="btn-time-slot">19:30</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <hr class="reserve-divider" />
-
-            <div class="fixed-submit-container">
-                <button type="button" id="btn-final-reserve" class="btn-main-submit">예약하기</button>
+          <div class="time-slot-container">
+            <div class="time-block-group">
+              <h4 class="time-period-label">오전</h4>
+              <div class="slots-grid">
+                <button class="btn-time-slot">10:00</button>
+                <button class="btn-time-slot">10:30</button>
+                <button class="btn-time-slot">11:00</button>
+                <button class="btn-time-slot">11:30</button>
+              </div>
             </div>
 
+            <div class="time-block-group">
+              <h4 class="time-period-label">오후</h4>
+              <div class="slots-grid">
+                <button class="btn-time-slot">12:00</button>
+                <button class="btn-time-slot">12:30</button>
+                <button class="btn-time-slot">13:00</button>
+                <button class="btn-time-slot">13:30</button>
+                <button class="btn-time-slot">14:00</button>
+                <button class="btn-time-slot">14:30</button>
+                <button class="btn-time-slot">15:00</button>
+                <button class="btn-time-slot">15:30</button>
+                <button class="btn-time-slot">16:00</button>
+                <button class="btn-time-slot">16:30</button>
+                <button class="btn-time-slot">17:00</button>
+                <button class="btn-time-slot">17:30</button>
+                <button class="btn-time-slot">18:00</button>
+                <button class="btn-time-slot">18:30</button>
+                <button class="btn-time-slot">19:00</button>
+                <button class="btn-time-slot">19:30</button>
+              </div>
+            </div>
+          </div>
+        </section>
+        <hr class="reserve-divider" />
+
+        <div class="fixed-submit-container">
+          <button type="button" id="btn-final-reserve" class="btn-main-submit">
+            예약하기
+          </button>
         </div>
+      </div>
     </main>
 
     <!-- flatpickr JS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
     <script src="/js/reservation.js"></script>
-</body>
-
+  </body>
 </html>
