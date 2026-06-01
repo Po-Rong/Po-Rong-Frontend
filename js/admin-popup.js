@@ -299,6 +299,18 @@ function registerPopup() {
         formGroup.appendChild(msg); // afterend → appendChild
         hasError = true;
     }
+
+    if (!reservationStartDate || !reservationEndDate) {
+        const formGroup = document
+            .getElementById("reservationStartDate")
+            .closest(".form-group");
+        const msg = document.createElement("p");
+        msg.className = "error-msg";
+        msg.textContent = "예약 일정을 입력해주세요.";
+        formGroup.appendChild(msg);
+        hasError = true;
+    }
+
     if (!mainImageFile) {
         const btn = document.querySelector(
             ".form-group > button[type='button']",
@@ -484,6 +496,11 @@ function editPopup() {
     const endDate = document.getElementById("endDate").value;
     const categoryId = document.getElementById("selectedCategory").value;
     const regionId = document.getElementById("selectedRegion").value;
+    const reservationStartDate = document.getElementById(
+        "reservationStartDate",
+    ).value;
+    const reservationEndDate =
+        document.getElementById("reservationEndDate").value;
 
     if (!title) {
         showError("popupTitle", "팝업 이름은 필수입니다.");
@@ -523,6 +540,16 @@ function editPopup() {
         formGroup.appendChild(msg); // afterend → appendChild
         hasError = true;
     }
+    if (!reservationStartDate || !reservationEndDate) {
+        const formGroup = document
+            .getElementById("reservationStartDate")
+            .closest(".form-group");
+        const msg = document.createElement("p");
+        msg.className = "error-msg";
+        msg.textContent = "예약 일정을 입력해주세요.";
+        formGroup.appendChild(msg);
+        hasError = true;
+    }
     if (!mainImageFile && !existingMainImageUrl) {
         const btn = document.querySelector(
             ".form-group > button[type='button']",
@@ -541,11 +568,6 @@ function editPopup() {
     }
 
     const user = JSON.parse(localStorage.getItem("loginUser"));
-    const reservationStartDate = document.getElementById(
-        "reservationStartDate",
-    ).value;
-    const reservationEndDate =
-        document.getElementById("reservationEndDate").value;
     const benefit = document.getElementById("popupBenefit").value.trim();
     const notice = document.getElementById("popupNotice").value.trim();
     const info = document.getElementById("popupInfo").value.trim();
@@ -622,6 +644,24 @@ document.getElementById("startDate").addEventListener("change", () => {
 document.getElementById("endDate").addEventListener("change", () => {
     const formGroup = document
         .getElementById("startDate")
+        .closest(".form-group");
+    const msg = formGroup.querySelector(".error-msg");
+    if (msg) msg.remove();
+});
+
+document
+    .getElementById("reservationStartDate")
+    .addEventListener("change", () => {
+        const formGroup = document
+            .getElementById("reservationStartDate")
+            .closest(".form-group");
+        const msg = formGroup.querySelector(".error-msg");
+        if (msg) msg.remove();
+    });
+
+document.getElementById("reservationEndDate").addEventListener("change", () => {
+    const formGroup = document
+        .getElementById("reservationStartDate")
         .closest(".form-group");
     const msg = formGroup.querySelector(".error-msg");
     if (msg) msg.remove();
