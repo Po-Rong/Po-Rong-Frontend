@@ -482,6 +482,34 @@
     color: var(--color-text-secondary);
 }
 
+/* 3열 가로 정렬 카드 그리드 */
+.timeline-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    width: 100%;
+    margin-top: 12px;
+}
+
+.timeline-cards-grid .timeline-card {
+    display: flex;
+    min-width: 0; /* 부모 그리드의 크기에 맞춰 유연하게 줄어들도록 설정 */
+    width: 100%;  /* 가로 폭 꽉 차게 매핑 */
+}
+
+/* 반응형 스마트폰 및 태블릿 분기 */
+@media screen and (max-width: 1023px) {
+    .timeline-cards-grid {
+        grid-template-columns: repeat(2, 1fr); /* 태블릿에서는 2열로 조정 */
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .timeline-cards-grid {
+        grid-template-columns: 1fr; /* 모바일에서는 1열로 조정 */
+    }
+}
+
 /* 7. 모달 공통 레이아웃 */
 .modal-overlay {
     position: fixed;

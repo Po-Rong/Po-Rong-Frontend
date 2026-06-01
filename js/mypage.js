@@ -410,62 +410,111 @@ function renderMyReservations(dataList) {
         return;
     }
 
+    // 1. 예약 일정을 최신 순(내림차순)으로 정렬
+    dataList.sort((a, b) => {
+        const dateA = a.reserveDate ? new Date(a.reserveDate.replace(' ', 'T')) : new Date(0);
+        const dateB = b.reserveDate ? new Date(b.reserveDate.replace(' ', 'T')) : new Date(0);
+        return dateB - dateA;
+    });
+
+    // 2. 날짜별로 그룹화 (reserveDate의 날짜 부분인 YYYY-MM-DD 기준)
+    const grouped = {};
+    const dateBadgeMap = {}; // 날짜별로 출력할 뱃지 텍스트 맵
+    
     dataList.forEach(item => {
+        let dateStr = '날짜 미정';
         let dateBadge = '날짜 미정';
-        let dateStr = '';
-        let timeStr = '';
 
         if (item.reserveDate) {
             const parts = item.reserveDate.split(' ');
-            dateStr = parts[0];
-
-            if (parts[1]) {
-                const timeParts = parts[1].split(':');
-                let hour = parseInt(timeParts[0], 10);
-                const ampm = hour >= 12 ? '오후' : '오전';
-                if (hour > 12) hour -= 12;
-                if (hour === 0) hour = 12;
-                timeStr = `${ampm} ${hour}:${timeParts[1]}`;
-            }
-
+            dateStr = parts[0]; // e.g. YYYY-MM-DD
+            
             const dateObj = new Date(dateStr);
             const days = ['일', '월', '화', '수', '목', '금', '토'];
             dateBadge = `${dateObj.getMonth() + 1}.${dateObj.getDate()} ${days[dateObj.getDay()]}`;
         }
-
-        let actionButtonHtml = '';
-        if (item.status === 'CANCELED') {
-            actionButtonHtml = `<button class="btn-reservation-action" disabled>예약 취소됨</button>`;
-        } else {
-            let isPassed = false;
-            if (item.reserveDate) {
-                const reserveTime = new Date(item.reserveDate.replace(' ', 'T'));
-                const now = new Date();
-                isPassed = reserveTime < now;
-            }
-
-            if (isPassed) {
-                // 백엔드에서 오는 isReviewed 값이 true인지 확인
-                if (item.isReviewed === true) {
-                    // 이미 쓴 거면 후기 완료 버튼으로 바꾸고 disabled 처리하여 클릭을 막음
-                    actionButtonHtml = `<button class="btn-reservation-action" disabled style="background-color: var(--color-offwhite); color: var(--color-text-secondary); cursor: not-allowed;">후기 완료</button>`;
-                } else {
-                    // 아직 안 썼으면 정상적으로 후기 쓰기 버튼
-                    actionButtonHtml = `<button class="btn-reservation-action" onclick="location.href='/pages/review-write.html?popupId=${item.popupId}&reservationId=${item.id}'">후기 쓰기</button>`;
-                }
-            } else {
-                actionButtonHtml = `<button class="btn-reservation-action" onclick="openReservationModal(${JSON.stringify(item).replace(/"/g, '&quot;')})">예약 확인하기</button>`;
-            }
+        
+        if (!grouped[dateStr]) {
+            grouped[dateStr] = [];
+            dateBadgeMap[dateStr] = dateBadge;
         }
+        grouped[dateStr].push(item);
+    });
 
-        const html = `
-            <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-date">${dateBadge}</div>
+    // 3. 내림차순 정렬된 날짜 순서대로 그룹화된 고유 날짜 배열 생성
+    const uniqueDates = [];
+    dataList.forEach(item => {
+        let dateStr = '날짜 미정';
+        if (item.reserveDate) {
+            dateStr = item.reserveDate.split(' ')[0];
+        }
+        if (!uniqueDates.includes(dateStr)) {
+            uniqueDates.push(dateStr);
+        }
+    });
+
+    // 4. 각 고유 날짜 그룹별로 타임라인 아이템 출력
+    uniqueDates.forEach(dateStr => {
+        const items = grouped[dateStr];
+        const dateBadge = dateBadgeMap[dateStr];
+
+        let cardsHtml = '';
+        
+        items.forEach(item => {
+            let timeStr = '';
+            if (item.reserveDate) {
+                const parts = item.reserveDate.split(' ');
+                if (parts[1]) {
+                    const timeParts = parts[1].split(':');
+                    let hour = parseInt(timeParts[0], 10);
+                    const ampm = hour >= 12 ? '오후' : '오전';
+                    if (hour > 12) hour -= 12;
+                    if (hour === 0) hour = 12;
+                    timeStr = `${ampm} ${hour}:${timeParts[1]}`;
+                }
+            }
+
+            let actionButtonHtml = '';
+            if (item.status === 'CANCELED') {
+                actionButtonHtml = `<button class="btn-reservation-action" disabled>예약 취소됨</button>`;
+            } else {
+                let isPassed = false;
+                if (item.reserveDate) {
+                    const reserveTime = new Date(item.reserveDate.replace(' ', 'T'));
+                    const now = new Date();
+                    isPassed = reserveTime < now;
+                }
+
+                if (isPassed) {
+                    // 백엔드에서 오는 isReviewed 값이 true인지 확인
+                    if (item.isReviewed === true) {
+                        // 이미 쓴 거면 후기 완료 버튼으로 바꾸고 disabled 처리하여 클릭을 막음
+                        actionButtonHtml = `<button class="btn-reservation-action" disabled style="background-color: var(--color-offwhite); color: var(--color-text-secondary); cursor: not-allowed;">후기 완료</button>`;
+                    } else {
+                        // 아직 안 썼으면 정상적으로 후기 쓰기 버튼
+                        actionButtonHtml = `<button class="btn-reservation-action" onclick="location.href='/pages/review-write.html?popupId=${item.popupId}&reservationId=${item.id}'">후기 쓰기</button>`;
+                    }
+                } else {
+                    actionButtonHtml = `<button class="btn-reservation-action" onclick="openReservationModal(${JSON.stringify(item).replace(/"/g, '&quot;')})">예약 확인하기</button>`;
+                }
+            }
+
+            cardsHtml += `
                 <div class="timeline-card">
                     <h4 class="timeline-card-title">${item.popupTitle || '산리오 팝업스토어'}</h4>
                     <p class="timeline-card-time">${dateStr} | ${timeStr} 예약</p>
                     ${actionButtonHtml}
+                </div>
+            `;
+        });
+
+        // 같은 날짜의 카드 그룹을 grid 컨테이너(.timeline-cards-grid)에 묶어 가로로 출력
+        const html = `
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-date">${dateBadge}</div>
+                <div class="timeline-cards-grid">
+                    ${cardsHtml}
                 </div>
             </div>
         `;
