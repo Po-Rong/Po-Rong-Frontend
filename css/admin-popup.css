@@ -334,6 +334,10 @@ body {
     font-weight: var(--weight-semibold) !important;
 }
 
+.flatpickr-monthDropdown-months {
+    background-color: var(--color-primary) !important;
+}
+
 /* ── 등록/수정 제출 버튼 ── */
 .btn-submit {
     display: block;
