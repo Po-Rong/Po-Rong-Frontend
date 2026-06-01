@@ -83,6 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
     Promise.all(fetchPromises)
         .then(results => {
             const [popup, allWishList, myWishList] = results;
+            const popupReservationPeriod = document.getElementById("popup-reservation-period");
 
             // 상세 정보 렌더링
             if (popupMainThumb) {
@@ -95,6 +96,21 @@ document.addEventListener("DOMContentLoaded", () => {
             if (popupLocation) popupLocation.innerText = popup.address;
             if (popupHours) popupHours.innerText = popup.operatingHours || "10:00 ~ 22:00";
             if (popupIntro) popupIntro.innerText = popup.info || "";
+
+            if (popupPeriod) popupPeriod.innerText = `${popup.startDate.split('T')[0]} ~ ${popup.endDate.split('T')[0]}`;
+
+            // 예약 기간 조건부 데이터 렌더링 로직 추가
+            if (popupReservationPeriod) {
+                if (popup.reservationStartDate && popup.reservationEndDate) {
+                    const resStart = popup.reservationStartDate.split('T')[0];
+                    const resEnd = popup.reservationEndDate.split('T')[0];
+                    popupReservationPeriod.innerText = `${resStart} ~ ${resEnd}`;
+                } else {
+                    popupReservationPeriod.innerText = "예약 일정 정보가 없습니다.";
+                    popupReservationPeriod.style.color = "#999999";
+                    // 정보가 없을 때 흐리게 처리
+                }
+            }
 
             // 혜택 렌더링
             const popupBenefit = document.getElementById("popup-benefit");
