@@ -83,6 +83,19 @@ body {
     padding: 0 20px;
 }
 
+.msgfail {
+    color: #e05c5c;
+    font-size: 13px;
+}
+
+.msgok {
+    color: var(--color-sub-green);
+}
+
+input.input-error {
+    border-color: #e05c5c;
+}
+
 /* ── 인풋 공통 ── */
 .auth-box input[type="text"],
 .auth-box input[type="email"],

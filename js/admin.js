@@ -521,6 +521,13 @@ function addScrollHint(containerId) {
     hintLeft.style.opacity = "0";
     wrapper.appendChild(hintLeft);
 
+    // 스크롤 필요 없으면 오른쪽 화살표도 숨기기
+    setTimeout(() => {
+        if (container.scrollWidth <= container.clientWidth) {
+            hintRight.style.opacity = "0";
+        }
+    }, 100);
+
     hintRight.addEventListener("click", (e) => {
         e.stopPropagation();
         e.preventDefault();
