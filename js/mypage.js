@@ -434,12 +434,21 @@ function renderMyReservations(dataList) {
         }
 
         let actionButtonHtml = '';
-        if (item.status === 'USED') {
-            actionButtonHtml = `<button class="btn-reservation-action" onclick="location.href='/pages/review-write.html?popupId=${item.popupId}&reservationId=${item.id}'">후기 쓰기</button>`;
-        } else if (item.status === 'CONFIRMED') {
-            actionButtonHtml = `<button class="btn-reservation-action" onclick="openReservationModal(${JSON.stringify(item).replace(/"/g, '&quot;')})">예약 확인하기</button>`;
-        } else {
+        if (item.status === 'CANCELED') {
             actionButtonHtml = `<button class="btn-reservation-action" disabled>예약 취소됨</button>`;
+        } else {
+            let isPassed = false;
+            if (item.reserveDate) {
+                const reserveTime = new Date(item.reserveDate.replace(' ', 'T'));
+                const now = new Date();
+                isPassed = reserveTime < now;
+            }
+
+            if (isPassed) {
+                actionButtonHtml = `<button class="btn-reservation-action" onclick="location.href='/pages/review-write.html?popupId=${item.popupId}&reservationId=${item.id}'">후기 쓰기</button>`;
+            } else {
+                actionButtonHtml = `<button class="btn-reservation-action" onclick="openReservationModal(${JSON.stringify(item).replace(/"/g, '&quot;')})">예약 확인하기</button>`;
+            }
         }
 
         const html = `
