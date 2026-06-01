@@ -31,12 +31,13 @@ async function fetchPopupSummary(popupId) {
 
         const popupData = await response.json();
 
-        // HTML 요소 선택 (ID가 일치하는지 확인하세요)
-        const thumbImg = document.getElementById("popup-thumb");
+        // HTML 클래스/ID 선택자 정밀 정정 (기존 popup-thumb 아이디는 HTML에 없으므로 클래스로 획득)
+        const thumbImg = document.querySelector(".target-thumb");
         const titleText = document.querySelector(".target-title");
         const regionText = document.querySelector(".target-location");
-        const categoryBadge = document.querySelector(".card-category");
+        const tagRow = document.querySelector(".tag-row");
 
+        // 대표 이미지 채우기 (외부 unsplash URL 대응 완벽 지원)
         if (thumbImg && popupData.mainImageUrl) {
             thumbImg.src = popupData.mainImageUrl.startsWith("/")
                 ? `http://localhost:8080${popupData.mainImageUrl}`
@@ -46,8 +47,39 @@ async function fetchPopupSummary(popupId) {
             titleText.textContent = popupData.title;
         if (regionText && popupData.regionName)
             regionText.textContent = popupData.regionName;
-        if (categoryBadge && popupData.categoryName)
-            categoryBadge.textContent = popupData.categoryName;
+
+        // [중요 개선] 카테고리, 운영 상태, 그리고 커스텀 태그까지 한번에 동적으로 매핑하여 노출
+        if (tagRow) {
+            tagRow.innerHTML = ""; // 기존 정적인 뱃지 제거 후 완전 동적 주입
+
+            // 1. 카테고리 뱃지 추가
+            if (popupData.categoryName) {
+                const catSpan = document.createElement("span");
+                catSpan.className = "card-category";
+                catSpan.textContent = popupData.categoryName;
+                tagRow.appendChild(catSpan);
+            }
+
+            // 2. 운영 상태 뱃지 추가 (ongoing, upcoming, closed 분기 및 한글 전환)
+            if (popupData.status) {
+                const statusSpan = document.createElement("span");
+                let statusText = "운영중";
+                let statusClass = "is-running";
+
+                if (popupData.status === "upcoming" || popupData.status === "오픈 예정") {
+                    statusText = "운영 예정";
+                    statusClass = "is-upcoming";
+                } else if (popupData.status === "closed" || popupData.status === "종료") {
+                    statusText = "운영 마감";
+                    statusClass = "is-closed";
+                }
+
+                statusSpan.className = `card-status ${statusClass}`;
+                statusSpan.textContent = statusText;
+                tagRow.appendChild(statusSpan);
+            }
+
+        }
     } catch (error) {
         console.error("팝업 요약 정보 로드 실패:", error);
     }
