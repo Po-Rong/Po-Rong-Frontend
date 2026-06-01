@@ -199,21 +199,21 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 50px;
+    gap: 24px; /* 카드 사이 간격을 50px에서 24px로 좁혀 컴팩트하게 밀착시킴 */
     width: 100%;
     padding-top: 20px;
 }
 
 .keyring-card {
     display: flex;
-    width: 122px;
+    width: 150px; /* 부모 카드의 너비를 150px로 넓혀 큼직한 키링이 안정적으로 담기도록 수정 */
     flex-direction: column;
     align-items: center;
     gap: 10px;
 }
 
 .keyring-img-box {
-    padding-right: 20px;
+    padding: 0; /* 우측 패딩을 제거하여 가로축 정중앙에 완벽하게 정렬시킴 */
 }
 
 .keyring-circle.empty-state {
