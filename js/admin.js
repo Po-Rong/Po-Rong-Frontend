@@ -14,6 +14,13 @@ function loadPopupList() {
         .then((data) => {
             const popupList = document.getElementById("popupList");
             popupList.innerHTML = "";
+
+            // 기존 힌트 제거
+            const wrapper = popupList.closest(".admin-section");
+            wrapper
+                .querySelectorAll(".scroll-hint")
+                .forEach((el) => el.remove());
+
             if (data.length === 0) {
                 popupList.innerHTML =
                     '<p class="empty-msg">등록한 팝업스토어가 없습니다.</p>';
@@ -50,10 +57,11 @@ function loadPopupList() {
                 `;
                 popupList.appendChild(div);
             });
+
+            addScrollHint("popupList");
+            initDragScroll("popupList");
         });
 }
-
-addScrollHint("popupList");
 
 // 팝업 삭제
 function deletePopup(popupId) {
@@ -69,7 +77,6 @@ function deletePopup(popupId) {
                 loadPopupList();
             } else {
                 alert(data.message);
-                location.reload();
             }
         })
         .catch(() => alert("서버 오류"));
@@ -152,9 +159,10 @@ function loadReviewList() {
 
                 reviewList.appendChild(div);
             });
+            addScrollHint("reviewList");
+            initDragScroll("reviewList");
         });
 }
-addScrollHint("reviewList");
 
 // 리뷰 모달
 function openReviewModal(review) {
@@ -449,8 +457,6 @@ loadPopupList();
 loadReviewList();
 loadReservationList();
 loadSummary();
-initDragScroll("popupList");
-initDragScroll("reviewList");
 
 // 관리자 페이지 전용 드래그 스크롤 + 클릭 방지
 function initDragScroll(containerId) {
