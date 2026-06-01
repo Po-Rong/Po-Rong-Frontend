@@ -125,16 +125,25 @@
     border: 1px solid var(--color-text-secondary);
     border-radius: var(--radius-sm);
     font-size: 14px;
+    color: var(--color-text-main);
+    background-color: var(--color-white);
     outline: none;
     display: flex;
     padding: 14px;
     align-items: center;
     gap: 10px;
     flex: 1 0 0;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+
+.input-row input::placeholder {
+    color: #bbbbbb;
+    font-size: 14px;
 }
 
 .input-row input:focus {
-    border-color: var(--color-primary-dark);
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-light2);
 }
 
 /* 5. 날짜/시간 선택 영역 */
@@ -159,6 +168,54 @@
     border: 1px solid var(--color-border-default);
     border-radius: var(--radius-sm);
     padding: var(--space-md);
+}
+
+/* 방문 날짜 입력 가로 정렬 로우 */
+.date-input-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 16px;
+}
+
+/* 방문 날짜 라벨 스타일 */
+.date-input-label {
+    width: 100px;
+    font-weight: var(--weight-medium);
+    color: var(--color-text-main);
+    font-size: 16px;
+    line-height: normal;
+    flex-shrink: 0;
+}
+
+.date-input-wrapper {
+    flex: 1;
+}
+
+/* 날짜 입력창 스타일 (이름/연락처 인풋과 동일하게 스타일링하되 너비 축소) */
+.date-input-wrapper input {
+    width: 100%;
+    max-width: 320px; /* 단정한 레이아웃을 위해 가로 너비를 320px로 제한 */
+    height: 48px;
+    border: 1px solid var(--color-text-secondary);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    color: var(--color-text-main);
+    background-color: var(--color-white);
+    outline: none;
+    padding: 0 14px;
+    transition: border-color 0.2s, background-color 0.2s;
+    box-sizing: border-box;
+}
+
+.date-input-wrapper input::placeholder {
+    color: #bbbbbb;
+    font-size: 14px;
+}
+
+.date-input-wrapper input:focus {
+    border-color: var(--color-primary);
+    background-color: var(--color-primary-light2);
 }
 
 .calendar-header {
@@ -206,10 +263,22 @@
     color: var(--color-text-main);
     position: relative;
     cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    border-radius: var(--radius-xs);
+}
+
+/* flatpickr 호버 스타일 이식 */
+.calendar-table td:hover {
+    background-color: var(--color-primary-light2);
 }
 
 .calendar-table td.muted {
     color: #CCCCCC;
+    cursor: default;
+}
+
+.calendar-table td.muted:hover {
+    background-color: transparent;
 }
 
 .calendar-table td.sun {
@@ -229,10 +298,11 @@
     margin-top: 2px;
 }
 
+/* 오늘 날짜 태그 브랜드 컬러 전환 */
 .today-tag {
     display: block;
     font-size: 9px;
-    color: var(--color-sub-green);
+    color: var(--color-primary);
     font-weight: var(--weight-bold);
 }
 
@@ -246,11 +316,16 @@
     color: #AAAAAA;
 }
 
+/* flatpickr 활성 날짜 컬러 이식 */
 .calendar-table td.active-day {
-    background-color: var(--color-sub-green);
-    color: var(--color-white);
+    background-color: var(--color-primary) !important;
+    color: var(--color-white) !important;
     border-radius: var(--radius-xs);
     font-weight: var(--weight-bold);
+}
+
+.calendar-table td.active-day:hover {
+    background-color: var(--color-primary) !important;
 }
 
 /* 6. 시간 슬롯 선택 그리드 */
@@ -357,6 +432,23 @@
         width: 100%;
         box-sizing: border-box;
         flex: none;
+    }
+
+    /* 모바일 반응형 가로 -> 세로 정렬 대응 */
+    .date-input-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .date-input-label {
+        width: 100%;
+        margin-bottom: 2px;
+    }
+
+    .date-input-wrapper {
+        width: 100%;
     }
 
     .slots-grid {
