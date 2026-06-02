@@ -1,20 +1,20 @@
 /* ==========================================================================
    1. DOM 로드 완료 후 초기 실행
    ========================================================================== */
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(window.location.search);
-    const currentPopupId = urlParams.get('popupId') || 11;
+    const currentPopupId = urlParams.get("popupId") || 11;
 
     // 기본 정렬 값: 최신순 (latest)
-    let currentSort = 'latest';
+    let currentSort = "latest";
     fetchReviewsData(currentPopupId, currentSort);
     initImageModal();
     initRatingPrompt(currentPopupId);
 
     // 정렬 선택박스 이벤트 감지
-    const sortSelect = document.getElementById('review-sort-select');
+    const sortSelect = document.getElementById("review-sort-select");
     if (sortSelect) {
-        sortSelect.addEventListener('change', (e) => {
+        sortSelect.addEventListener("change", (e) => {
             currentSort = e.target.value;
             fetchReviewsData(currentPopupId, currentSort);
         });
@@ -26,16 +26,16 @@ document.addEventListener('DOMContentLoaded', () => {
    ========================================================================== */
 let currentPopupDetails = null;
 
-async function fetchReviewsData(popupId, sort = 'latest') {
+async function fetchReviewsData(popupId, sort = "latest") {
     const reviewsApiUrl = `http://localhost:8080/api/popups/${popupId}/reviews?sort=${sort}`;
-    const popupDetailUrl = `http://localhost:8080/api/popups/${popupId}`
+    const popupDetailUrl = `http://localhost:8080/api/popups/${popupId}`;
     const congestionApiUrl = `http://localhost:8080/api/popups/${popupId}/congestion`;
 
     try {
         const [reviewsRes, popupRes, congestionRes] = await Promise.all([
             fetch(reviewsApiUrl),
             fetch(popupDetailUrl),
-            fetch(congestionApiUrl)
+            fetch(congestionApiUrl),
         ]);
 
         const reviewsList = await reviewsRes.json();
@@ -44,7 +44,6 @@ async function fetchReviewsData(popupId, sort = 'latest') {
 
         renderUpperDashboard(reviewsList, congestionData);
         renderReviews(reviewsList); // 이제 렌더링 시 currentPopupDetails 사용 가능
-
     } catch (error) {
         console.error("데이터 로드 오류:", error);
     }
@@ -54,15 +53,18 @@ async function fetchReviewsData(popupId, sort = 'latest') {
    3. 상단 대시보드 실시간 통계 계산 및 동적 주입 함수
    ========================================================================== */
 function renderUpperDashboard(dataList, congestionStats) {
-    const avgScoreDisplay = document.getElementById('avgScoreDisplay');
-    const avgStarsGroup = document.getElementById('avgStarsGroup');
-    const mainCongestionText = document.getElementById('mainCongestionText');
-    const mainCongestionIcons = document.getElementById('mainCongestionIcons');
+    const avgScoreDisplay = document.getElementById("avgScoreDisplay");
+    const avgStarsGroup = document.getElementById("avgStarsGroup");
+    const mainCongestionText = document.getElementById("mainCongestionText");
+    const mainCongestionIcons = document.getElementById("mainCongestionIcons");
 
     if (!dataList || dataList.length === 0) return;
 
     // 점수 계산
-    const totalScore = dataList.reduce((acc, item) => acc + (item.rating ? parseInt(item.rating) : 0), 0);
+    const totalScore = dataList.reduce(
+        (acc, item) => acc + (item.rating ? parseInt(item.rating) : 0),
+        0,
+    );
     const avgScore = totalScore / dataList.length;
 
     if (avgScoreDisplay) avgScoreDisplay.textContent = avgScore.toFixed(1);
@@ -70,9 +72,12 @@ function renderUpperDashboard(dataList, congestionStats) {
     // 상단 평균 별점 렌더링
     if (avgStarsGroup) {
         const roundedAvg = Math.round(avgScore);
-        let starsHtml = '';
+        let starsHtml = "";
         for (let i = 1; i <= 5; i++) {
-            const src = i <= roundedAvg ? '/assets/images/icons/icon-star-fill.png' : '/assets/images/icons/icon-star-empty.png';
+            const src =
+                i <= roundedAvg
+                    ? "/assets/images/icons/icon-star-fill.png"
+                    : "/assets/images/icons/icon-star-empty.png";
             starsHtml += `<img src="${src}" class="star-icon" alt="별점" />`;
         }
         avgStarsGroup.innerHTML = starsHtml;
@@ -80,20 +85,24 @@ function renderUpperDashboard(dataList, congestionStats) {
 
     // 상단 혼잡도 렌더링
     const congestionMap = {
-        '여유': { label: '여유', count: 1 },
-        '보통': { label: '보통', count: 2 },
-        '혼잡': { label: '혼잡', count: 3 }
+        여유: { label: "여유", count: 1 },
+        보통: { label: "보통", count: 2 },
+        혼잡: { label: "혼잡", count: 3 },
     };
-    const stats = congestionMap[congestionStats.averageCongestionLevel] || { label: '-', count: 0 };
+    const stats = congestionMap[congestionStats.averageCongestionLevel] || {
+        label: "-",
+        count: 0,
+    };
 
     if (mainCongestionText) mainCongestionText.textContent = stats.label;
 
     if (mainCongestionIcons) {
-        const icons = mainCongestionIcons.querySelectorAll('.btn-congestion');
+        const icons = mainCongestionIcons.querySelectorAll(".btn-congestion");
         icons.forEach((img, index) => {
-            img.src = ((index + 1) <= stats.count) ?
-                '/assets/images/icons/icon-person-fill.png' :
-                '/assets/images/icons/icon-person-empty.png';
+            img.src =
+                index + 1 <= stats.count
+                    ? "/assets/images/icons/icon-person-fill.png"
+                    : "/assets/images/icons/icon-person-empty.png";
         });
     }
 }
@@ -102,7 +111,7 @@ function renderUpperDashboard(dataList, congestionStats) {
    4. 하단 후기 리스트 영역 동적 데이터 렌더러
    ========================================================================== */
 function renderReviews(dataList) {
-    const listGroup = document.querySelector('.reviews-list-group');
+    const listGroup = document.querySelector(".reviews-list-group");
     if (!listGroup) return;
 
     while (listGroup.firstChild) {
@@ -114,36 +123,58 @@ function renderReviews(dataList) {
         return;
     }
 
-    dataList.forEach(item => {
+    dataList.forEach((item) => {
         const ratingScore = item.rating ? parseInt(item.rating) : 0;
-        const userNickname = item.nickname || '포롱이';
+        const userNickname = item.nickname || "포롱이";
 
-        let formattedDate = '날짜 없음';
+        let formattedDate = "날짜 없음";
         if (item.reserveDate) {
-            const parts = item.reserveDate.split('-');
-            formattedDate = parts.length === 3 ? `${parts[0].slice(2)}.${parts[1]}.${parts[2]}` : item.reserveDate;
+            const parts = item.reserveDate.split("-");
+            formattedDate =
+                parts.length === 3
+                    ? `${parts[0].slice(2)}.${parts[1]}.${parts[2]}`
+                    : item.reserveDate;
+        }
+
+        // 리뷰 작성일 포맷팅 (createdAt 데이터 처리)
+        let formattedCreatedAt = "날짜 없음";
+        if (item.createdAt) {
+            const datePart = item.createdAt.split(" ")[0];
+            const parts = datePart.split("-");
+            if (parts.length === 3) {
+                formattedCreatedAt = `${parts[0].slice(2)}.${parts[1]}.${parts[2]}`;
+            }
         }
 
         const congestionMap = {
-            'HIGH': { label: '높음', filledCount: 3 },
-            'NORMAL': { label: '보통', filledCount: 2 },
-            'LOW': { label: '낮음', filledCount: 1 }
+            HIGH: { label: "높음", filledCount: 3 },
+            NORMAL: { label: "보통", filledCount: 2 },
+            LOW: { label: "낮음", filledCount: 1 },
         };
-        const congestionData = congestionMap[item.congestionLevel] || { label: '정보 없음', filledCount: 0 };
+        const congestionData = congestionMap[item.congestionLevel] || {
+            label: "정보 없음",
+            filledCount: 0,
+        };
 
-        let starsHtml = '';
+        let starsHtml = "";
         for (let i = 1; i <= 5; i++) {
-            const starSrc = i <= ratingScore ? '/assets/images/icons/icon-star-fill.png' : '/assets/images/icons/icon-star-empty.png';
+            const starSrc =
+                i <= ratingScore
+                    ? "/assets/images/icons/icon-star-fill.png"
+                    : "/assets/images/icons/icon-star-empty.png";
             starsHtml += `<img src="${starSrc}" class="icon-star" alt="별" />`;
         }
 
-        let congestionIconsHtml = '';
+        let congestionIconsHtml = "";
         for (let i = 1; i <= 3; i++) {
-            const personSrc = i <= congestionData.filledCount ? '/assets/images/icons/icon-person-fill.png' : '/assets/images/icons/icon-person-empty.png';
+            const personSrc =
+                i <= congestionData.filledCount
+                    ? "/assets/images/icons/icon-person-fill.png"
+                    : "/assets/images/icons/icon-person-empty.png";
             congestionIconsHtml += `<img src="${personSrc}" class="icon-person" alt="혼잡도" />`;
         }
-        let imageContainerHtml = '';
-        if (item.reviewImageUrl && item.reviewImageUrl !== 'NULL') {
+        let imageContainerHtml = "";
+        if (item.reviewImageUrl && item.reviewImageUrl !== "NULL") {
             imageContainerHtml = `
                 <div class="review-image-thumbnail">
                     <img src="${item.reviewImageUrl}" alt="리뷰 첨부 이미지" />
@@ -151,13 +182,16 @@ function renderReviews(dataList) {
             `;
         }
         const p = currentPopupDetails || {};
-        const cardArticle = document.createElement('article');
-        cardArticle.className = 'review-item-card';
+        const cardArticle = document.createElement("article");
+        cardArticle.className = "review-item-card";
         cardArticle.innerHTML = `
             <div class="review-card">
                 <div class="review-card-header">
                     <span class="reviewer-name">${userNickname}</span>
-                    <span class="review-date">${formattedDate}</span>
+                    <div class="review-date" style="display: flex; flex-direction: column; align-items: flex-end; text-align: right; font-size: 13px; color: #888;">
+                        <span>작성 : ${formattedCreatedAt}</span>
+                        <span>방문 : ${formattedDate}</span>
+                    </div>
                 </div>
                 <div class="review-stats-row">
                     <div class="rating-wrap">
@@ -172,41 +206,44 @@ function renderReviews(dataList) {
                 </div>
                 <div class="review-card-body">
                     <div class="review-text-content">
-                        <p class="review-main-paragraph">${item.content || '내용 없음'}</p>
+                        <p class="review-main-paragraph">${item.content || "내용 없음"}</p>
                         <button type="button" class="btn-toggle-expand">펼치기 ∨</button>
                     </div>
                     ${imageContainerHtml}
                 </div>
                 <div class="review-target-popup">
                     <div class="target-thumb-wrap">
-                        <img src="${p.mainImageUrl || '/assets/images/dummies/thumb-dummy01.png'}" alt="팝업 썸네일" class="target-thumb" />
+                        <img src="${p.mainImageUrl || "/assets/images/dummies/thumb-dummy01.png"}" alt="팝업 썸네일" class="target-thumb" />
                     </div>
                     <div class="target-info-wrap">
                         <div class="target-tags">
-                            <span class="card-category">${p.categoryName || '팝업'}</span>
-                            <span class="card-status ${p.status === 'ongoing' ? 'is-running' : ''}">
-                                ${p.status === 'ongoing' ? '운영중' : '종료'}
+                            <span class="card-category">${p.categoryName || "팝업"}</span>
+                            <span class="card-status ${p.status === "ongoing" ? "is-running" : ""}">
+                                ${p.status === "ongoing" ? "운영중" : "종료"}
                             </span>
                         </div>
-                        <h4 class="target-title">${p.title || '팝업 이름'}</h4>
-                        <p class="target-location">${p.regionName || '위치 미정'}</p>
+                        <h4 class="target-title">${p.title || "팝업 이름"}</h4>
+                        <p class="target-location">${p.regionName || "위치 미정"}</p>
                     </div>
                 </div>
             </div>
         `;
 
         // 펼치기 이벤트 연결
-        const expandBtn = cardArticle.querySelector('.btn-toggle-expand');
-        expandBtn.addEventListener('click', () => {
+        const expandBtn = cardArticle.querySelector(".btn-toggle-expand");
+        expandBtn.addEventListener("click", () => {
             const textContentBox = expandBtn.parentElement;
             const cardBody = textContentBox.parentElement;
             const textParagraph = expandBtn.previousElementSibling;
-            const imageThumb = cardBody.querySelector('.review-image-thumbnail');
+            const imageThumb = cardBody.querySelector(
+                ".review-image-thumbnail",
+            );
 
-            const isExpanded = textParagraph.classList.toggle('is-expanded');
-            cardBody.classList.toggle('is-expanded', isExpanded);
-            if (imageThumb) imageThumb.classList.toggle('is-expanded', isExpanded);
-            expandBtn.textContent = isExpanded ? '접기 ∧' : '펼치기 ∨';
+            const isExpanded = textParagraph.classList.toggle("is-expanded");
+            cardBody.classList.toggle("is-expanded", isExpanded);
+            if (imageThumb)
+                imageThumb.classList.toggle("is-expanded", isExpanded);
+            expandBtn.textContent = isExpanded ? "접기 ∧" : "펼치기 ∨";
         });
 
         listGroup.appendChild(cardArticle);
@@ -217,26 +254,26 @@ function renderReviews(dataList) {
    5. 이미지 대형 확대 모달 싱글톤 제어
    ========================================================================== */
 function initImageModal() {
-    const modal = document.getElementById('imageModal');
-    const modalContent = document.getElementById('modalContent');
-    const modalClose = document.getElementById('modalClose');
+    const modal = document.getElementById("imageModal");
+    const modalContent = document.getElementById("modalContent");
+    const modalClose = document.getElementById("modalClose");
 
     if (!modal || !modalContent || !modalClose) return;
 
-    document.addEventListener('click', (e) => {
-        if (e.target.matches('.review-image-thumbnail img')) {
+    document.addEventListener("click", (e) => {
+        if (e.target.matches(".review-image-thumbnail img")) {
             modalContent.style.backgroundImage = `url('${e.target.src}')`;
-            modal.classList.add('is-active');
+            modal.classList.add("is-active");
         }
     });
 
-    modalClose.addEventListener('click', () => {
-        modal.classList.remove('is-active');
+    modalClose.addEventListener("click", () => {
+        modal.classList.remove("is-active");
     });
 
-    modal.addEventListener('click', (e) => {
+    modal.addEventListener("click", (e) => {
         if (e.target === modal) {
-            modal.classList.remove('is-active');
+            modal.classList.remove("is-active");
         }
     });
 }
@@ -245,18 +282,19 @@ function initImageModal() {
    6. 하단 평점 선택 및 작성 페이지 이동 인터랙션
    ========================================================================== */
 function initRatingPrompt(popupId) {
-    const starsContainer = document.getElementById('interactivePromptStars');
+    const starsContainer = document.getElementById("interactivePromptStars");
     if (!starsContainer) return;
 
-    const stars = starsContainer.querySelectorAll('.prompt-star-btn');
+    const stars = starsContainer.querySelectorAll(".prompt-star-btn");
 
-    stars.forEach(star => {
-        star.addEventListener('mouseenter', () => {
-            const currentLevel = parseInt(star.getAttribute('data-value'));
+    stars.forEach((star) => {
+        star.addEventListener("mouseenter", () => {
+            const currentLevel = parseInt(star.getAttribute("data-value"));
             stars.forEach((s, index) => {
-                s.src = (index < currentLevel) ?
-                    '/assets/images/icons/icon-star-fill.png' :
-                    '/assets/images/icons/icon-star-empty.png';
+                s.src =
+                    index < currentLevel
+                        ? "/assets/images/icons/icon-star-fill.png"
+                        : "/assets/images/icons/icon-star-empty.png";
             });
         });
 
@@ -265,9 +303,9 @@ function initRatingPrompt(popupId) {
         //     window.location.href = `/pages/review-write.html?popupId=${popupId}&rating=${selectedRating}`;
         // });
     });
-    starsContainer.addEventListener('mouseleave', () => {
-        stars.forEach(s => {
-            s.src = '/assets/images/icons/icon-star-empty.png';
+    starsContainer.addEventListener("mouseleave", () => {
+        stars.forEach((s) => {
+            s.src = "/assets/images/icons/icon-star-empty.png";
         });
     });
 }

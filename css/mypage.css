@@ -32,7 +32,7 @@
     width: 100%;
     height: 100%;
     border-radius: var(--radius-full);
-    background: linear-gradient(135deg, #FFE3EC 0%, #F5E3FF 100%);
+    background: linear-gradient(135deg, #ffe3ec 0%, #f5e3ff 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -138,7 +138,7 @@
 }
 
 .counter-card.reviews .counter-icon-box {
-    background-color: #FAF2D6;
+    background-color: #faf2d6;
 }
 
 .counter-card.wishlist .counter-icon-box svg {
@@ -148,7 +148,7 @@
 }
 
 .counter-card.reviews .counter-icon-box svg {
-    stroke: #DFA426;
+    stroke: #dfa426;
     fill: none;
     width: 26px;
     height: 26px;
@@ -234,16 +234,16 @@
 .keyring-tag {
     padding: 6px 16px;
     border-radius: var(--radius-full);
-    border: 1px solid #E5E7EB;
+    border: 1px solid #e5e7eb;
     background: var(--color-white);
     font-size: 13px;
     font-weight: var(--weight-medium);
-    color: #6B7280;
+    color: #6b7280;
 }
 
 .keyring-desc {
     font-size: 12px;
-    color: #9CA3AF;
+    color: #9ca3af;
 }
 
 /* 5. 탭 메뉴 및 카드 그리드 (Tab Menu & Card Grid) */
@@ -279,7 +279,7 @@
     letter-spacing: -0.8px;
     background: transparent;
     border: none;
-    border-bottom: 2px solid #E5E7EB;
+    border-bottom: 2px solid #e5e7eb;
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -299,7 +299,7 @@
 .popup-poster-placeholder {
     width: 100%;
     aspect-ratio: 3 / 4;
-    background: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%);
+    background: linear-gradient(135deg, #ffdee9 0%, #b5fffc 100%);
     position: relative;
     display: flex;
     flex-direction: column;
@@ -316,7 +316,11 @@
     position: absolute;
     width: 120%;
     height: 120%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 60%);
+    background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.4) 0%,
+        transparent 60%
+    );
     top: -10%;
     left: -10%;
 }
@@ -326,7 +330,11 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0) 100%);
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.45) 0%,
+        rgba(0, 0, 0, 0) 100%
+    );
     padding: 30px 10px 10px;
     color: var(--color-white);
     font-size: 12px;
@@ -352,8 +360,8 @@
 
 .badge-open {
     display: inline-block;
-    background-color: #EAFDF2;
-    color: #17A24B;
+    background-color: #eafdf2;
+    color: #17a24b;
     padding: 3px 8px;
     border-radius: var(--radius-xs);
     font-size: 11px;
@@ -397,7 +405,7 @@
     top: 10px;
     bottom: 20px;
     width: 2px;
-    background-color: #E5E7EB;
+    background-color: #e5e7eb;
 }
 
 .timeline-item {
@@ -416,7 +424,7 @@
     width: 24px;
     height: 24px;
     border-radius: var(--radius-full);
-    background-color: #C8BFF9;
+    background-color: #c8bff9;
     border: 3px solid var(--color-white);
     z-index: 2;
 }
@@ -494,7 +502,7 @@
 .timeline-cards-grid .timeline-card {
     display: flex;
     min-width: 0; /* 부모 그리드의 크기에 맞춰 유연하게 줄어들도록 설정 */
-    width: 100%;  /* 가로 폭 꽉 차게 매핑 */
+    width: 100%; /* 가로 폭 꽉 차게 매핑 */
 }
 
 /* 반응형 스마트폰 및 태블릿 분기 */
@@ -566,7 +574,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: #9CA3AF;
+    color: #9ca3af;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -591,12 +599,14 @@
     font-size: 15px;
     color: var(--color-text-main);
     margin-bottom: 24px;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
     outline: none;
 }
 
 .input-nickname::placeholder {
-    color: #9CA3AF;
+    color: #9ca3af;
 }
 
 .input-nickname:focus {
@@ -614,11 +624,13 @@
     font-size: 16px;
     font-weight: var(--weight-bold);
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
+    transition:
+        background-color 0.2s,
+        transform 0.1s;
 }
 
 .btn-confirm-nickname:hover {
-    background-color: var(--color-primary-hover, #8A7AE0);
+    background-color: var(--color-primary-hover, #8a7ae0);
 }
 
 .btn-confirm-nickname:active {
@@ -666,7 +678,7 @@
     width: 56px;
     height: 56px;
     border-radius: var(--radius-sm);
-    background-color: #D9D9D9;
+    background-color: #d9d9d9;
     object-fit: cover;
 }
 
@@ -884,5 +896,42 @@
 
 .menu-edit-btn:hover {
     background-color: var(--color-offwhite);
-    color: #8372DE;
+    color: #8372de;
+}
+
+/* TOP 버튼 스타일 */
+.btn-top {
+    position: fixed;
+    bottom: 30px;
+    right: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-primary-light1);
+    color: var(--color-white); /* 화살표 색상 */
+    border: 1px solid var(--color-primary-light1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999; /* 모달창(보통 1000 이상)보다는 낮고 일반 컨텐츠보단 높게 */
+    opacity: 0; /* 처음에는 투명하게 */
+    visibility: hidden; /* 처음에는 클릭 안 되게 숨김 */
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease,
+        transform 0.2s ease;
+}
+
+/* 스크롤 내렸을 때 활성화되는 클래스 */
+.btn-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 마우스 호버 효과 */
+.btn-top:hover {
+    transform: translateY(-4px);
+    background-color: var(--color-primary);
 }

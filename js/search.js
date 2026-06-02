@@ -40,7 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // 추천 팝업
 async function fetchRecommendPopups() {
-    const scrollContainer = document.getElementById("recommend-scroll-container");
+    const scrollContainer = document.getElementById(
+        "recommend-scroll-container",
+    );
     if (!scrollContainer) return;
 
     // 찜 여부 확인을 위한 공통 유저 쿼리 스트링 획득
@@ -50,7 +52,9 @@ async function fetchRecommendPopups() {
         scrollContainer.innerHTML = `<p class="loading-msg" style="padding:20px; color:#888;">추천 팝업을 가져오는 중입니다...</p>`;
 
         // 제공해주신 찜하기 정렬 및 진행중 팝업 전용 주소 맵핑
-        const response = await fetch(`${API_URL}/popups?status=ongoing&sort=wishlist${userQuery}`);
+        const response = await fetch(
+            `${API_URL}/popups?status=ongoing&sort=wishlist${userQuery}`,
+        );
         if (!response.ok) throw new Error("추천 데이터 로드 실패");
 
         const popupsData = await response.json();
@@ -66,11 +70,10 @@ async function fetchRecommendPopups() {
         }
 
         // 가로 스크롤 컨테이너에 카드 동적 주입
-        top10Popups.forEach(popup => {
+        top10Popups.forEach((popup) => {
             const cardHtml = createPopupCardHtml(popup);
             scrollContainer.insertAdjacentHTML("beforeend", cardHtml);
         });
-
     } catch (error) {
         console.error("추chen 팝업 바인딩 에러:", error);
         scrollContainer.innerHTML = `<p class="error-msg" style="padding:20px; color:red;">추천 팝업을 불러오지 못했습니다.</p>`;
@@ -120,11 +123,10 @@ async function fetchSearchResults(keyword) {
         }
 
         // 4열 그리드 결과 카드 렌더링
-        searchResults.forEach(popup => {
+        searchResults.forEach((popup) => {
             const cardHtml = createPopupCardHtml(popup);
             gridContainer.insertAdjacentHTML("beforeend", cardHtml);
         });
-
     } catch (error) {
         console.error("서버 검색 연동 에러:", error);
         gridContainer.innerHTML = `<p class="error-msg" style="grid-column: 1/-1; text-align:center; color:red; padding:40px 0;">검색 중 오류가 발생했습니다.</p>`;
@@ -161,14 +163,15 @@ function createPopupCardHtml(popup) {
     let starsHtml = "";
     const score = Math.round(popup.avgRating || 0);
     for (let i = 1; i <= 5; i++) {
-        starsHtml += i <= score
-            ? `<img src="/assets/images/icons/icon-star-fill.png" alt="별" style="width:14px; height:14px; object-fit:contain;">`
-            : `<img src="/assets/images/icons/icon-star-empty.png" alt="빈 별" style="width:14px; height:14px; object-fit:contain;">`;
+        starsHtml +=
+            i <= score
+                ? `<img src="/assets/images/icons/icon-star-fill.png" alt="별" style="width:14px; height:14px; object-fit:contain;">`
+                : `<img src="/assets/images/icons/icon-star-empty.png" alt="빈 별" style="width:14px; height:14px; object-fit:contain;">`;
     }
 
     return `
         <div class="popup-card leisure-card" data-popup-id="${popup.id}">
-            <div class="card-image-wrap" onclick="location.href='/pages/detail.html?id=${popup.id}'" style="cursor:pointer;">
+            <div class="card-image-wrap" onclick="location.href='/pages/popup-detail.html?id=${popup.id}'" style="cursor:pointer;">
                 <img src="${popup.mainImageUrl}" alt="${popup.title} 썸네일" class="card-thumb" />
             </div>
             <button class="wish-btn ${activeClass}" aria-label="찜하기" onclick="toggleWish(${popup.id}, this)">
@@ -177,7 +180,7 @@ function createPopupCardHtml(popup) {
             <div class="card-body-wrap">
                 <div class="card-info">
                     ${statusBadgeHtml}
-                    <h3 class="card-title" onclick="location.href='/pages/detail.html?id=${popup.id}'" style="cursor:pointer;">${popup.title}</h3>
+                    <h3 class="card-title" onclick="location.href='/pages/popup-detail.html?id=${popup.id}'" style="cursor:pointer;">${popup.title}</h3>
                     <p class="card-location">${popup.regionName}</p>
                     <p class="card-date">${formattedStartDate} - ${formattedEndDate}</p>
                     
