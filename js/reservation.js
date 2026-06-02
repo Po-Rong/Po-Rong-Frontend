@@ -217,16 +217,22 @@ document.addEventListener("DOMContentLoaded", function () {
         const dateInput = document.getElementById("reserve-date-input");
         if (dateInput) {
             // 백엔드에서 전달하는 예약 시작일/종료일 추출 (기본값 설정 제공)
-            const minD =
-                popupData && popupData.reservationStartDate
-                    ? popupData.reservationStartDate.split("T")[0]
+            // 1. 팝업 데이터에서 시작일 가져오기 (없으면 기본값 "2026-05-29")
+            const popupStart =
+                popupData && popupData.startDate
+                    ? popupData.startDate.split("T")[0]
                     : "2026-05-29";
-            const maxD =
-                popupData && popupData.reservationEndDate
-                    ? popupData.reservationEndDate.split("T")[0]
-                    : null;
-            // 오늘 날짜를 YYYY-MM-DD 형식의 문자열로 만들기
+
+            // 2. 오늘 날짜 구하기 (YYYY-MM-DD)
             const todayStr = new Date().toISOString().split("T")[0];
+
+            // 3. 날짜 비교
+            const minD = popupStart > todayStr ? popupStart : todayStr;
+
+            const maxD =
+                popupData && popupData.endDate
+                    ? popupData.endDate.split("T")[0]
+                    : null;
 
             // flatpickr 날짜 인풋 초기화
             const fp = flatpickr("#reserve-date-input", {
