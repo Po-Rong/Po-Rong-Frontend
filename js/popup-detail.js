@@ -95,7 +95,10 @@ document.addEventListener("DOMContentLoaded", () => {
             if (popupPeriod) popupPeriod.innerText = `${popup.startDate.split('T')[0]} ~ ${popup.endDate.split('T')[0]}`;
             if (popupLocation) popupLocation.innerText = popup.address;
             if (popupHours) popupHours.innerText = popup.operatingHours || "10:00 ~ 22:00";
-            if (popupIntro) popupIntro.innerText = popup.info || "";
+            if (popupIntro) {
+                const infoText = popup.info || "";
+                popupIntro.innerText = infoText.replace(/\\n/g, "\n");
+            }
 
             if (popupPeriod) popupPeriod.innerText = `${popup.startDate.split('T')[0]} ~ ${popup.endDate.split('T')[0]}`;
 
@@ -115,13 +118,15 @@ document.addEventListener("DOMContentLoaded", () => {
             // 혜택 렌더링
             const popupBenefit = document.getElementById("popup-benefit");
             if (popupBenefit) {
-                popupBenefit.innerText = popup.benefit || popup.benefits || "등록된 혜택이 없습니다.";
+                const benefitText = popup.benefit || popup.benefits || "등록된 혜택이 없습니다.";
+                popupBenefit.innerText = benefitText.replace(/\\n/g, "\n");
             }
 
             // 공지사항 렌더링
             const popupNotice = document.getElementById("popup-notice");
             if (popupNotice) {
-                popupNotice.innerText = popup.notice || "등록된 공지사항이 없습니다.";
+                const noticeText = popup.notice || "등록된 공지사항이 없습니다.";
+                popupNotice.innerText = noticeText.replace(/\\n/g, "\n");
             }
 
             // 태그 렌더링
