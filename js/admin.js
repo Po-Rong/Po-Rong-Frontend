@@ -359,12 +359,55 @@ function getCongestionText(level) {
 }
 
 // 예약 목록 불러오기
+let selectedYear = new Date().getFullYear();
+let selectedMonth = new Date().getMonth() + 1;
 let reservationPage = 0;
-let reservationHasNext = false;
+
+function initReservationFilter() {
+    const section = document.getElementById("reservationSection");
+
+    // 필터 UI 삽입 (h3 아래)
+    const filterHtml = `
+        <div class="reservation-filter">
+            <select id="filterYear"></select>
+            <select id="filterMonth"></select>
+            <button id="btnFilterApply">조회</button>
+        </div>
+    `;
+    section.querySelector("h3").insertAdjacentHTML("afterend", filterHtml);
+
+    // 년도: 최근 3년
+    const yearSelect = document.getElementById("filterYear");
+    const currentYear = new Date().getFullYear();
+    for (let y = currentYear; y >= currentYear - 2; y--) {
+        const opt = document.createElement("option");
+        opt.value = y;
+        opt.textContent = `${y}년`;
+        if (y === selectedYear) opt.selected = true;
+        yearSelect.appendChild(opt);
+    }
+
+    // 월
+    const monthSelect = document.getElementById("filterMonth");
+    for (let m = 1; m <= 12; m++) {
+        const opt = document.createElement("option");
+        opt.value = m;
+        opt.textContent = `${m}월`;
+        if (m === selectedMonth) opt.selected = true;
+        monthSelect.appendChild(opt);
+    }
+
+    document.getElementById("btnFilterApply").addEventListener("click", () => {
+        selectedYear = parseInt(yearSelect.value);
+        selectedMonth = parseInt(monthSelect.value);
+        reservationPage = 0;
+        loadReservationList(0);
+    });
+}
 
 function loadReservationList(page = 0) {
     fetch(
-        `http://localhost:8080/api/reservations?seller_id=${user.userId}&page=${page}&size=2`,
+        `${API}/reservations?seller_id=${user.userId}&year=${selectedYear}&month=${selectedMonth}&page=${page}&size=2`,
     )
         .then((res) => res.json())
         .then((data) => {
@@ -567,6 +610,7 @@ function loadSummary() {
 
 loadPopupList();
 loadReviewList();
+initReservationFilter();
 loadReservationList();
 loadSummary();
 
