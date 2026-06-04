@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const heartIcon = document.getElementById("heart-icon");
     const wishCountSpan = document.getElementById("wish-count");
 
-    // 1. 하트 아이콘 업데이트 함수
+    // 하트 아이콘 업데이트 함수
     function updateHeartIcon(isWished) {
         if (!heartIcon) return;
         heartIcon.src = isWished
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
             : "/assets/images/icons/icon-heart-empty.png";
     }
 
-    // 2. 찜하기 버튼 클릭 이벤트
+    // 찜하기 버튼 클릭 이벤트
     if (wishBtn) {
         wishBtn.addEventListener("click", () => {
             if (!userId) {
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 3. 팝업 상세 데이터 및 찜 상태 로드
+    // 팝업 상세 데이터 및 찜 상태 로드
     const fetchPromises = [
         fetch(`http://localhost:8080/api/popups/${popupId}`).then(res => res.json()),
         fetch(`http://localhost:8080/api/wishlists/popups/${popupId}`).then(res => res.json())
