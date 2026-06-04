@@ -1,6 +1,5 @@
 # 💜 팝업스토어 모음 플랫폼 PORONG
-> **경험 중심 소비 트렌드로 급부상한 팝업스토어!**  
-파편화된 정보를 한곳에 모으고, 실시간 혼잡도 공유와 게이미피케이션 요소를 결합한  
+> 파편화된 정보를 한곳에 모으고, 실시간 혼잡도 공유와 게이미피케이션 요소를 결합한  
 팝업스토어 통합 플랫폼 포롱(PORONG)입니다.
 
 <img width="1920" height="910" alt="image" src="https://github.com/user-attachments/assets/e236bd4a-46a3-4993-8cef-eef8142eda4c" />
