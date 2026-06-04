@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 최근 리뷰
     renderReviews(`${API_BASE_URL}/reviews/recent`, ".review-grid-container");
 
-    // 히어로 배너 스크롤 릴리즈 스케일 다운 효과 (Option 3)
+    // 히어로 배너 스크롤 릴리즈 스케일 다운 효과
     const heroContainer = document.querySelector(".hero-container");
 
     if (heroContainer) {
