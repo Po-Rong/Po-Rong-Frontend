@@ -457,4 +457,11 @@ body {
     #tagList {
         padding-left: 0;
     }
+
+    #popupBenefit,
+    #popupNotice,
+    #popupInfo {
+        width: 100%;
+        box-sizing: border-box;
+    }
 }
