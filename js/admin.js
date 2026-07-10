@@ -26,9 +26,17 @@ function loadPopupList() {
       }
       data.forEach((popup) => {
         const div = document.createElement('div');
-        const imageUrl = popup.mainImageUrl?.startsWith('http')
-          ? popup.mainImageUrl
-          : `${window.BACKEND_URL}${popup.mainImageUrl}`;
+
+        let imageUrl = popup.mainImageUrl || '';
+        if (imageUrl && imageUrl.includes('localhost:8080')) {
+          imageUrl = imageUrl.replace(
+            'http://localhost:8080',
+            window.BACKEND_URL,
+          );
+        } else if (!imageUrl.startsWith('http')) {
+          imageUrl = `${window.BACKEND_URL}${imageUrl}`;
+        }
+
         div.className = 'popup-card';
         div.style.cursor = 'pointer';
         div.onclick = () =>
@@ -199,12 +207,27 @@ function loadReviewList() {
 
         reviews.forEach((review) => {
           const div = document.createElement('div');
-          const reviewImageUrl = review.reviewImageUrl?.startsWith('http')
-            ? review.reviewImageUrl
-            : `${window.BACKEND_URL}${review.reviewImageUrl}`;
-          const popupImageUrl = review.popupMainImageUrl?.startsWith('http')
-            ? review.popupMainImageUrl
-            : `${window.BACKEND_URL}${review.popupMainImageUrl}`;
+
+          let reviewImageUrl = review.reviewImageUrl || '';
+          if (reviewImageUrl && reviewImageUrl.includes('localhost:8080')) {
+            reviewImageUrl = reviewImageUrl.replace(
+              'http://localhost:8080',
+              window.BACKEND_URL,
+            );
+          } else if (reviewImageUrl && !reviewImageUrl.startsWith('http')) {
+            reviewImageUrl = `${window.BACKEND_URL}${reviewImageUrl}`;
+          }
+
+          let popupImageUrl = review.popupMainImageUrl || '';
+          if (popupImageUrl && popupImageUrl.includes('localhost:8080')) {
+            popupImageUrl = popupImageUrl.replace(
+              'http://localhost:8080',
+              window.BACKEND_URL,
+            );
+          } else if (popupImageUrl && !popupImageUrl.startsWith('http')) {
+            popupImageUrl = `${window.BACKEND_URL}${popupImageUrl}`;
+          }
+
           div.className = 'review-card';
           div.innerHTML = `
                         <div class="review-card-header">
@@ -268,12 +291,27 @@ function loadReviewList() {
 // 리뷰 모달
 function openReviewModal(review) {
   const modal = document.createElement('div');
-  const reviewImageUrl = review.reviewImageUrl?.startsWith('http')
-    ? review.reviewImageUrl
-    : `${window.BACKEND_URL}${review.reviewImageUrl}`;
-  const popupImageUrl = review.popupMainImageUrl?.startsWith('http')
-    ? review.popupMainImageUrl
-    : `${window.BACKEND_URL}${review.popupMainImageUrl}`;
+
+  let reviewImageUrl = review.reviewImageUrl || '';
+  if (reviewImageUrl && reviewImageUrl.includes('localhost:8080')) {
+    reviewImageUrl = reviewImageUrl.replace(
+      'http://localhost:8080',
+      window.BACKEND_URL,
+    );
+  } else if (reviewImageUrl && !reviewImageUrl.startsWith('http')) {
+    reviewImageUrl = `${window.BACKEND_URL}${reviewImageUrl}`;
+  }
+
+  let popupImageUrl = review.popupMainImageUrl || '';
+  if (popupImageUrl && popupImageUrl.includes('localhost:8080')) {
+    popupImageUrl = popupImageUrl.replace(
+      'http://localhost:8080',
+      window.BACKEND_URL,
+    );
+  } else if (popupImageUrl && !popupImageUrl.startsWith('http')) {
+    popupImageUrl = `${window.BACKEND_URL}${popupImageUrl}`;
+  }
+
   modal.className = 'modal-overlay';
   modal.innerHTML = `
         <div class="modal-review-box">

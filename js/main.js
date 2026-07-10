@@ -56,6 +56,14 @@ async function fetchTrendPopups() {
       const rank = index + 1;
       const activeClass = popup.isWishlisted ? 'active' : '';
 
+      let finalThumbUrl = popup.mainImageUrl;
+      if (finalThumbUrl && finalThumbUrl.includes('localhost:8080')) {
+        finalThumbUrl = finalThumbUrl.replace(
+          'http://localhost:8080',
+          window.BACKEND_URL,
+        );
+      }
+
       // 1, 2, 3위에만 왕관 뱃지
       let crownHtml = '';
       if (rank === 1) crownHtml = `<div class="crown-badge rank-gold"></div>`;
@@ -66,8 +74,8 @@ async function fetchTrendPopups() {
 
       const cardHtml = `
                 <div class="popup-card trend-card" data-popup-id="${popup.id}">
-                    <div class="card-image-wrap" onclick="location.href='/pages/popup-detail.html?id=${popup.id}'">
-                        <img src="${popup.mainImageUrl}" alt="${popup.title} 썸네일" class="card-thumb" />
+                  <div class="card-image-wrap" onclick="location.href='/pages/popup-detail.html?id=${popup.id}'">
+                    <img src="${finalThumbUrl}" alt="${popup.title} 썸네일" class="card-thumb" />
                         <div class="gradient-overlay"></div>
                         ${crownHtml} 
                         <div class="card-overlay-info">
@@ -116,12 +124,23 @@ async function fetchLeisurePopups() {
       const formattedStartDate = formatDateString(popup.startDate);
       const formattedEndDate = formatDateString(popup.endDate);
 
+      let rawImageUrl =
+        popup.mainImageUrl || popup.thumbnailUrl || popup.imageUrl || '';
+
+      let finalThumbUrl = rawImageUrl;
+      if (finalThumbUrl && finalThumbUrl.includes('localhost:8080')) {
+        finalThumbUrl = finalThumbUrl.replace(
+          'http://localhost:8080',
+          window.BACKEND_URL,
+        );
+      }
+
       const cardHtml = `
                 <div class="popup-card leisure-card" data-popup-id="${popup.id}">
-                    <div class="card-image-wrap" onclick="location.href='/pages/popup-detail.html?id=${popup.id}'">
-                        <img src="${popup.mainImageUrl}" alt="${popup.title} 썸네일" class="card-thumb" />
-                        <div class="leisure-status-badge"></div>
-                    </div>
+            <div class="card-image-wrap" onclick="location.href='/pages/popup-detail.html?id=${popup.id}'">
+                <img src="${finalThumbUrl}" alt="${popup.title} 썸네일" class="card-thumb" />
+                <div class="leisure-status-badge"></div>
+            </div>
                     <button class="wish-btn ${activeClass}" aria-label="찜하기" onclick="toggleWish(${popup.id || popup.popupId}, this)">
                         <span class="heart-icon"></span> 찜하기
                     </button>
@@ -170,11 +189,19 @@ async function fetchUpcomingPopups() {
       const formattedStartDate = formatDateString(popup.startDate);
       const formattedEndDate = formatDateString(popup.endDate);
 
+      let finalThumbUrl = popup.mainImageUrl;
+      if (finalThumbUrl && finalThumbUrl.includes('localhost:8080')) {
+        finalThumbUrl = finalThumbUrl.replace(
+          'http://localhost:8080',
+          window.BACKEND_URL,
+        );
+      }
+
       const cardHtml = `
                 <div class="popup-card upcoming-card" data-popup-id="${popup.id}">
-                    <div class="card-image-wrap" onclick="location.href='/pages/popup-detail.html?id=${popup.id}'">
-                        <img src="${popup.mainImageUrl}" alt="${popup.title} 썸네일" class="card-thumb" />
-                        <div class="status-badge new-status"></div>
+            <div class="card-image-wrap" onclick="location.href='/pages/popup-detail.html?id=${popup.id}'">
+                <img src="${finalThumbUrl}" alt="${popup.title} 썸네일" class="card-thumb" />
+                <div class="status-badge new-status"></div>
                     </div>
                     <button class="wish-btn ${activeClass}" aria-label="찜하기" onclick="toggleWish(${popup.id || popup.popupId}, this)">
                         <span class="heart-icon"></span> 찜하기

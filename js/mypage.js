@@ -253,7 +253,12 @@ function renderWishlist(dataList) {
       item.mainImageUrl ||
       item.main_image_url ||
       '/assets/images/dummies/thumb-dummy01.png';
-    if (imageUrl.startsWith('/')) imageUrl = `${window.BACKEND_URL}${imageUrl}`;
+
+    if (imageUrl && imageUrl.includes('localhost:8080')) {
+      imageUrl = imageUrl.replace('http://localhost:8080', window.BACKEND_URL);
+    } else if (imageUrl.startsWith('/')) {
+      imageUrl = `${window.BACKEND_URL}${imageUrl}`;
+    }
 
     const cardHtml = `
             <div class="popup-card leisure-card" onclick="location.href='/pages/popup-detail.html?id=${item.popupId || item.id}'" style="cursor: pointer;">
@@ -343,11 +348,19 @@ function renderMyReviews(dataList) {
     let attachBoxHtml = '';
     let noImageClass = '';
     if (review.reviewImageUrl && review.reviewImageUrl !== 'NULL') {
+      let finalReviewImgUrl = review.reviewImageUrl;
+      if (finalReviewImgUrl && finalReviewImgUrl.includes('localhost:8080')) {
+        finalReviewImgUrl = finalReviewImgUrl.replace(
+          'http://localhost:8080',
+          window.BACKEND_URL,
+        );
+      }
+
       attachBoxHtml = `
-                <div class="review-attach-box">
-                    <img src="${review.reviewImageUrl}" alt="리뷰 첨부 사진" class="review-attached-img" />
-                </div>
-            `;
+            <div class="review-attach-box">
+                <img src="${finalReviewImgUrl}" alt="리뷰 첨부 사진" class="review-attached-img" />
+            </div>
+        `;
     } else {
       noImageClass = 'has-no-image';
     }
@@ -363,6 +376,15 @@ function renderMyReviews(dataList) {
     )
       statusBadgeClass = 'is-closed';
     const displayStatusText = review.popupStatus || '운영중';
+
+    let finalPopupThumbUrl =
+      review.popupMainImageUrl || '/assets/images/dummies/thumb-dummy01.png';
+    if (finalPopupThumbUrl && finalPopupThumbUrl.includes('localhost:8080')) {
+      finalPopupThumbUrl = finalPopupThumbUrl.replace(
+        'http://localhost:8080',
+        window.BACKEND_URL,
+      );
+    }
 
     const reviewHtml = `
             <div class="review-card ${noImageClass}" data-review-id="${review.reviewId}" onclick="location.href='/pages/popup-detail.html?id=${review.popupId}'" style="cursor:pointer;">
@@ -401,7 +423,7 @@ function renderMyReviews(dataList) {
                 ${attachBoxHtml} 
                 <div class="review-target-popup">
                     <div class="target-thumb-wrap">
-                        <img src="${review.popupMainImageUrl || '/assets/images/dummies/thumb-dummy01.png'}" alt="팝업 미니 썸네일" class="target-thumb" />
+                        <img src="${finalPopupThumbUrl || '/assets/images/dummies/thumb-dummy01.png'}" alt="팝업 미니 썸네일" class="target-thumb" />
                     </div>
                     <div class="target-info-wrap">
                         <div class="target-tags">

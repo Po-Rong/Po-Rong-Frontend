@@ -54,7 +54,14 @@ async function fetchOriginalReview(reviewId) {
 
     // 팝업 미니 카드 매핑
     if (review.popupMainImageUrl) {
-      document.querySelector('.target-thumb').src = review.popupMainImageUrl;
+      let originalPopupThumb = review.popupMainImageUrl;
+      if (originalPopupThumb && originalPopupThumb.includes('localhost:8080')) {
+        originalPopupThumb = originalPopupThumb.replace(
+          'http://localhost:8080',
+          window.BACKEND_URL,
+        );
+      }
+      document.querySelector('.target-thumb').src = originalPopupThumb;
     }
 
     // 연동

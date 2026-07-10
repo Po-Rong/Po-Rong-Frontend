@@ -174,16 +174,38 @@ function renderReviews(dataList) {
       congestionIconsHtml += `<img src="${personSrc}" class="icon-person" alt="혼잡도" />`;
     }
     let imageContainerHtml = '';
+
     if (item.reviewImageUrl && item.reviewImageUrl !== 'NULL') {
+      let finalReviewImgUrl = item.reviewImageUrl;
+      if (finalReviewImgUrl && finalReviewImgUrl.includes('localhost:8080')) {
+        finalReviewImgUrl = finalReviewImgUrl.replace(
+          'http://localhost:8080',
+          window.BACKEND_URL,
+        );
+      }
+
       imageContainerHtml = `
-                <div class="review-image-thumbnail">
-                    <img src="${item.reviewImageUrl}" alt="리뷰 첨부 이미지" />
-                </div>
-            `;
+            <div class="review-image-thumbnail">
+                <img src="${finalReviewImgUrl}" alt="리뷰 첨부 이미지" />
+            </div>
+        `;
     }
+
     const p = currentPopupDetails || {};
     const cardArticle = document.createElement('article');
     cardArticle.className = 'review-item-card';
+
+    let finalPopupThumbUrl =
+      p.mainImageUrl || '/assets/images/dummies/thumb-dummy01.png';
+    if (finalPopupThumbUrl && finalPopupThumbUrl.includes('localhost:8080')) {
+      finalPopupThumbUrl = finalPopupThumbUrl.replace(
+        'http://localhost:8080',
+        window.BACKEND_URL,
+      );
+    } else if (finalPopupThumbUrl && finalPopupThumbUrl.startsWith('/')) {
+      finalPopupThumbUrl = `${window.BACKEND_URL}${finalPopupThumbUrl}`;
+    }
+
     cardArticle.innerHTML = `
             <div class="review-card">
                 <div class="review-card-header">
@@ -212,9 +234,9 @@ function renderReviews(dataList) {
                     ${imageContainerHtml}
                 </div>
                 <div class="review-target-popup">
-                    <div class="target-thumb-wrap">
-                        <img src="${p.mainImageUrl || '/assets/images/dummies/thumb-dummy01.png'}" alt="팝업 썸네일" class="target-thumb" />
-                    </div>
+        <div class="target-thumb-wrap">
+            <img src="${finalPopupThumbUrl}" alt="팝업 썸네일" class="target-thumb" />
+        </div>
                     <div class="target-info-wrap">
                         <div class="target-tags">
                             <span class="card-category">${p.categoryName || '팝업'}</span>

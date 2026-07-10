@@ -93,10 +93,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // 상세 정보 렌더링
       if (popupMainThumb) {
-        const mainUrl = popup.mainImageUrl || '';
-        popupMainThumb.src = mainUrl.startsWith('/')
-          ? `${window.BACKEND_URL}${mainUrl}`
-          : mainUrl;
+        let mainUrl = popup.mainImageUrl || '';
+
+        // DB에 로컬 주소가 박혀있다면 Render 배포 주소로 스왑
+        if (mainUrl && mainUrl.includes('localhost:8080')) {
+          mainUrl = mainUrl.replace(
+            'http://localhost:8080',
+            window.BACKEND_URL,
+          );
+        } else if (mainUrl.startsWith('/')) {
+          mainUrl = `${window.BACKEND_URL}${mainUrl}`;
+        }
+
+        popupMainThumb.src = mainUrl;
       }
       if (popupCategory)
         popupCategory.innerText = popup.categoryName || '미지정';
@@ -190,10 +199,20 @@ document.addEventListener('DOMContentLoaded', () => {
                   imageUrl.imageUrl ||
                   imageUrl.url;
             if (src) {
+              let finalSrc = src;
+
+              // 상세 이미지 배열 안의 주소들도 로컬 호스트 주소가 있다면 안전하게 치환
+              if (finalSrc && finalSrc.includes('localhost:8080')) {
+                finalSrc = finalSrc.replace(
+                  'http://localhost:8080',
+                  window.BACKEND_URL,
+                );
+              } else if (finalSrc.startsWith('/')) {
+                finalSrc = `${window.BACKEND_URL}${finalSrc}`;
+              }
+
               const img = document.createElement('img');
-              img.src = src.startsWith('/')
-                ? `${window.BACKEND_URL}${src}`
-                : src;
+              img.src = finalSrc; // 가공된 주소 주입
               img.alt = '팝업 상세 이미지';
               img.style.width = '100%';
               img.style.maxWidth = '480px';

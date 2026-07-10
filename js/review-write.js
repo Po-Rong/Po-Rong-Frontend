@@ -39,10 +39,15 @@ async function fetchPopupSummary(popupId) {
 
     // 대표 이미지 채우기 (외부 unsplash URL 대응 완벽 지원)
     if (thumbImg && popupData.mainImageUrl) {
-      thumbImg.src = popupData.mainImageUrl.startsWith('/')
-        ? `${window.BACKEND_URL}${popupData.mainImageUrl}`
-        : popupData.mainImageUrl;
+      let mainUrl = popupData.mainImageUrl;
+      if (mainUrl && mainUrl.includes('localhost:8080')) {
+        mainUrl = mainUrl.replace('http://localhost:8080', window.BACKEND_URL);
+      } else if (mainUrl.startsWith('/')) {
+        mainUrl = `${window.BACKEND_URL}${mainUrl}`;
+      }
+      thumbImg.src = mainUrl;
     }
+
     if (titleText && popupData.title) titleText.textContent = popupData.title;
     if (regionText && popupData.regionName)
       regionText.textContent = popupData.regionName;

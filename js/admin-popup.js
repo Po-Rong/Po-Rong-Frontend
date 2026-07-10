@@ -466,9 +466,18 @@ function loadPopupDetail(id) {
       // 메인 이미지 미리보기
       if (data.mainImageUrl) {
         document.getElementById('mainImageCount').textContent = 1;
-        const mainImageUrl = data.mainImageUrl?.startsWith('http')
-          ? data.mainImageUrl
-          : `${window.BACKEND_URL}${data.mainImageUrl}`;
+
+        // 로컬 주소가 포함되어 있다면 실서버 배포 주소로 치환
+        let mainImageUrl = data.mainImageUrl;
+        if (mainImageUrl && mainImageUrl.includes('localhost:8080')) {
+          mainImageUrl = mainImageUrl.replace(
+            'http://localhost:8080',
+            window.BACKEND_URL,
+          );
+        } else if (!mainImageUrl.startsWith('http')) {
+          mainImageUrl = `${window.BACKEND_URL}${mainImageUrl}`;
+        }
+
         renderMainImagePreview(`${mainImageUrl}`);
       }
 
@@ -479,9 +488,15 @@ function loadPopupDetail(id) {
 
         Promise.all(
           data.detailImages.map((imageUrl) => {
-            const fullUrl = imageUrl.startsWith('http')
-              ? imageUrl
-              : `${window.BACKEND_URL}${imageUrl}`;
+            let fullUrl = imageUrl;
+            if (fullUrl && fullUrl.includes('localhost:8080')) {
+              fullUrl = fullUrl.replace(
+                'http://localhost:8080',
+                window.BACKEND_URL,
+              );
+            } else if (!fullUrl.startsWith('http')) {
+              fullUrl = `${window.BACKEND_URL}${fullUrl}`;
+            }
             return fetch(fullUrl)
               .then((res) => res.blob())
               .then(

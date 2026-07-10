@@ -5,14 +5,10 @@ const isLocal =
   window.location.hostname === '127.0.0.1';
 
 // 다른 모든 JS 파일에서 사용할 전역 변수 설정
-window.API_BASE_URL = isLocal
-  ? 'http://localhost:8080/api'
-  : 'https://본인의-스프링부트-render-주소.onrender.com/api'; // 추후에 입력
+window.API_BASE_URL = 'https://po-rong-backend.onrender.com/api'; // 추후에 입력
 
 // 이미지 경로 연결용 주소
-window.BACKEND_URL = isLocal
-  ? 'http://localhost:8080'
-  : 'https://본인의-스프링부트-render-주소.onrender.com';
+window.BACKEND_URL = 'https://po-rong-backend.onrender.com';
 
 const API = window.API_BASE_URL;
 
@@ -264,6 +260,20 @@ async function renderReviews(apiEndpoint, containerSelector) {
         noImageClass = 'has-no-image';
       }
 
+      let rawPopupThumb =
+        review.popupImageUrl ||
+        review.popupMainImageUrl ||
+        review.popupThumbnailUrl ||
+        '';
+
+      let finalPopupThumbUrl = rawPopupThumb;
+      if (finalPopupThumbUrl && finalPopupThumbUrl.includes('localhost:8080')) {
+        finalPopupThumbUrl = finalPopupThumbUrl.replace(
+          'http://localhost:8080',
+          window.BACKEND_URL,
+        );
+      }
+
       // 리뷰 카드 HTML 생성
       const reviewHtml = `
                 <div class="review-card ${noImageClass}" data-review-id="${review.reviewId}" onclick="location.href='/pages/explore.html?id=${review.popupId}'" style="cursor:pointer;">
@@ -290,7 +300,7 @@ async function renderReviews(apiEndpoint, containerSelector) {
                     ${attachBoxHtml} 
                     <div class="review-target-popup">
                         <div class="target-thumb-wrap">
-                            <img src="${review.popupMainImageUrl}" alt="팝업 미니 썸네일" class="target-thumb" />
+                            <img src="${finalPopupThumbUrl}" alt="팝업 미니 썸네일" class="target-thumb" />
                         </div>
                         <div class="target-info-wrap">
                             <div class="target-tags">

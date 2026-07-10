@@ -124,9 +124,13 @@ document.addEventListener('DOMContentLoaded', function () {
   function renderSummary(data) {
     const posterImg = document.getElementById('reserve-main-thumb');
     if (posterImg && data.mainImageUrl) {
-      posterImg.src = data.mainImageUrl.startsWith('/')
-        ? `${window.BACKEND_URL}${data.mainImageUrl}`
-        : data.mainImageUrl;
+      let mainUrl = data.mainImageUrl;
+      if (mainUrl && mainUrl.includes('localhost:8080')) {
+        mainUrl = mainUrl.replace('http://localhost:8080', window.BACKEND_URL);
+      } else if (mainUrl.startsWith('/')) {
+        mainUrl = `${window.BACKEND_URL}${mainUrl}`;
+      }
+      posterImg.src = mainUrl;
     }
 
     // 상태값 가져오기
