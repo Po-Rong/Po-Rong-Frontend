@@ -5,10 +5,14 @@ const isLocal =
   window.location.hostname === '127.0.0.1';
 
 // 다른 모든 JS 파일에서 사용할 전역 변수 설정
-window.API_BASE_URL = 'https://po-rong-backend.onrender.com/api'; // 추후에 입력
+window.API_BASE_URL = isLocal
+  ? 'http://localhost:8080/api' // 로컬 환경일 때
+  : 'https://po-rong-backend.onrender.com/api';
 
 // 이미지 경로 연결용 주소
-window.BACKEND_URL = 'https://po-rong-backend.onrender.com';
+window.BACKEND_URL = isLocal
+  ? 'http://localhost:8080' // 로컬 환경일 때
+  : 'https://po-rong-backend.onrender.com';
 
 const API = window.API_BASE_URL;
 
