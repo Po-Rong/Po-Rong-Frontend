@@ -1,161 +1,163 @@
 <!doctype html>
 <html lang="ko">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>PORONG</title>
-        <link rel="stylesheet" href="/css/global.css" />
-        <link rel="stylesheet" href="/css/admin.css" />
-    </head>
-    <body>
-        <header class="common-header">
-            <div class="header-container">
-                <div class="header-logo">
-                    <a href="/index.html" class="logo font-point">PORONG</a>
-                </div>
-                <input type="checkbox" id="menu-toggle" class="menu-checkbox" />
-                <nav class="nav-container">
-                    <div class="center-menu">
-                        <a href="/index.html">홈</a>
-                        <a href="/pages/explore.html">팝업 찾기</a>
-                        <a href="/pages/mypage.html">마이포롱</a>
-                    </div>
-                </nav>
-                <div class="header-right-group">
-                    <a
-                        href="/pages/search.html"
-                        class="search-btn"
-                        aria-label="검색"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                    </a>
-                    <a href="/pages/login.html" class="login-link">로그인</a>
-                    <label for="menu-toggle" class="hamburger-button">
-                        <span></span><span></span><span></span>
-                    </label>
-                </div>
-            </div>
-        </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PORONG</title>
+    <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/admin.css" />
+  </head>
+  <body>
+    <header class="common-header">
+      <div class="header-container">
+        <div class="header-logo">
+          <a href="/index.html" class="logo font-point">PORONG</a>
+        </div>
+        <input type="checkbox" id="menu-toggle" class="menu-checkbox" />
+        <nav class="nav-container">
+          <div class="center-menu">
+            <a href="/index.html">홈</a>
+            <a href="/pages/explore.html">팝업 찾기</a>
+            <a href="/pages/mypage.html">마이포롱</a>
+          </div>
+        </nav>
+        <div class="header-right-group">
+          <a href="/pages/search.html" class="search-btn" aria-label="검색">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </a>
+          <a href="/pages/login.html" class="login-link">로그인</a>
+          <label for="menu-toggle" class="hamburger-button">
+            <span></span><span></span><span></span>
+          </label>
+        </div>
+      </div>
+    </header>
 
-        <main>
-            <!-- 인사말 -->
-            <div class="admin-welcome">
-                <h2>판매자님, 반가워요!</h2>
+    <main>
+      <!-- 인사말 -->
+      <div class="admin-welcome">
+        <h2>판매자님, 반가워요!</h2>
 
-                <!-- 요약 통계 -->
-                <div class="admin-stats">
-                    <div
-                        class="stat-card"
-                        onclick="
-                            window.scrollTo({
-                                top:
-                                    document
-                                        .getElementById('reservationSection')
-                                        .getBoundingClientRect().top +
-                                    window.scrollY -
-                                    150,
-                                behavior: 'smooth',
-                            })
-                        "
-                        style="cursor: pointer"
-                    >
-                        <p class="stat-label">이번달 예약 🗓️</p>
-                        <p class="stat-value" id="statMonthlyReservation">-</p>
-                    </div>
-                    <div class="stat-card">
-                        <p class="stat-label">평균 별점 ⭐</p>
-                        <p class="stat-value" id="statAverageRating">-</p>
-                    </div>
-                    <div
-                        class="stat-card"
-                        onclick="
-                            window.scrollTo({
-                                top:
-                                    document
-                                        .getElementById('reviewSection')
-                                        .getBoundingClientRect().top +
-                                    window.scrollY -
-                                    200,
-                                behavior: 'smooth',
-                            })
-                        "
-                        style="cursor: pointer"
-                    >
-                        <p class="stat-label">총 리뷰 👀</p>
-                        <p class="stat-value" id="statTotalReview">-</p>
-                    </div>
-                </div>
-
-                <button onclick="location.href = '/pages/popup-register.html'">
-                    팝업스토어 등록하기
-                </button>
-            </div>
-
-            <!-- 판매자가 등록한 팝업스토어 목록 -->
-            <section class="admin-section">
-                <h3>판매자님이 등록한 팝업스토어</h3>
-                <div
-                    id="popupList"
-                    class="scroll-container card-scroll-container"
-                ></div>
-            </section>
-
-            <!-- 팝업스토어에 달린 후기 -->
-            <section class="admin-section" id="reviewSection">
-                <h3>팝업스토어에 달린 후기</h3>
-                <div id="reviewList"></div>
-            </section>
-
-            <!-- 나의 팝업스토어 예약 목록 -->
-            <section class="admin-section" id="reservationSection">
-                <h3>나의 팝업스토어 예약 목록</h3>
-                <div id="reservationList"></div>
-            </section>
-        </main>
-
-        <!-- 로그아웃 버튼 -->
-        <div class="logout-section">
-            <button type="button" id="btn-logout" class="btn-logout-wide">
-                로그아웃
-            </button>
+        <!-- 요약 통계 -->
+        <div class="admin-stats">
+          <div
+            class="stat-card"
+            onclick="
+              window.scrollTo({
+                top:
+                  document
+                    .getElementById('reservationSection')
+                    .getBoundingClientRect().top +
+                  window.scrollY -
+                  150,
+                behavior: 'smooth',
+              })
+            "
+            style="cursor: pointer"
+          >
+            <p class="stat-label">이번달 예약 🗓️</p>
+            <p class="stat-value" id="statMonthlyReservation">-</p>
+          </div>
+          <div class="stat-card">
+            <p class="stat-label">평균 별점 ⭐</p>
+            <p class="stat-value" id="statAverageRating">-</p>
+          </div>
+          <div
+            class="stat-card"
+            onclick="
+              window.scrollTo({
+                top:
+                  document
+                    .getElementById('reviewSection')
+                    .getBoundingClientRect().top +
+                  window.scrollY -
+                  200,
+                behavior: 'smooth',
+              })
+            "
+            style="cursor: pointer"
+          >
+            <p class="stat-label">총 리뷰 👀</p>
+            <p class="stat-value" id="statTotalReview">-</p>
+          </div>
         </div>
 
-        <footer class="common-footer">
-            <div class="footer-container">
-                <div class="footer-info">
-                    <p class="footer-logo">PORONG</p>
-                </div>
-                <div class="footer-info2">
-                    <div class="footer-infodng">
-                        <p>개발자</p>
-                        <p>이주현 | 고유정 | 서지현</p>
-                    </div>
-                    <div class="footer-infodng">
-                        <p>깃허브</p>
-                        <a
-                            style="text-decoration: none"
-                            href="https://github.com/Po-Rong"
-                            >https://github.com/Po-Rong</a
-                        >
-                    </div>
-                </div>
-            </div>
-        </footer>
+        <button onclick="location.href = '/pages/popup-register.html'">
+          팝업스토어 등록하기
+        </button>
+      </div>
 
-        <script src="/js/index.js"></script>
-        <script src="/js/admin.js"></script>
-    </body>
+      <!-- 판매자가 등록한 팝업스토어 목록 -->
+      <section class="admin-section">
+        <h3>판매자님이 등록한 팝업스토어</h3>
+        <div
+          id="popupList"
+          class="scroll-container card-scroll-container"
+        ></div>
+      </section>
+
+      <!-- 팝업스토어에 달린 후기 -->
+      <section class="admin-section" id="reviewSection">
+        <h3>팝업스토어에 달린 후기</h3>
+        <div id="reviewList"></div>
+      </section>
+
+      <!-- 나의 팝업스토어 예약 목록 -->
+      <section class="admin-section" id="reservationSection">
+        <h3>나의 팝업스토어 예약 목록</h3>
+        <div id="reservationList"></div>
+      </section>
+    </main>
+
+    <!-- 로그아웃 버튼 -->
+    <div class="logout-section">
+      <button type="button" id="btn-logout" class="btn-logout-wide">
+        로그아웃
+      </button>
+    </div>
+
+    <footer class="common-footer">
+      <div class="footer-container">
+        <div class="footer-info">
+          <p class="footer-logo">PORONG</p>
+        </div>
+        <div class="footer-info2">
+          <div class="footer-infodng">
+            <p>개발자</p>
+            <p>이주현 | 고유정 | 서지현</p>
+          </div>
+          <div class="footer-infodng">
+            <p>깃허브</p>
+            <a style="text-decoration: none" href="https://github.com/Po-Rong"
+              >https://github.com/Po-Rong</a
+            >
+          </div>
+
+          <p>
+            본 프로젝트는 비상업적 목적의 개인 포트폴리오용으로 제작되었습니다.
+            <br />
+            시스템 테스트 및 데이터 렌더링을 위해 사용된 일부 이미지와 텍스트의
+            저작권은 원저작자(팝가, 네이버 블로그 등)에게 있으며, 요청 시 즉시
+            삭제 처리됩니다.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/js/index.js"></script>
+    <script src="/js/admin.js"></script>
+  </body>
 </html>
